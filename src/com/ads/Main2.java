@@ -3,9 +3,11 @@ package com.ads;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Main2 {
-
+    static int counter = 0;
     private int[][] Heap;
     private int size;
     private int maxsize;
@@ -106,10 +108,10 @@ public class Main2 {
     }
 
     // Function to print the contents of the heap
-    public void print()
+    public void print(int counter)
     {
         for (int i = 1; i <= size / 2; i++) {
-            System.out.print(" PARENT : (" + Heap[i][0] +","+ Heap[i][1]+","+ Heap[i][2]+")"
+            System.out.print("At "+counter+":- PARENT : (" + Heap[i][0] +","+ Heap[i][1]+","+ Heap[i][2]+")"
                     + " LEFT CHILD : (" + Heap[2 * i][0] +","+Heap[2 * i][1]+","+Heap[2 * i][2]+")"
                     + " RIGHT CHILD : (" + Heap[2 * i + 1][0]+","+Heap[2 * i + 1][1]+","+Heap[2 * i + 1][2]+")");
             System.out.println();
@@ -179,20 +181,33 @@ public class Main2 {
     // Driver code
     public static void main(String[] arg) throws IOException
     {
-        
+
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        String line;
+
         Main2 minHeap = new Main2(15);
-        while ((line = in.readLine()) != null) {
-            int[] params = stringToParams(line);
-            minHeap.insert(params);
-            minHeap.print();
-            //int[] ret = new RevealCards().deckRevealedIncreasing(deck);
+        Timer timer = new Timer();
+        timer.schedule( new TimerTask() {
+            String line;
+            public void run() {
+                System.out.println("time: "+counter);
+                while (true) {
+                    try {
+                        if ((line = in.readLine()) == null) break;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    int[] params = stringToParams(line);
+                    minHeap.insert(params);
+                    minHeap.print(counter);
+                    //int[] ret = new RevealCards().deckRevealedIncreasing(deck);
 
-            //String out = integerArrayToString(ret);
+                    //String out = integerArrayToString(ret);
 
-            //System.out.print(out);
-        }
+                    //System.out.print(out);
+                }
+                counter++;
+            }
+        }, 0, 10*1000);
         //System.out.println("The Min Heap is ");
 
         /*minHeap.insert(5);

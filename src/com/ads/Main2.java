@@ -1,8 +1,6 @@
 package com.ads;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -108,10 +106,10 @@ public class Main2 {
     }
 
     // Function to print the contents of the heap
-    public void print(int counter)
+    public void print()
     {
         for (int i = 1; i <= size / 2; i++) {
-            System.out.print("At "+counter+":- PARENT : (" + Heap[i][0] +","+ Heap[i][1]+","+ Heap[i][2]+")"
+            System.out.print(" PARENT : (" + Heap[i][0] +","+ Heap[i][1]+","+ Heap[i][2]+")"
                     + " LEFT CHILD : (" + Heap[2 * i][0] +","+Heap[2 * i][1]+","+Heap[2 * i][2]+")"
                     + " RIGHT CHILD : (" + Heap[2 * i + 1][0]+","+Heap[2 * i + 1][1]+","+Heap[2 * i + 1][2]+")");
             System.out.println();
@@ -160,12 +158,13 @@ public class Main2 {
             return new int[0];
         }
 
+
         String[] params = input.split(",");
         int[] output = new int[triple+1];
-        String part = params[0].trim();
+        String part = params[0].split("\\(")[1];
         output[0] = Integer.parseInt(part);
         output[1]=0;
-        part = params[1].trim();
+        part = params[1].split("\\)")[0];
         output[2] = Integer.parseInt(part);
         /*for(int index = 0; index < params.length+1; index++) {
             if(index==1){
@@ -178,36 +177,46 @@ public class Main2 {
         return output;
     }
 
+    // Function to print the contents of the heap
+    public void process()
+    {
+        System.out.println(Heap[1][0]+" "+Heap[1][1]);
+    }
+
     // Driver code
     public static void main(String[] arg) throws IOException
     {
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-
+        File file = new File("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String st;
         Main2 minHeap = new Main2(15);
-        Timer timer = new Timer();
-        timer.schedule( new TimerTask() {
-            String line;
-            public void run() {
-                System.out.println("time: "+counter);
-                while (true) {
-                    try {
-                        if ((line = in.readLine()) == null) break;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    int[] params = stringToParams(line);
-                    minHeap.insert(params);
-                    minHeap.print(counter);
-                    //int[] ret = new RevealCards().deckRevealedIncreasing(deck);
+        while ((st = br.readLine()) != null) {
 
-                    //String out = integerArrayToString(ret);
+            if(st.contains("Insert")){
+                int[] params = stringToParams(st);
+                minHeap.insert(params);
+                minHeap.print();
 
-                    //System.out.print(out);
-                }
-                counter++;
             }
-        }, 0, 10*1000);
+
+            //System.out.println(st);
+
+        }
+
+    //BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        //String line;
+        /*Main2 minHeap = new Main2(15);
+        while ((line = in.readLine()) != null) {
+            int[] params = stringToParams(line);
+            minHeap.insert(params);
+            minHeap.process();
+            minHeap.print();
+            //int[] ret = new RevealCards().deckRevealedIncreasing(deck);
+
+            //String out = integerArrayToString(ret);
+
+            //System.out.print(out);
+        }*/
         //System.out.println("The Min Heap is ");
 
         /*minHeap.insert(5);
@@ -224,4 +233,5 @@ public class Main2 {
 
        // System.out.println("The Min val is " + minHeap.remove());
     }
+
 }

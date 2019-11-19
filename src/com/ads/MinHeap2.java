@@ -10,7 +10,7 @@ public class MinHeap2 {
 
 
     /**
-     * MaxHeap implemented using Array
+     * MinHeap implemented using Array
      */
 
         private static final int d= 2;
@@ -100,7 +100,7 @@ public class MinHeap2 {
             int child;
             int[] temp = heap[i];
             while(kthChild(i, 1) < heapSize){
-                child = maxChild(i);
+                child = minChild(i);
                 if(temp[1] > heap[child][1]){
                     heap[i] = heap[child];
                 }else
@@ -111,7 +111,7 @@ public class MinHeap2 {
             heap[i] = temp;
         }
 
-        private int maxChild(int i) {
+        private int minChild(int i) {
             int leftChild = kthChild(i, 1);
             int rightChild = kthChild(i, 2);
 
@@ -130,10 +130,10 @@ public class MinHeap2 {
             System.out.println();
         }
         /**
-         *  This method returns the max element of the heap.
+         *  This method returns the min element of the heap.
          *  complexity: O(1)
          */
-        public int[] findMax(){
+        public int[] findMin(){
             if(isEmpty())
                 throw new NoSuchElementException("Heap is empty.");
             return heap[0];
@@ -172,28 +172,30 @@ public class MinHeap2 {
     }
 
         public static void main(String[] args){
-            MinHeap2 maxHeap = new MinHeap2(10);
+            MinHeap2 minHeap = new MinHeap2(10);
             int[] params = stringToParams("1,5,25");
-            maxHeap.insert(params);
-            maxHeap.printHeap();
+            minHeap.insert(params);
+            minHeap.printHeap();
             params = stringToParams("4,6,10");
-            maxHeap.insert(params);
-            maxHeap.printHeap();
+            minHeap.insert(params);
+            minHeap.printHeap();
             params = stringToParams("9,3,15");
-            maxHeap.insert(params);
-            maxHeap.printHeap();
+            minHeap.insert(params);
+            minHeap.printHeap();
             params = stringToParams("10,7,3");
-            maxHeap.insert(params);
-            maxHeap.printHeap();
-            params = stringToParams("7,10,4");
-            maxHeap.insert(params);
-            maxHeap.printHeap();
-            /*maxHeap.insert(5);
-            maxHeap.printHeap();
-            maxHeap.insert(3);
-            maxHeap.printHeap();*/
-            maxHeap.delete(0);
-            maxHeap.printHeap();
+            minHeap.insert(params);
+            minHeap.printHeap();
+             params = stringToParams("7,10,4");
+            minHeap.insert(params);
+            minHeap.printHeap();
+            params = stringToParams("5,10,4");
+            minHeap.insert(params);
+            minHeap.printHeap();
+            params = stringToParams("6,10,4");
+            minHeap.insert(params);
+            minHeap.printHeap();
+            minHeap.delete(0);
+            minHeap.printHeap();
         }
 
 }

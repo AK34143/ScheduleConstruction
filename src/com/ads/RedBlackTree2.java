@@ -2,25 +2,28 @@ package com.ads;
 
 import java.util.Scanner;
 
+import static com.ads.MinHeap2.stringToParams;
+
 public class RedBlackTree2 {
 
     private final int RED = 0;
     private final int BLACK = 1;
 
-    private class Node {
+    public class RBTNode {
 
-        int key = -1, color = BLACK;
-        Node left = nil, right = nil, parent = nil;
+        Node key;
+        int color = BLACK;
+        RBTNode left = nil, right = nil, parent = nil;
 
-        Node(int key) {
+        RBTNode(Node key) {
             this.key = key;
         }
     }
 
-    private final Node nil = new Node(-1);
-    private Node root = nil;
+    private final RBTNode nil = new RBTNode(new Node(-1,-1,-1));
+    private RBTNode root = nil;
 
-    public void printTree(Node node) {
+    public void printTree(RBTNode node) {
         if (node == nil) {
             return;
         }
@@ -29,7 +32,7 @@ public class RedBlackTree2 {
         if (node.color==RED)
             c = 'R';
         //System.out.print("("+r.element[0] +","+r.element[1]+","+r.element[2] +")"+c+" ");
-        System.out.print("("+node.key+")"+c+" ");
+        System.out.print("("+node.key.getBuildingNum()+","+node.key.getExecutionTime()+")"+c+" ");
         //System.out.print(((node.color==RED)?"Color: Red ":"Color: Black ")+"Key: "+node.key+" Parent: "+node.parent.key+"\n");
         printTree(node.right);
     }
@@ -56,7 +59,7 @@ public class RedBlackTree2 {
         for (i=1; i<=h; i++)
             printGivenLevel(root, i);
     }
-    int height(Node root)
+    int height(RBTNode root)
     {
         if (root == null)
             return 0;
@@ -72,7 +75,7 @@ public class RedBlackTree2 {
             else return(rheight+1);
         }
     }
-    void printGivenLevel (Node node ,int level)
+    void printGivenLevel (RBTNode node ,int level)
     {
         if (node == null)
             return;
@@ -80,7 +83,8 @@ public class RedBlackTree2 {
             char c = 'B';
             if (node.color == RED)
                 c = 'R';
-            System.out.print(node.key + "(" + c+") ");
+            //if(node.key.buildingNum!=-1)
+                System.out.print(node.key.getBuildingNum()+","+ node.key.getExecutionTime()+","+ node.key.getTotalTime()+ "(" + c+") ");
         }
         else if (level > 1)
         {
@@ -89,27 +93,27 @@ public class RedBlackTree2 {
         }
     }
 
-    private Node findNode(Node findNode, Node node) {
+    private RBTNode findNode(RBTNode findNode, RBTNode node) {
         if (root == nil) {
             return null;
         }
 
-        if (findNode.key < node.key) {
+        if (findNode.key.getBuildingNum() < node.key.getBuildingNum()) {
             if (node.left != nil) {
                 return findNode(findNode, node.left);
             }
-        } else if (findNode.key > node.key) {
+        } else if (findNode.key.getBuildingNum() > node.key.getBuildingNum()) {
             if (node.right != nil) {
                 return findNode(findNode, node.right);
             }
-        } else if (findNode.key == node.key) {
+        } else if (findNode.key.getBuildingNum() == node.key.getBuildingNum()) {
             return node;
         }
         return null;
     }
 
-    private void insert(Node node) {
-        Node temp = root;
+    public void insertRBT(RBTNode node) {
+        RBTNode temp = root;
         if (root == nil) {
             root = node;
             node.color = BLACK;
@@ -117,7 +121,7 @@ public class RedBlackTree2 {
         } else {
             node.color = RED;
             while (true) {
-                if (node.key < temp.key) {
+                if (node.key.getBuildingNum() < temp.key.getBuildingNum()) {
                     if (temp.left == nil) {
                         temp.left = node;
                         node.parent = temp;
@@ -125,7 +129,7 @@ public class RedBlackTree2 {
                     } else {
                         temp = temp.left;
                     }
-                } else if (node.key >= temp.key) {
+                } else if (node.key.getBuildingNum() >= temp.key.getBuildingNum()) {
                     if (temp.right == nil) {
                         temp.right = node;
                         node.parent = temp;
@@ -140,9 +144,9 @@ public class RedBlackTree2 {
     }
 
     //Takes as argument the newly inserted node
-    private void fixTree(Node node) {
+    private void fixTree(RBTNode node) {
         while (node.parent.color == RED) {
-            Node uncle = nil;
+            RBTNode uncle = nil;
             if (node.parent == node.parent.parent.left) {
                 uncle = node.parent.parent.right;
 
@@ -187,7 +191,7 @@ public class RedBlackTree2 {
         root.color = BLACK;
     }
 
-    void rotateLeft(Node node) {
+    void rotateLeft(RBTNode node) {
         if (node.parent != nil) {
             if (node == node.parent.left) {
                 node.parent.left = node.right;
@@ -202,7 +206,7 @@ public class RedBlackTree2 {
             node.right = node.right.left;
             node.parent.left = node;
         } else {//Need to rotate root
-            Node right = root.right;
+            RBTNode right = root.right;
             root.right = right.left;
             right.left.parent = root;
             root.parent = right;
@@ -212,7 +216,7 @@ public class RedBlackTree2 {
         }
     }
 
-    void rotateRight(Node node) {
+    void rotateRight(RBTNode node) {
         if (node.parent != nil) {
             if (node == node.parent.left) {
                 node.parent.left = node.left;
@@ -228,7 +232,7 @@ public class RedBlackTree2 {
             node.left = node.left.right;
             node.parent.right = node;
         } else {//Need to rotate root
-            Node left = root.left;
+            RBTNode left = root.left;
             root.left = root.left.right;
             left.right.parent = root;
             root.parent = left;
@@ -248,7 +252,7 @@ public class RedBlackTree2 {
     //This operation doesn't care about the new Node's connections
     //with previous node's left and right. The caller has to take care
     //of that.
-    void transplant(Node target, Node with){
+    void transplant(RBTNode target, RBTNode with){
         if(target.parent == nil){
             root = with;
         }else if(target == target.parent.left){
@@ -258,10 +262,10 @@ public class RedBlackTree2 {
         with.parent = target.parent;
     }
 
-    boolean delete(Node z){
+    boolean delete(RBTNode z){
         if((z = findNode(z, root))==null)return false;
-        Node x;
-        Node y = z; // temporary reference y
+        RBTNode x;
+        RBTNode y = z; // temporary reference y
         int y_original_color = y.color;
 
         if(z.left == nil){
@@ -291,10 +295,10 @@ public class RedBlackTree2 {
         return true;
     }
 
-    void deleteFixup(Node x){
+    void deleteFixup(RBTNode x){
         while(x!=root && x.color == BLACK){
             if(x == x.parent.left){
-                Node w = x.parent.right;
+                RBTNode w = x.parent.right;
                 if(w.color == RED){
                     w.color = BLACK;
                     x.parent.color = RED;
@@ -320,7 +324,7 @@ public class RedBlackTree2 {
                     x = root;
                 }
             }else{
-                Node w = x.parent.left;
+                RBTNode w = x.parent.left;
                 if(w.color == RED){
                     w.color = BLACK;
                     x.parent.color = RED;
@@ -350,7 +354,7 @@ public class RedBlackTree2 {
         x.color = BLACK;
     }
 
-    Node treeMinimum(Node subTreeRoot){
+    RBTNode treeMinimum(RBTNode subTreeRoot){
         while(subTreeRoot.left!=nil){
             subTreeRoot = subTreeRoot.left;
         }
@@ -359,17 +363,134 @@ public class RedBlackTree2 {
 
     public void consoleUI() {
         Scanner scan = new Scanner(System.in);
-        while (true) {
-            System.out.println("\n1.- Add items\n"
-                    + "2.- Delete items\n"
-                    + "3.- Check items\n"
-                    + "4.- Print tree\n"
-                    + "5.- Delete tree\n");
-            int choice = scan.nextInt();
+//        while (true) {
+//            System.out.println("\n1.- Add items\n"
+//                    + "2.- Delete items\n"
+//                    + "3.- Check items\n"
+//                    + "4.- Print tree\n"
+//                    + "5.- Delete tree\n");
+            //int choice = scan.nextInt();
 
             int item;
-            Node node;
-            switch (choice) {
+        RBTNode node;
+            int[] params = stringToParams("1,5,25");
+        RBTNode node1 = new RBTNode(new Node(params[0],params[1],params[2]));
+            insertRBT(node1);
+            //minHeap.printHeap();
+            params = stringToParams("4,6,10");
+        RBTNode node2 = new RBTNode(new Node(params[0],params[1],params[2]));
+            insertRBT(node2);
+            //minHeap.printHeap();
+            params = stringToParams("9,3,15");
+        RBTNode node3 = new RBTNode(new Node(params[0],params[1],params[2]));
+            insertRBT(node3);
+            //minHeap.printHeap();
+            params = stringToParams("10,7,3");
+        RBTNode node4 = new RBTNode(new Node(params[0],params[1],params[2]));
+            insertRBT(node4);
+            //minHeap.printHeap();
+            params = stringToParams("6,10,4");
+            //RedBlackTree2.Node node = new RedBlackTree2.Node(params);
+            //insertRBT(params);
+        RBTNode node5 = new RBTNode(new Node(params[0],params[1],params[2]));
+            insertRBT(node5);
+            //minHeap.printHeap();
+            params = stringToParams("5,5,4");
+        RBTNode node6 = new RBTNode(new Node(params[0],params[1],params[2]));
+            insertRBT(node6);
+            //minHeap.printHeap();
+            params = stringToParams("7,6,4");
+        RBTNode node7 = new RBTNode(new Node(params[0],params[1],params[2]));
+            insertRBT(node7);
+        params = stringToParams("12,3,4");
+        RBTNode node8 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node8);
+        params = stringToParams("17,11,4");
+        RBTNode node9 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node9);
+        params = stringToParams("19,15,4");
+        RBTNode node10 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node10);
+        params = stringToParams("25,7,4");
+        RBTNode node11 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node11);
+        params = stringToParams("15,9,4");
+        RBTNode node12 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node12);
+        params = stringToParams("21,23,4");
+        RBTNode node13 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node13);
+        params = stringToParams("28,17,4");
+        RBTNode node14 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node14);
+        params = stringToParams("13,17,4");
+        RBTNode node15 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node15);
+        params = stringToParams("2,23,4");
+        RBTNode node16 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node16);
+        params = stringToParams("38,10,4");
+        RBTNode node17 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node17);
+        params = stringToParams("33,17,4");
+        RBTNode node18 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node18);
+        params = stringToParams("20,10,4");
+        RBTNode node19 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node19);
+        params = stringToParams("30,10,4");
+        RBTNode node20 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node20);
+        params = stringToParams("23,16,4");
+        RBTNode node21 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node21);
+        params = stringToParams("8,10,4");
+        RBTNode node22 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node22);
+        params = stringToParams("3,24,4");
+        RBTNode node23 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node23);
+        params = stringToParams("11,10,4");
+        RBTNode node24 = new RBTNode(new Node(params[0],params[1],params[2]));
+        insertRBT(node24);
+
+            //minHeap.printHeap();
+            /*node.key= new int[]{6, 10};
+            node.color=BLACK;
+            node.left=*/
+        printLevelOrder();
+            delete(node5);
+        System.out.println(" ");
+        printLevelOrder();
+            delete(node3);
+            System.out.println(" ");
+            printLevelOrder();
+        delete(node1);
+        System.out.println(" ");
+        printLevelOrder();
+        delete(node2);
+        System.out.println(" ");
+        printLevelOrder();
+        delete(node4);
+        System.out.println(" ");
+        printLevelOrder();
+        delete(node5);
+        System.out.println(" ");
+        printLevelOrder();
+        delete(node6);
+        System.out.println(" ");
+        printLevelOrder();
+        delete(node7);
+        System.out.println(" ");
+        printLevelOrder();
+        delete(node8);
+        System.out.println(" ");
+        printLevelOrder();
+        delete(node9);
+        System.out.println(" ");
+        printLevelOrder();
+
+            /*switch (choice) {
                 case 1:
                     item = scan.nextInt();
                     while (item != -999) {
@@ -411,8 +532,8 @@ public class RedBlackTree2 {
                     deleteTree();
                     System.out.println("Tree deleted!");
                     break;
-            }
-        }
+            }*/
+//        }
     }
     public static void main(String[] args) {
         RedBlackTree2 rbt = new RedBlackTree2();

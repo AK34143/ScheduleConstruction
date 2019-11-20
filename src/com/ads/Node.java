@@ -4,7 +4,8 @@ public class Node {
     int buildingNum;
     int executionTime;
     int totalTime;
-    //RedBlackTree2.RBTNode rbtNode;
+    int tempProgress;
+    RedBlackTree2.RBTNode rbtNode;
 
     /* Constructor */
     public Node(int buildingNumber, int execTime, int totTime)
@@ -44,13 +45,24 @@ public class Node {
     }
 
     //Getter
-    /*public RedBlackTree2.RBTNode getRBTNode() {
-        return rbtNode;
-    }*/
+    public int getTempProgress() {
+        return tempProgress;
+    }
 
     // Setter
-    /*public void setRBTNode(RedBlackTree2.RBTNode newRBTNode) {
+    public void setTempProgress(int newTempProgress) {
+        this.tempProgress = newTempProgress;
+    }
+
+    //Getter
+    public RedBlackTree2.RBTNode getRBTNode() {
+        return rbtNode;
+    }
+
+    // Setter
+    public void setRBTNode(RedBlackTree2.RBTNode newRBTNode) {
         this.rbtNode = newRBTNode;
-    }*/
+    }
+
 }
 

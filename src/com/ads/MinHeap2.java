@@ -28,7 +28,7 @@ public class MinHeap2 {
             heap = new Node[capacity+1];//int[capacity+1][2];
             //heap.setBuildingNum(-1);
           //node = new RedBlackTree2.Node();//int[capacity+1][2];
-            Arrays.fill(heap, new Node(-1,-1,-1));//new int[]{-1,-1});//
+            Arrays.fill(heap, new Node(9999,9999,9999));//new int[]{-1,-1});//
 
         }
 
@@ -128,12 +128,12 @@ public class MinHeap2 {
         private int minChild(int i) {
             int leftChild = kthChild(i, 1);
             int rightChild = kthChild(i, 2);
-            int minChild=rightChild;
-            if(heap[leftChild].getExecutionTime()<heap[rightChild].getExecutionTime()){
-                minChild=leftChild;
+            int minChild=leftChild;
+            if(heap[leftChild].getExecutionTime()>heap[rightChild].getExecutionTime()){
+                minChild=rightChild;
             } else if(heap[leftChild].getExecutionTime()==heap[rightChild].getExecutionTime()){
-                if(heap[leftChild].getBuildingNum()<heap[rightChild].getBuildingNum()){
-                    minChild=leftChild;
+                if(heap[leftChild].getBuildingNum()>heap[rightChild].getBuildingNum()){
+                    minChild=rightChild;
                 }
             }
             return minChild;
@@ -171,18 +171,18 @@ public class MinHeap2 {
         String[] params = input.split(",");
         int[] output = new int[3];
         // For input file
-        /*String part = params[0].split("\\(")[1];
+        String part = params[0].split("\\(")[1];
         output[0] = Integer.parseInt(part);
         output[1]=0;
         part = params[1].split("\\)")[0];
-        output[2] = Integer.parseInt(part);*/
+        output[2] = Integer.parseInt(part);
         // For hard coded input
-        String part = params[0].trim();
+        /*String part = params[0].trim();
         output[0] = Integer.parseInt(part);
         part = params[1].trim();
         output[1]=Integer.parseInt(part);
         part = params[2].trim();
-        output[2] = Integer.parseInt(part);
+        output[2] = Integer.parseInt(part);*/
         /*for(int index = 0; index < params.length; index++) {
             if(index==1){
                 output[index]=0;
@@ -210,15 +210,22 @@ public class MinHeap2 {
         //System.out.println(Heap[1][0]+" "+Heap[1][1]);
         //nodes[0].setExecutionTime(3);
         //heap[0].setExecutionTime(Math.min(heap[0].getTotalTime(), 5));
-        heap[0].setExecutionTime(heap[0].getExecutionTime()+1);
-        //heap[0].setBuildingNum(6);
-        if(heap[0].getExecutionTime()==heap[0].getTotalTime()){
-            //rbt.delete(heap[0].getRBTNode());
-            minHeap.delete(0);
+        int minTime = Math.min(heap[0].getTotalTime(), 5);
+        if(heap[0].getExecutionTime()+1<=heap[0].getTotalTime() && heap[0].getTempProgress()<minTime){
+            heap[0].setExecutionTime(heap[0].getExecutionTime()+1);
+            heap[0].setTempProgress(heap[0].getTempProgress()+1);
+            if(heap[0].getExecutionTime()==heap[0].getTotalTime()){
+                //rbt.delete(heap[0].getRBTNode());
+                minHeap.delete(0);
 
-        } else {
-            minHeap.heapifyDown(0);
+            } else if(heap[0].getTempProgress()==minTime){
+                heap[0].setTempProgress(0);
+                heapifyDown(0);
+            }
         }
+
+        //heap[0].setBuildingNum(6);
+
     }
 
         public static void main(String[] args){

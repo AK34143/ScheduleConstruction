@@ -18,7 +18,7 @@ public class MinHeap2 {
         public HeapNode[] heap;
         private RedBlackTree2.RBTNode node;
         private int heapSize;
-
+        public Node nullNode=new Node(Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE);
 
         /**
          * This will initialize our heap with default size.
@@ -28,7 +28,7 @@ public class MinHeap2 {
             heap = new HeapNode[capacity+1];//int[capacity+1][2];
             //heap.setBuildingNum(-1);
           //node = new RedBlackTree2.Node();//int[capacity+1][2];
-            Arrays.fill(heap, new HeapNode(new Node(9999,9999,9999)));//new int[]{-1,-1});//
+            Arrays.fill(heap, new HeapNode(nullNode));//new int[]{-1,-1});//
 
         }
 
@@ -92,7 +92,7 @@ public class MinHeap2 {
             /*heap[lastIndex].setBuildingNum(9999);
             heap[lastIndex].setExecutionTime(9999);
             heap[lastIndex].setTotalTime(9999);*/
-            heap[lastIndex].setNode(new Node(9999,9999,9999));
+            heap[lastIndex].setNode(nullNode);
             heap[lastIndex].setTempProgress(0);
             heap[lastIndex].setRBTNode(null);
             return key;
@@ -240,7 +240,7 @@ public class MinHeap2 {
         //heap[0].setExecutionTime(Math.min(heap[0].getTotalTime(), 5));
         int completedBuildingNum=-1;
         int minTime = Math.min(heap[0].getNode().getTotalTime(), 5);
-        if(heap[0].getNode().getExecutionTime()+1<=heap[0].getNode().getTotalTime() && heap[0].getTempProgress()<minTime){
+        if(heapSize>0 && heap[0].getNode().getExecutionTime()+1<=heap[0].getNode().getTotalTime() && heap[0].getTempProgress()<minTime){
             //heap[0].getNode().setExecutionTime(heap[0].getNode().getExecutionTime()+1);
             //Node node=;
             heap[0].getNode().setExecutionTime(heap[0].getNode().getExecutionTime()+1);

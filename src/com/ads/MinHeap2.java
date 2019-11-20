@@ -15,7 +15,7 @@ public class MinHeap2 {
 
 
         private static final int d= 2;
-        private Node[] heap;
+        public Node[] heap;
         private RedBlackTree2.RBTNode node;
         private int heapSize;
 
@@ -62,8 +62,8 @@ public class MinHeap2 {
          *  Complexity: O(log N)
          *  As worst case scenario, we need to traverse till the root
          */
-        public void insert(int[] x){
-            Node heapx= new Node(x[0],x[1],x[2]);
+        public void insert(Node heapx){
+            //Node heapx= new Node(x[0],x[1],x[2]);
             if(isFull())
                 throw new NoSuchElementException("Heap is full, No space to insert new element");
             heap[heapSize++] = heapx;
@@ -89,7 +89,7 @@ public class MinHeap2 {
          *  This method used to maintain the heap property while inserting an element.
          *
          */
-        private void heapifyUp(int i) {
+        public void heapifyUp(int i) {
             Node temp = heap[i];
             //int parenti = parent(i);
             while(i>0 && ((temp.getExecutionTime() < heap[parent(i)].getExecutionTime())
@@ -108,7 +108,7 @@ public class MinHeap2 {
          *  This method used to maintain the heap property while deleting an element.
          *
          */
-        private void heapifyDown(int i){
+        public void heapifyDown(int i){
             int child;
             Node temp = heap[i];
             while(kthChild(i, 1) < heapSize){
@@ -170,11 +170,13 @@ public class MinHeap2 {
 
         String[] params = input.split(",");
         int[] output = new int[3];
-      /*  String part = params[0].split("\\(")[1];
+        // For input file
+        /*String part = params[0].split("\\(")[1];
         output[0] = Integer.parseInt(part);
         output[1]=0;
         part = params[1].split("\\)")[0];
         output[2] = Integer.parseInt(part);*/
+        // For hard coded input
         String part = params[0].trim();
         output[0] = Integer.parseInt(part);
         part = params[1].trim();
@@ -192,7 +194,7 @@ public class MinHeap2 {
         return output;
     }
     // Function to print the contents of the heap
-    public void process()
+    /*public void process()
     {
         //System.out.println(Heap[1][0]+" "+Heap[1][1]);
         heap[0].setExecutionTime(3);//Math.min(heap[0].getTotalTime(), 5));
@@ -202,13 +204,28 @@ public class MinHeap2 {
         } else {
             heapifyDown(0);
         }
+    }*/
+    public void process(MinHeap2 minHeap,RedBlackTree2 rbt)
+    {
+        //System.out.println(Heap[1][0]+" "+Heap[1][1]);
+        //nodes[0].setExecutionTime(3);
+        //heap[0].setExecutionTime(Math.min(heap[0].getTotalTime(), 5));
+        heap[0].setExecutionTime(heap[0].getExecutionTime()+1);
+        //heap[0].setBuildingNum(6);
+        if(heap[0].getExecutionTime()==heap[0].getTotalTime()){
+            //rbt.delete(heap[0].getRBTNode());
+            minHeap.delete(0);
+
+        } else {
+            minHeap.heapifyDown(0);
+        }
     }
 
         public static void main(String[] args){
             MinHeap2 minHeap = new MinHeap2(10);
 
             int[] params = stringToParams("1,0,5");
-            minHeap.insert(params);
+           /* minHeap.insert(params);
             minHeap.printHeap();
             params = stringToParams("5,0,10");
             minHeap.insert(params);
@@ -228,9 +245,9 @@ public class MinHeap2 {
             minHeap.insert(params);
             minHeap.printHeap();
             params = stringToParams("7,0,4");
-            minHeap.insert(params);
+            minHeap.insert(params);*/
             minHeap.printHeap();
-            minHeap.process();
+            //minHeap.process();
             //minHeap.delete(0);
             minHeap.printHeap();
         }

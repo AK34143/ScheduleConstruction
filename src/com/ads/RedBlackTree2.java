@@ -1,5 +1,7 @@
 package com.ads;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static com.ads.MinHeap2.stringToParams;
@@ -7,9 +9,9 @@ import static com.ads.MinHeap2.stringToParams;
 public class RedBlackTree2 {
 
     private final int RED = 0;
-    private final int BLACK = 1;
-
-    public class RBTNode {
+    private static final int BLACK = 1;
+    public List<RBTNode> rangeBuildings = new ArrayList<>();
+    public static class RBTNode {
 
         Node key;
         int color = BLACK;
@@ -20,7 +22,7 @@ public class RedBlackTree2 {
         }
     }
 
-    private final RBTNode nil = new RBTNode(new Node(-1,-1,-1));
+    private static final RBTNode nil = new RBTNode(new Node(-1,-1,-1));
     private RBTNode root = nil;
 
     public void printTree(RBTNode node) {
@@ -84,7 +86,7 @@ public class RedBlackTree2 {
             if (node.color == RED)
                 c = 'R';
             //if(node.key.buildingNum!=-1)
-                System.out.print(node.key.getBuildingNum()+","+ node.key.getExecutionTime()+","+ node.key.getTotalTime()+ "(" + c+") ");
+                System.out.print("("+node.key.getBuildingNum()+","+ node.key.getExecutionTime()+","+ node.key.getTotalTime()+ "," + c+") ");
         }
         else if (level > 1)
         {
@@ -92,6 +94,76 @@ public class RedBlackTree2 {
             printGivenLevel(node.right, level-1);
         }
     }
+
+    public RBTNode printBuilding( int x ) {
+        //nullNode.element = x;
+        RBTNode current = root;
+
+        while(current!=nil) {
+            if( x < current.key.getBuildingNum() )
+                current = current.left;
+            else if( x > current.key.getBuildingNum())
+                current = current.right;
+            else if( x == current.key.getBuildingNum() )
+                return current;
+            //else
+
+        }
+        return null;
+    }
+
+    public List<RBTNode> printBetween(int x, int y) {
+        RBTNode current = root;
+        printBetween(current,x,y);
+        return rangeBuildings;
+    }
+    public void printBetween(RBTNode current,int x, int y){
+
+        //while(current!=nil) {
+            /*if(x== current.key.getBuildingNum() && y==current.key.getBuildingNum()){
+                System.out.println("(" + current.key.getBuildingNum() + "," + current.key.getExecutionTime() + "," + current.key.getTotalTime() + ")");*/
+            if(current==nil){
+                //System.out.println("(" + 0 + "," + 0 + "," + 0 + ")");
+            } else if( x <= current.key.getBuildingNum() && y >= current.key.getBuildingNum()) {
+                rangeBuildings.add(current);
+                //System.out.println("(" + current.key.getBuildingNum() + "," + current.key.getExecutionTime() + "," + current.key.getTotalTime() + ")");
+                printBetween(current.left, x,Math.min(y,current.key.getBuildingNum()));
+                printBetween(current.right, Math.max(x,current.key.getBuildingNum()),y);//current = current.left;
+            } else if ( x > current.key.getBuildingNum() && y > current.key.getBuildingNum()) {
+                //System.out.println("(" + current.key.getBuildingNum() + "," + current.key.getExecutionTime() + "," + current.key.getTotalTime() + ")");
+                //printBetween(current.left, x,current.key.getExecutionTime());
+                printBetween(current.right, Math.max(x,current.key.getBuildingNum()),y);//current = current.left;
+            } else if (x < current.key.getBuildingNum() && y < current.key.getBuildingNum()){
+                printBetween(current.left, x,Math.min(y,current.key.getBuildingNum()));
+            }
+            /*else if( x > current.key.getBuildingNum())
+                current = current.right;*/
+            //else if( x == current.key.getBuildingNum() )
+                //return current;
+            //else
+
+        //}
+    }
+    /**
+     * Find an item in the tree.
+     * x the item to search for.
+     * @return the matching item or null if not found.
+     */
+    /*public Comparable find( Comparable x ) {
+        nullNode.element = x;
+        current = header.right;
+
+        for( ; ; ) {
+            if( x.compareTo( current.element ) < 0 )
+                current = current.left;
+            else if( x.compareTo( current.element ) > 0 )
+                current = current.right;
+            else if( current != nullNode )
+                return current.element;
+            else
+                return null;
+        }
+    }*/
 
     private RBTNode findNode(RBTNode findNode, RBTNode node) {
         if (root == nil) {

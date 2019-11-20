@@ -112,7 +112,7 @@ public class RedBlackTree2 {
         return null;
     }
 
-    public List<RBTNode> printBetween(int x, int y) {
+    public List<RBTNode> printBuilding(int x, int y) {
         RBTNode current = root;
         printBetween(current,x,y);
         return rangeBuildings;

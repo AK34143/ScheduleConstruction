@@ -289,7 +289,7 @@ public class Main {
             System.out.println("(" + 0 + "," + 0 + "," + 0 + ")");
         else
             System.out.println("("+printBuildingNode.key.getBuildingNum()+","+printBuildingNode.key.getExecutionTime()+","+printBuildingNode.key.getTotalTime()+")");
-        List<RedBlackTree2.RBTNode> rangeBuildings = rbt.printBetween(5,10);
+        List<RedBlackTree2.RBTNode> rangeBuildings = rbt.printBuilding(5,10);
         if(rangeBuildings.size()==0){
             System.out.println("(" + 0 + "," + 0 + "," + 0 + ")");
         } else {

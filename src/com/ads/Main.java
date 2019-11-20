@@ -53,9 +53,9 @@ public class Main {
                 //System.out.println("counter : " + counter);
                 if (currentCommand.contains("Insert") && commandTime==counter) {
                     int[] params = stringToParams(currentCommand);
-                    Node node1 = new Node(params[0], params[1], params[2]);
+                    HeapNode node1 = new HeapNode(params[0], params[1], params[2]);
                     minHeap.insert(node1);
-                    RedBlackTree2.RBTNode rbtNode1 = new RedBlackTree2.RBTNode(node1);
+                    RedBlackTree2.RBTNode rbtNode1 = new RedBlackTree2.RBTNode(new Node(node1.buildingNum,node1.executionTime,node1.totalTime));
                     rbt.insertRBT(rbtNode1);
                     node1.setRBTNode(rbtNode1);
                     //minHeap.printHeap();

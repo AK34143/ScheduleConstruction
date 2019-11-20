@@ -15,7 +15,7 @@ public class MinHeap2 {
 
 
         private static final int d= 2;
-        public Node[] heap;
+        public HeapNode[] heap;
         private RedBlackTree2.RBTNode node;
         private int heapSize;
 
@@ -25,10 +25,10 @@ public class MinHeap2 {
          */
         public MinHeap2(int capacity){
             heapSize = 0;
-            heap = new Node[capacity+1];//int[capacity+1][2];
+            heap = new HeapNode[capacity+1];//int[capacity+1][2];
             //heap.setBuildingNum(-1);
           //node = new RedBlackTree2.Node();//int[capacity+1][2];
-            Arrays.fill(heap, new Node(9999,9999,9999));//new int[]{-1,-1});//
+            Arrays.fill(heap, new HeapNode(9999,9999,9999));//new int[]{-1,-1});//
 
         }
 
@@ -62,7 +62,7 @@ public class MinHeap2 {
          *  Complexity: O(log N)
          *  As worst case scenario, we need to traverse till the root
          */
-        public void insert(Node heapx){
+        public void insert(HeapNode heapx){
             //Node heapx= new Node(x[0],x[1],x[2]);
             if(isFull())
                 throw new NoSuchElementException("Heap is full, No space to insert new element");
@@ -91,6 +91,8 @@ public class MinHeap2 {
             heap[lastIndex].setBuildingNum(9999);
             heap[lastIndex].setExecutionTime(9999);
             heap[lastIndex].setTotalTime(9999);
+            heap[lastIndex].setTempProgress(0);
+            heap[lastIndex].setRBTNode(null);
             return key;
         }
 
@@ -99,7 +101,7 @@ public class MinHeap2 {
          *
          */
         public void heapifyUp(int i) {
-            Node temp = heap[i];
+            HeapNode temp = heap[i];
             //int parenti = parent(i);
             while(i>0 && ((temp.getExecutionTime() < heap[parent(i)].getExecutionTime())
                     || (temp.getExecutionTime()==heap[parent(i)].getExecutionTime() && temp.getBuildingNum()<heap[parent(i)].getBuildingNum()))){
@@ -119,7 +121,7 @@ public class MinHeap2 {
          */
         public void heapifyDown(int i){
             int child;
-            Node temp = new Node(heap[i].getBuildingNum(),heap[i].getExecutionTime(),heap[i].getTotalTime(),heap[i].getTempProgress(),heap[i].getRBTNode());
+            HeapNode temp = new HeapNode(heap[i].getBuildingNum(),heap[i].getExecutionTime(),heap[i].getTotalTime(),heap[i].getTempProgress(),heap[i].getRBTNode());
             while(kthChild(i, 1) < heapSize){
                 child = minChild(i);// Finding out the min of the children
                 if(temp.getExecutionTime() > heap[child].getExecutionTime()){ // Comparing parent with the min of the children

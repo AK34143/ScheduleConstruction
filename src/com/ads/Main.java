@@ -39,11 +39,12 @@ public class Main {
         Scanner sc = new Scanner(file);
         Scanner scCopy=new Scanner(file);
         if(scCopy.hasNextLine()) scCopy.nextLine();
+        int completedBuildingNum;
         while (sc.hasNextLine()) {
             int commandTime =Integer.parseInt(sc.next().split(":")[0]);
             String currentCommand=sc.next();
             //System.out.println(currentCommand);
-            int nextCommandTime =commandTime+1;
+            int nextCommandTime =commandTime+999;
             if(sc.hasNextLine()) {
                 String nextCommand = scCopy.nextLine();
                 nextCommandTime = Integer.parseInt(nextCommand.split(":")[0]);
@@ -61,7 +62,7 @@ public class Main {
                     //rbt.printLevelOrder();
 
 
-                    minHeap.process(minHeap, rbt);
+                    if((completedBuildingNum = minHeap.process(minHeap, rbt))!=-1) System.out.println("("+completedBuildingNum+","+(counter+1)+")");
                 } else if(currentCommand.contains("PrintBuilding") && commandTime==counter){
                     if(currentCommand.contains(",")){
                         int[] params = stringToParams(currentCommand);
@@ -87,17 +88,19 @@ public class Main {
                             System.out.println("(" + printBuildingNode.key.getBuildingNum() + "," + printBuildingNode.key.getExecutionTime() + "," + printBuildingNode.key.getTotalTime() + ")");
                         System.out.println();
                     }
-                    minHeap.process(minHeap, rbt);
+                    if((completedBuildingNum = minHeap.process(minHeap, rbt))!=-1) System.out.println("("+completedBuildingNum+","+(counter+1)+")");
                 } else {
-                    minHeap.process(minHeap,rbt);
+                    if((completedBuildingNum = minHeap.process(minHeap, rbt))!=-1) System.out.println("("+completedBuildingNum+","+(counter+1)+")");
                 }
                 counter++;
+                //
             }
-            //System.out.println(st);
-            //st=nextSt;
 
+            //st=nextSt;
+            //if(minHeap.heap[0].getBuildingNum()!=9999) break;
         }
-        minHeap.printHeap();
+        System.out.println("Completion day: "+counter);
+        //System.out.println(minHeap.heap[0].getBuildingNum());
         //while (counter > 0){
         //int commandTime = ;
         /*while ((st) != null) {

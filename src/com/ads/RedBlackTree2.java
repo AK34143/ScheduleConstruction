@@ -10,7 +10,7 @@ public class RedBlackTree2 {
 
     private final int RED = 0;
     private static final int BLACK = 1;
-    public List<RBTNode> rangeBuildings = new ArrayList<>();
+    public List<RBTNode> rangeBuildings;
     public static class RBTNode {
 
         Node key;
@@ -113,6 +113,7 @@ public class RedBlackTree2 {
     }
 
     public List<RBTNode> printBuilding(int x, int y) {
+        rangeBuildings=new ArrayList<>();
         RBTNode current = root;
         printBetween(current,x,y);
         return rangeBuildings;

@@ -1,30 +1,35 @@
 package com.ads;
 
 public class HeapNode {
-    int buildingNum;
+    /*int buildingNum;
     int executionTime;
-    int totalTime;
+    int totalTime;*/
+    Node node;
     int tempProgress;
     RedBlackTree2.RBTNode rbtNode;
 
     /* Constructor */
-    public HeapNode(int buildingNumber, int execTime, int totTime)
+    //public HeapNode(int buildingNumber, int execTime, int totTime)
+    public HeapNode(Node basicNode)
     {
-        buildingNum = buildingNumber;
+        node=basicNode;
+        /*buildingNum = buildingNumber;
         executionTime = execTime;
-        totalTime = totTime;
+        totalTime = totTime;*/
     }
 
-    public HeapNode(int buildingNumber, int execTime, int totTime, int tempProg, RedBlackTree2.RBTNode rbt) {
-        buildingNum = buildingNumber;
+    //public HeapNode(int buildingNumber, int execTime, int totTime, int tempProg, RedBlackTree2.RBTNode rbt) {
+    public HeapNode(Node basicNode, int tempProg, RedBlackTree2.RBTNode rbt) {
+        /*buildingNum = buildingNumber;
         executionTime = execTime;
-        totalTime = totTime;
+        totalTime = totTime;*/
+        node = basicNode;
         tempProgress = tempProg;
         rbtNode = rbt;
     }
 
     //Getter
-    public int getBuildingNum() {
+    /*public int getBuildingNum() {
         return buildingNum;
     }
 
@@ -51,6 +56,15 @@ public class HeapNode {
     // Setter
     public void setTotalTime(int newTotalTime) {
         this.totalTime = newTotalTime;
+    }*/
+
+    public Node getNode() {
+        return node;
+    }
+
+    // Setter
+    public void setNode(Node newnode) {
+        this.node = newnode;
     }
 
     //Getter

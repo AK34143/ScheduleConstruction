@@ -9,7 +9,7 @@ public class Main2 {
     private int[][] Heap;
     private int size;
     private int maxsize;
-    private static int triple=2;
+    public static int triple=2;
 
     private static final int FRONT = 1;
 
@@ -91,7 +91,7 @@ public class Main2 {
     }
 
     // Function to insert a node into the heap
-    public void insert(int[] element)
+    public void insertMinHeap(int[] element)
     {
         if (size >= maxsize) {
             return;
@@ -180,35 +180,37 @@ public class Main2 {
     // Function to print the contents of the heap
     public void process()
     {
-        System.out.println(Heap[1][0]+" "+Heap[1][1]);
+        //System.out.println(Heap[1][0]+" "+Heap[1][1]);
+        Heap[1][1] = Math.min(Heap[1][2], 5);
     }
+
+
 
     // Driver code
     public static void main(String[] arg) throws IOException
     {
-        File file = new File("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input.txt");
+        /*File file = new File("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
         String st;
         Main2 minHeap = new Main2(15);
+        RedBlackTree rbt = new RedBlackTree(new int[3]);
         while ((st = br.readLine()) != null) {
-
             if(st.contains("Insert")){
                 int[] params = stringToParams(st);
-                minHeap.insert(params);
-                minHeap.print();
-
+                minHeap.insertMinHeap(params);
+                rbt.insertRBT(params);
+                //minHeap.print();
+                rbt.preorder();
             }
-
             //System.out.println(st);
+        }*/
 
-        }
-
-    //BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        //String line;
-        /*Main2 minHeap = new Main2(15);
+    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String line;
+        Main2 minHeap = new Main2(15);
         while ((line = in.readLine()) != null) {
             int[] params = stringToParams(line);
-            minHeap.insert(params);
+            minHeap.insertMinHeap(params);
             minHeap.process();
             minHeap.print();
             //int[] ret = new RevealCards().deckRevealedIncreasing(deck);
@@ -216,7 +218,7 @@ public class Main2 {
             //String out = integerArrayToString(ret);
 
             //System.out.print(out);
-        }*/
+        }
         //System.out.println("The Min Heap is ");
 
         /*minHeap.insert(5);

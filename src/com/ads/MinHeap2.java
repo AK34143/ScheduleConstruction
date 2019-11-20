@@ -28,7 +28,7 @@ public class MinHeap2 {
             heap = new HeapNode[capacity+1];//int[capacity+1][2];
             //heap.setBuildingNum(-1);
           //node = new RedBlackTree2.Node();//int[capacity+1][2];
-            Arrays.fill(heap, new HeapNode(9999,9999,9999));//new int[]{-1,-1});//
+            Arrays.fill(heap, new HeapNode(new Node(9999,9999,9999)));//new int[]{-1,-1});//
 
         }
 
@@ -78,19 +78,21 @@ public class MinHeap2 {
         public int delete(int x){
             if(isEmpty())
                 throw new NoSuchElementException("Heap is empty, No element to delete");
-            int key = heap[x].getBuildingNum();
+            int key = heap[x].getNode().getBuildingNum();
 
-            heap[x].setBuildingNum(heap[heapSize -1].getBuildingNum());
+            /*heap[x].setBuildingNum(heap[heapSize -1].getBuildingNum());
             heap[x].setExecutionTime(heap[heapSize -1].getExecutionTime());
-            heap[x].setTotalTime(heap[heapSize -1].getTotalTime());
+            heap[x].setTotalTime(heap[heapSize -1].getTotalTime());*/
+            heap[x].setNode(heap[heapSize -1].getNode());
             heap[x].setTempProgress(heap[heapSize -1].getTempProgress());
             heap[x].setRBTNode(heap[heapSize -1].getRBTNode());
             heapSize--;
             heapifyDown(x);
             int lastIndex = heapSize;
-            heap[lastIndex].setBuildingNum(9999);
+            /*heap[lastIndex].setBuildingNum(9999);
             heap[lastIndex].setExecutionTime(9999);
-            heap[lastIndex].setTotalTime(9999);
+            heap[lastIndex].setTotalTime(9999);*/
+            heap[lastIndex].setNode(new Node(9999,9999,9999));
             heap[lastIndex].setTempProgress(0);
             heap[lastIndex].setRBTNode(null);
             return key;
@@ -103,8 +105,8 @@ public class MinHeap2 {
         public void heapifyUp(int i) {
             HeapNode temp = heap[i];
             //int parenti = parent(i);
-            while(i>0 && ((temp.getExecutionTime() < heap[parent(i)].getExecutionTime())
-                    || (temp.getExecutionTime()==heap[parent(i)].getExecutionTime() && temp.getBuildingNum()<heap[parent(i)].getBuildingNum()))){
+            while(i>0 && ((temp.getNode().getExecutionTime() < heap[parent(i)].getNode().getExecutionTime())
+                    || (temp.getNode().getExecutionTime()==heap[parent(i)].getNode().getExecutionTime() && temp.getNode().getBuildingNum()<heap[parent(i)].getNode().getBuildingNum()))){
 
                 //if((temp[1]==heap[parenti][1] && temp[0]<heap[parenti][0]) || temp[1]<heap[parenti][1]) {//If execution times are same for two nodes
                     heap[i] = heap[parent(i)];
@@ -121,19 +123,21 @@ public class MinHeap2 {
          */
         public void heapifyDown(int i){
             int child;
-            HeapNode temp = new HeapNode(heap[i].getBuildingNum(),heap[i].getExecutionTime(),heap[i].getTotalTime(),heap[i].getTempProgress(),heap[i].getRBTNode());
+            HeapNode temp = new HeapNode(heap[i].getNode(),heap[i].getTempProgress(),heap[i].getRBTNode());
             while(kthChild(i, 1) < heapSize){
                 child = minChild(i);// Finding out the min of the children
-                if(temp.getExecutionTime() > heap[child].getExecutionTime()){ // Comparing parent with the min of the children
-                    heap[i].setBuildingNum(heap[child].getBuildingNum()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
+                if(temp.getNode().getExecutionTime() > heap[child].getNode().getExecutionTime()){ // Comparing parent with the min of the children
+                    /*heap[i].setBuildingNum(heap[child].getBuildingNum()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
                     heap[i].setExecutionTime(heap[child].getExecutionTime()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
-                    heap[i].setTotalTime(heap[child].getTotalTime()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
+                    heap[i].setTotalTime(heap[child].getTotalTime());*/ // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
+                    heap[i].setNode(heap[child].getNode()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
                     heap[i].setTempProgress(heap[child].getTempProgress()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
                     heap[i].setRBTNode(heap[child].getRBTNode()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
-                }else if(temp.getExecutionTime()==heap[child].getExecutionTime() && temp.getBuildingNum()>heap[child].getBuildingNum()){
-                    heap[i].setBuildingNum(heap[child].getBuildingNum());
+                }else if(temp.getNode().getExecutionTime()==heap[child].getNode().getExecutionTime() && temp.getNode().getBuildingNum()>heap[child].getNode().getBuildingNum()){
+                    /*heap[i].setBuildingNum(heap[child].getBuildingNum());
                     heap[i].setExecutionTime(heap[child].getExecutionTime());
-                    heap[i].setTotalTime(heap[child].getTotalTime());
+                    heap[i].setTotalTime(heap[child].getTotalTime());*/
+                    heap[i].setNode(heap[child].getNode());
                     heap[i].setTempProgress(heap[child].getTempProgress());
                     heap[i].setRBTNode(heap[child].getRBTNode());
                 } else
@@ -141,9 +145,10 @@ public class MinHeap2 {
 
                 i = child;
             }
-            heap[i].setBuildingNum(temp.getBuildingNum());
+            /*heap[i].setBuildingNum(temp.getBuildingNum());
             heap[i].setExecutionTime(temp.getExecutionTime());
-            heap[i].setTotalTime(temp.getTotalTime());
+            heap[i].setTotalTime(temp.getTotalTime());*/
+            heap[i].setNode(temp.getNode());
             heap[i].setTempProgress(temp.getTempProgress());
             heap[i].setRBTNode(temp.getRBTNode());
         }
@@ -152,10 +157,10 @@ public class MinHeap2 {
             int leftChild = kthChild(i, 1);
             int rightChild = kthChild(i, 2);
             int minChild=leftChild;
-            if(heap[leftChild].getExecutionTime()>heap[rightChild].getExecutionTime()){
+            if(heap[leftChild].getNode().getExecutionTime()>heap[rightChild].getNode().getExecutionTime()){
                 minChild=rightChild;
-            } else if(heap[leftChild].getExecutionTime()==heap[rightChild].getExecutionTime()){
-                if(heap[leftChild].getBuildingNum()>heap[rightChild].getBuildingNum()){
+            } else if(heap[leftChild].getNode().getExecutionTime()==heap[rightChild].getNode().getExecutionTime()){
+                if(heap[leftChild].getNode().getBuildingNum()>heap[rightChild].getNode().getBuildingNum()){
                     minChild=rightChild;
                 }
             }
@@ -170,18 +175,18 @@ public class MinHeap2 {
         {
             System.out.print("\nHeap = ");
             for (int i = 0; i < heapSize; i++)
-                System.out.print("("+heap[i].getBuildingNum()+","+heap[i].getExecutionTime() +","+heap[i].getTotalTime()+") ");
+                System.out.print("("+heap[i].getNode().getBuildingNum()+","+heap[i].getNode().getExecutionTime() +","+heap[i].getNode().getTotalTime()+") ");
             System.out.println();
         }
         /**
          *  This method returns the min element of the heap.
          *  complexity: O(1)
          */
-        /*public int[] findMin(){
+        public HeapNode findMin(){
             if(isEmpty())
                 throw new NoSuchElementException("Heap is empty.");
             return heap[0];
-        }*/
+        }
 
     public static int[] stringToParams(String input) {
         input = input.trim();
@@ -234,12 +239,16 @@ public class MinHeap2 {
         //nodes[0].setExecutionTime(3);
         //heap[0].setExecutionTime(Math.min(heap[0].getTotalTime(), 5));
         int completedBuildingNum=-1;
-        int minTime = Math.min(heap[0].getTotalTime(), 5);
-        if(heap[0].getExecutionTime()+1<=heap[0].getTotalTime() && heap[0].getTempProgress()<minTime){
-            heap[0].setExecutionTime(heap[0].getExecutionTime()+1);
+        int minTime = Math.min(heap[0].getNode().getTotalTime(), 5);
+        if(heap[0].getNode().getExecutionTime()+1<=heap[0].getNode().getTotalTime() && heap[0].getTempProgress()<minTime){
+            //heap[0].getNode().setExecutionTime(heap[0].getNode().getExecutionTime()+1);
+            //Node node=;
+            heap[0].getNode().setExecutionTime(heap[0].getNode().getExecutionTime()+1);
+            //heap[0].setNode(node);
+            heap[0].getRBTNode().key=heap[0].getNode();
             heap[0].setTempProgress(heap[0].getTempProgress()+1);
-            if(heap[0].getExecutionTime()==heap[0].getTotalTime()){
-                completedBuildingNum = heap[0].getBuildingNum();
+            if(heap[0].getNode().getExecutionTime()==heap[0].getNode().getTotalTime()){
+                completedBuildingNum = heap[0].getNode().getBuildingNum();
                 rbt.delete(heap[0].getRBTNode());
                 minHeap.delete(0);
 

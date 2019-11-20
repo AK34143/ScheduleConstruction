@@ -37,21 +37,21 @@ public class Main {
         File file =
                 new File("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input.txt");
         Scanner sc = new Scanner(file);
-
+        Scanner scCopy=new Scanner(file);
+        if(scCopy.hasNextLine()) scCopy.nextLine();
         while (sc.hasNextLine()) {
-            String currentSt=sc.nextLine();
-            System.out.println(currentSt);
-            int commandTime =Integer.parseInt(currentSt.split(":")[0]);
+            int commandTime =Integer.parseInt(sc.next().split(":")[0]);
+            String currentCommand=sc.next();
+            //System.out.println(currentCommand);
             int nextCommandTime =commandTime+1;
             if(sc.hasNextLine()) {
-                Scanner scCopy=sc;
-                String nextSt = scCopy.nextLine();
-                nextCommandTime = Integer.parseInt(nextSt.split(":")[0]);
+                String nextCommand = scCopy.nextLine();
+                nextCommandTime = Integer.parseInt(nextCommand.split(":")[0]);
             }
             while(counter>=commandTime && counter<nextCommandTime) {
-                System.out.println("counter : " + counter);
-                if (currentSt.contains("Insert") && commandTime==counter) {
-                    int[] params = stringToParams(currentSt);
+                //System.out.println("counter : " + counter);
+                if (currentCommand.contains("Insert") && commandTime==counter) {
+                    int[] params = stringToParams(currentCommand);
                     Node node1 = new Node(params[0], params[1], params[2]);
                     minHeap.insert(node1);
                     RedBlackTree2.RBTNode rbtNode1 = new RedBlackTree2.RBTNode(node1);
@@ -62,9 +62,9 @@ public class Main {
 
 
                     minHeap.process(minHeap, rbt);
-                } else if(currentSt.contains("PrintBuilding") && commandTime==counter){
-                    if(currentSt.contains(",")){
-                        int[] params = stringToParams(currentSt);
+                } else if(currentCommand.contains("PrintBuilding") && commandTime==counter){
+                    if(currentCommand.contains(",")){
+                        int[] params = stringToParams(currentCommand);
                         List<RedBlackTree2.RBTNode> rangeBuildings = rbt.printBuilding(params[0],params[2]);
                         if(rangeBuildings.size()==0){
                             System.out.println("(" + 0 + "," + 0 + "," + 0 + ")");
@@ -76,14 +76,16 @@ public class Main {
                                 if(i!=rangeBuildings.size())  System.out.print(",");
                             }
                         }
+                        System.out.println();
                     } else {
-                        String part = currentSt.split("\\(")[1];
+                        String part = currentCommand.split("\\(")[1];
                         part = part.split("\\)")[0];
                         RedBlackTree2.RBTNode printBuildingNode = rbt.printBuilding(Integer.parseInt(part));
                         if (printBuildingNode == null)
                             System.out.println("(" + 0 + "," + 0 + "," + 0 + ")");
                         else
                             System.out.println("(" + printBuildingNode.key.getBuildingNum() + "," + printBuildingNode.key.getExecutionTime() + "," + printBuildingNode.key.getTotalTime() + ")");
+                        System.out.println();
                     }
                     minHeap.process(minHeap, rbt);
                 } else {

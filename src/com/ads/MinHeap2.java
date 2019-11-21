@@ -1,6 +1,7 @@
 package com.ads;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.ads.Main2.triple;
@@ -67,7 +68,7 @@ public class MinHeap2 {
             if(isFull())
                 throw new NoSuchElementException("Heap is full, No space to insert new element");
             heap[heapSize++] = heapx;
-            //heapifyUp(heapSize-1);
+            heapifyUp(heapSize-1);
         }
 
         /**
@@ -234,9 +235,9 @@ public class MinHeap2 {
             heapifyDown(0);
         }
     }*/
-    public int process(int counter, HeapNode processNode,RedBlackTree2 rbt)
+    public int process(List<HeapNode> minHeapList, int counter, HeapNode processNode, RedBlackTree2 rbt)
     {
-        //if(counter==135)
+        if(counter==3502)
             System.out.println(counter);
         //if(counter==5215) System.out.println("At 5215 counter minHeap = "+heap[0].getNode().getBuildingNum());
         //System.out.println(Heap[1][0]+" "+Heap[1][1]);
@@ -263,12 +264,23 @@ public class MinHeap2 {
                 completedBuildingNum = heap[0].getNode().getBuildingNum();
                 rbt.delete(heap[0].getRBTNode());
                 delete(0);
-
+                if(!minHeapList.isEmpty()){
+                    for(int i=0;i<minHeapList.size();i++) {
+                        insert(minHeapList.get(0));
+                        minHeapList.remove(0);
+                    }
+                }
             } else if(heap[0].getTempProgress()==minTime){
                 heap[0].setTempProgress(0);
                 heapifyDown(0);
-                heapifyUp(heapSize-1);
-                minHeap();
+                if(!minHeapList.isEmpty()){
+                    for(int i=0;i<minHeapList.size();i++) {
+                        insert(minHeapList.get(0));
+                        minHeapList.remove(0);
+                    }
+                }
+                /*heapifyUp(heapSize-1);
+                minHeap();*/
                 //heapifyDown(0);
 
                 /*heapifyUp(heapSize-1);
@@ -278,7 +290,7 @@ public class MinHeap2 {
                 //HeapSort.sort(heap,heapSize);
             }
         }
-        printHeap();
+        //printHeap();
         return completedBuildingNum;
 
         //heap[0].setBuildingNum(6);

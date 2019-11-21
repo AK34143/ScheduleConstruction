@@ -17,7 +17,7 @@ public class MinHeap2 {
         private static final int d= 2;
         public HeapNode[] heap;
         private RedBlackTree2.RBTNode node;
-        private int heapSize;
+        public int heapSize;
         public Node nullNode=new Node(Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE);
 
         /**
@@ -67,7 +67,7 @@ public class MinHeap2 {
             if(isFull())
                 throw new NoSuchElementException("Heap is full, No space to insert new element");
             heap[heapSize++] = heapx;
-            heapifyUp(heapSize-1);
+            //heapifyUp(heapSize-1);
         }
 
         /**
@@ -103,6 +103,7 @@ public class MinHeap2 {
          *
          */
         public void heapifyUp(int i) {
+           // System.out.println("i= "+i);
             HeapNode temp = heap[i];
             //int parenti = parent(i);
             while(i>0 && ((temp.getNode().getExecutionTime() < heap[parent(i)].getNode().getExecutionTime())
@@ -233,8 +234,11 @@ public class MinHeap2 {
             heapifyDown(0);
         }
     }*/
-    public int process(MinHeap2 minHeap,RedBlackTree2 rbt)
+    public int process(int counter, MinHeap2 minHeap,RedBlackTree2 rbt)
     {
+//        if(counter==134)
+//            System.out.println(counter);
+        //if(counter==5215) System.out.println("At 5215 counter minHeap = "+heap[0].getNode().getBuildingNum());
         //System.out.println(Heap[1][0]+" "+Heap[1][1]);
         //nodes[0].setExecutionTime(3);
         //heap[0].setExecutionTime(Math.min(heap[0].getTotalTime(), 5));
@@ -247,6 +251,14 @@ public class MinHeap2 {
             //heap[0].setNode(node);
             heap[0].getRBTNode().key=heap[0].getNode();
             heap[0].setTempProgress(heap[0].getTempProgress()+1);
+            /*if(heap[0].getNode().getBuildingNum()==13320) {
+                System.out.println("counter for "+heap[0].getNode().getBuildingNum()+" = "+counter);
+                System.out.println("exec time for "+heap[0].getNode().getBuildingNum()+" = "+heap[0].getNode().getExecutionTime());
+                System.out.println("Total time for "+heap[0].getNode().getBuildingNum()+" = "+heap[0].getNode().getTotalTime());
+                System.out.println("time progress for "+heap[0].getNode().getBuildingNum()+" = "+heap[0].getTempProgress());
+                System.out.println("min time for "+heap[0].getNode().getBuildingNum()+" = "+minTime);
+                System.out.println("----------------------------");
+            }*/
             if(heap[0].getNode().getExecutionTime()==heap[0].getNode().getTotalTime()){
                 completedBuildingNum = heap[0].getNode().getBuildingNum();
                 rbt.delete(heap[0].getRBTNode());
@@ -255,19 +267,27 @@ public class MinHeap2 {
             } else if(heap[0].getTempProgress()==minTime){
                 heap[0].setTempProgress(0);
                 heapifyDown(0);
+
+                /*heapifyUp(heapSize-1);
+                heapifyDown(0);*/
+                //minHeap();
+
+                //HeapSort.sort(heap,heapSize);
             }
         }
+        //printHeap();
         return completedBuildingNum;
 
         //heap[0].setBuildingNum(6);
 
     }
 
-        public static void main(String[] args){
+
+        /*public static void main(String[] args){
             MinHeap2 minHeap = new MinHeap2(10);
 
             int[] params = stringToParams("1,0,5");
-           /* minHeap.insert(params);
+           *//* minHeap.insert(params);
             minHeap.printHeap();
             params = stringToParams("5,0,10");
             minHeap.insert(params);
@@ -287,11 +307,11 @@ public class MinHeap2 {
             minHeap.insert(params);
             minHeap.printHeap();
             params = stringToParams("7,0,4");
-            minHeap.insert(params);*/
+            minHeap.insert(params);*//*
             minHeap.printHeap();
             //minHeap.process();
             //minHeap.delete(0);
             minHeap.printHeap();
-        }
+        }*/
 
 }

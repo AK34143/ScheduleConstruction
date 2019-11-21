@@ -1,7 +1,7 @@
 package com.ads;
 
 public class MinHeapGfg {
-        private int[] Heap;
+        private int[][] Heap;
         private int size;
         private int maxsize;
 
@@ -11,8 +11,8 @@ public class MinHeapGfg {
         {
             this.maxsize = maxsize;
             this.size = 0;
-            Heap = new int[this.maxsize + 1];
-            Heap[0] = Integer.MIN_VALUE;
+            Heap = new int[this.maxsize + 1][3];
+            Heap[0][1] = Integer.MIN_VALUE;
         }
 
         // Function to return the position of
@@ -51,7 +51,7 @@ public class MinHeapGfg {
         // Function to swap two nodes of the heap
         private void swap(int fpos, int spos)
         {
-            int tmp;
+            int[] tmp;
             tmp = Heap[fpos];
             Heap[fpos] = Heap[spos];
             Heap[spos] = tmp;
@@ -64,12 +64,15 @@ public class MinHeapGfg {
             // If the node is a non-leaf node and greater
             // than any of its child
             if (!isLeaf(pos)) {
-                if (Heap[pos] > Heap[leftChild(pos)]
-                        || Heap[pos] > Heap[rightChild(pos)]) {
+                if (Heap[pos][1] > Heap[leftChild(pos)][1]
+                        || Heap[pos][1] > Heap[rightChild(pos)][1]) {
 
                     // Swap with the left child and heapify
                     // the left child
-                    if (Heap[leftChild(pos)] < Heap[rightChild(pos)]) {
+                    if (Heap[leftChild(pos)][1] < Heap[rightChild(pos)][1]) {
+                        swap(pos, leftChild(pos));
+                        minHeapify(leftChild(pos));
+                    } else if (Heap[leftChild(pos)][1] == Heap[rightChild(pos)][1] && Heap[leftChild(pos)][0] < Heap[rightChild(pos)][0]){
                         swap(pos, leftChild(pos));
                         minHeapify(leftChild(pos));
                     }
@@ -85,7 +88,7 @@ public class MinHeapGfg {
         }
 
         // Function to insert a node into the heap
-        public void insert(int element)
+        public void insert(int[] element)
         {
             if (size >= maxsize) {
                 return;
@@ -93,7 +96,7 @@ public class MinHeapGfg {
             Heap[++size] = element;
             int current = size;
 
-            while (Heap[current] < Heap[parent(current)]) {
+            while (Heap[current][1] < Heap[parent(current)][1]) {
                 swap(current, parent(current));
                 current = parent(current);
             }
@@ -103,9 +106,9 @@ public class MinHeapGfg {
         public void print()
         {
             for (int i = 1; i <= size / 2; i++) {
-                System.out.print(" PARENT : " + Heap[i]
-                        + " LEFT CHILD : " + Heap[2 * i]
-                        + " RIGHT CHILD :" + Heap[2 * i + 1]);
+                System.out.print(" PARENT : " + Heap[i][0] +","+ Heap[i][1] +","+ Heap[i][2]
+                        + " LEFT CHILD : " + Heap[2 * i][0] +","+ Heap[2 * i][1] +","+ Heap[2 * i][2]
+                        + " RIGHT CHILD :" + Heap[2 * i + 1][0] +","+ Heap[2 * i + 1][1] +","+ Heap[2 * i + 1][2]);
                 System.out.println();
             }
         }
@@ -121,9 +124,9 @@ public class MinHeapGfg {
 
         // Function to remove and return the minimum
         // element from the heap
-        public int remove()
+        public int[] remove()
         {
-            int popped = Heap[FRONT];
+            int[] popped = Heap[FRONT];
             Heap[FRONT] = Heap[size--];
             minHeapify(FRONT);
             return popped;
@@ -134,10 +137,10 @@ public class MinHeapGfg {
         {
             System.out.println("The Min Heap is ");
             MinHeapGfg minHeap = new MinHeapGfg(15);
-            minHeap.insert(45);
-            minHeap.insert(45);
-            minHeap.insert(45);
-            minHeap.insert(0);
+            minHeap.insert(new int[]{19059,45,179});
+            minHeap.insert(new int[]{16385,45,138});
+            minHeap.insert(new int[]{5296,45,133});
+            minHeap.insert(new int[]{13764,0,126});
 //            minHeap.insert(84);
 //            minHeap.insert(19);
 //            minHeap.insert(6);

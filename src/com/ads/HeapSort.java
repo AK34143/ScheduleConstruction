@@ -5,6 +5,7 @@ public class HeapSort
 {
     public static void sort(int arr[])
     {
+        //int n = heapSize;
         int n = arr.length;
 
         // Build heap (rearrange array)
@@ -15,6 +16,8 @@ public class HeapSort
         for (int i=n-1; i>=0; i--)
         {
             // Move current root to end
+            //HeapNode temp = new HeapNode(arr[0].getNode(),arr[0].getTempProgress(),arr[0].getRBTNode());
+            //arr[0].setNode(arr[i].getNode());
             int temp = arr[0];
             arr[0] = arr[i];
             arr[i] = temp;
@@ -28,7 +31,7 @@ public class HeapSort
     // an index in arr[]. n is size of heap
     static void heapify(int arr[], int n, int i)
     {
-        int largest = i; // Initialize largest as root
+        int largest = i; // Initialize smallest as root
         int l = 2*i + 1; // left = 2*i + 1
         int r = 2*i + 2; // right = 2*i + 2
 
@@ -64,7 +67,7 @@ public class HeapSort
     // Driver program
     public static void main(String args[])
     {
-        int arr[] = {12, 11, 13, 5, 6, 7};
+        int arr[] = {45,45,45,0};
         int n = arr.length;
 
         HeapSort ob = new HeapSort();

@@ -9,16 +9,16 @@ import java.util.Scanner;
 class RedBlackNode
 {
     RedBlackNode left, right;
-    int element;
+    int[] element;
     int color;
 
     /* Constructor */
-    public RedBlackNode(int theElement)
+    public RedBlackNode(int[] theElement)
     {
         this( theElement, null, null );
     }
     /* Constructor */
-    public RedBlackNode(int theElement, RedBlackNode lt, RedBlackNode rt)
+    public RedBlackNode(int[] theElement, RedBlackNode lt, RedBlackNode rt)
     {
         left = lt;
         right = rt;
@@ -39,7 +39,7 @@ class RedBlackTree
     /* static initializer for nullNode */
     static
     {
-        nullNode = new RedBlackNode(0);
+        nullNode = new RedBlackNode(new int[]{0, 0, 0});
         nullNode.left = nullNode;
         nullNode.right = nullNode;
     }
@@ -48,7 +48,7 @@ class RedBlackTree
     static final int RED   = 0;
 
     /* Constructor */
-    public RedBlackTree(int negInf)
+    public RedBlackTree(int[] negInf)
     {
         header = new RedBlackNode(negInf);
         header.left = nullNode;
@@ -65,16 +65,16 @@ class RedBlackTree
         header.right = nullNode;
     }
     /* Function to insert item */
-    public void insert(int item )
+    public void insertRBT(int[] item )
     {
         current = parent = grand = header;
-        nullNode.element = item;
-        while (current.element != item)
+        nullNode.element[0] = item[0];
+        while (current.element[0] != item[0])
         {
             great = grand;
             grand = parent;
             parent = current;
-            current = item < current.element ? current.left : current.right;
+            current = item[0] < current.element[0] ? current.left : current.right;
             // Check if two red children and fix if so
             if (current.left.color == RED && current.right.color == RED)
                 handleReorient( item );
@@ -84,13 +84,13 @@ class RedBlackTree
             return;
         current = new RedBlackNode(item, nullNode, nullNode);
         // Attach to parent
-        if (item < parent.element)
+        if (item[0] < parent.element[0])
             parent.left = current;
         else
             parent.right = current;
         handleReorient( item );
     }
-    private void handleReorient(int item)
+    private void handleReorient(int[] item)
     {
         // Do the color flip
         current.color = RED;
@@ -101,7 +101,7 @@ class RedBlackTree
         {
             // Have to rotate
             grand.color = RED;
-            if (item < grand.element != item < parent.element)
+            if (item[0] < grand.element[0] != item[0] < parent.element[0])
                 parent = rotate( item, grand );  // Start dbl rotate
             current = rotate(item, great );
             current.color = BLACK;
@@ -109,12 +109,12 @@ class RedBlackTree
         // Make root black
         header.right.color = BLACK;
     }
-    private RedBlackNode rotate(int item, RedBlackNode parent)
+    private RedBlackNode rotate(int[] item, RedBlackNode parent)
     {
-        if(item < parent.element)
-            return parent.left = item < parent.left.element ? rotateWithLeftChild(parent.left) : rotateWithRightChild(parent.left) ;
+        if(item[0] < parent.element[0])
+            return parent.left = item[0] < parent.left.element[0] ? rotateWithLeftChild(parent.left) : rotateWithRightChild(parent.left) ;
         else
-            return parent.right = item < parent.right.element ? rotateWithLeftChild(parent.right) : rotateWithRightChild(parent.right);
+            return parent.right = item[0] < parent.right.element[0] ? rotateWithLeftChild(parent.right) : rotateWithRightChild(parent.right);
     }
     /* Rotate binary tree node with left child */
     private RedBlackNode rotateWithLeftChild(RedBlackNode k2)
@@ -159,7 +159,7 @@ class RedBlackTree
         boolean found = false;
         while ((r != nullNode) && !found)
         {
-            int rval = r.element;
+            int rval = r.element[0];
             if (val < rval)
                 r = r.left;
             else if (val > rval)
@@ -186,7 +186,7 @@ class RedBlackTree
             char c = 'B';
             if (r.color == 0)
                 c = 'R';
-            System.out.print(r.element +""+c+" ");
+            System.out.print("("+r.element[0] +","+r.element[1]+","+r.element[2] +")"+c+" ");
             inorder(r.right);
         }
     }
@@ -202,7 +202,7 @@ class RedBlackTree
             char c = 'B';
             if (r.color == 0)
                 c = 'R';
-            System.out.print(r.element +""+c+" ");
+            System.out.print("("+r.element[0] +","+r.element[1]+","+r.element[2] +")"+c+" ");
             preorder(r.left);
             preorder(r.right);
         }
@@ -221,8 +221,37 @@ class RedBlackTree
             char c = 'B';
             if (r.color == 0)
                 c = 'R';
-            System.out.print(r.element +""+c+" ");
+            System.out.print("("+r.element[0] +","+r.element[1]+","+r.element[2] +")"+c+" ");
         }
     }
+
+    /** delete
+     * */
+    /*public void delete(RedBlackNode z) {
+        RedBlackNode y = z,x;
+        Color yOrigin = y.getColor();
+        if (z.left == nullNode) {
+            x=z.right;
+            transplant(z, z.right);
+        } else if (z.right == nullNode) {
+            x=z.left;
+            transplant(z, z.left);
+        } else {
+            y = minChild(z.right);
+            yOrigin=y.getColor();
+            x=y.right
+            if (y.parent() == z) {
+                x.setParent(y);
+            }else
+            {
+                transplant(y, y.right);
+                y.right = z.right;
+                y.right.setParent(y);
+            }
+            transplant(z, y);
+            y.left = z.left;
+            y.left.setParent(y);
+            y.color = z.color;
+        }*/
 }
 

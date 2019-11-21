@@ -234,23 +234,23 @@ public class MinHeap2 {
             heapifyDown(0);
         }
     }*/
-    public int process(int counter, MinHeap2 minHeap,RedBlackTree2 rbt)
+    public int process(int counter, HeapNode processNode,RedBlackTree2 rbt)
     {
-//        if(counter==134)
-//            System.out.println(counter);
+        //if(counter==135)
+            System.out.println(counter);
         //if(counter==5215) System.out.println("At 5215 counter minHeap = "+heap[0].getNode().getBuildingNum());
         //System.out.println(Heap[1][0]+" "+Heap[1][1]);
         //nodes[0].setExecutionTime(3);
         //heap[0].setExecutionTime(Math.min(heap[0].getTotalTime(), 5));
         int completedBuildingNum=-1;
-        int minTime = Math.min(heap[0].getNode().getTotalTime(), 5);
-        if(heapSize>0 && heap[0].getNode().getExecutionTime()+1<=heap[0].getNode().getTotalTime() && heap[0].getTempProgress()<minTime){
+        int minTime = Math.min(processNode.getNode().getTotalTime(), 5);
+        if(heapSize>0 && processNode.getNode().getExecutionTime()+1<=processNode.getNode().getTotalTime() && processNode.getTempProgress()<minTime){
             //heap[0].getNode().setExecutionTime(heap[0].getNode().getExecutionTime()+1);
             //Node node=;
-            heap[0].getNode().setExecutionTime(heap[0].getNode().getExecutionTime()+1);
+            processNode.getNode().setExecutionTime(processNode.getNode().getExecutionTime()+1);
             //heap[0].setNode(node);
-            heap[0].getRBTNode().key=heap[0].getNode();
-            heap[0].setTempProgress(heap[0].getTempProgress()+1);
+            processNode.getRBTNode().key=processNode.getNode();
+            processNode.setTempProgress(processNode.getTempProgress()+1);
             /*if(heap[0].getNode().getBuildingNum()==13320) {
                 System.out.println("counter for "+heap[0].getNode().getBuildingNum()+" = "+counter);
                 System.out.println("exec time for "+heap[0].getNode().getBuildingNum()+" = "+heap[0].getNode().getExecutionTime());
@@ -262,11 +262,14 @@ public class MinHeap2 {
             if(heap[0].getNode().getExecutionTime()==heap[0].getNode().getTotalTime()){
                 completedBuildingNum = heap[0].getNode().getBuildingNum();
                 rbt.delete(heap[0].getRBTNode());
-                minHeap.delete(0);
+                delete(0);
 
             } else if(heap[0].getTempProgress()==minTime){
                 heap[0].setTempProgress(0);
                 heapifyDown(0);
+                heapifyUp(heapSize-1);
+                minHeap();
+                //heapifyDown(0);
 
                 /*heapifyUp(heapSize-1);
                 heapifyDown(0);*/
@@ -275,11 +278,87 @@ public class MinHeap2 {
                 //HeapSort.sort(heap,heapSize);
             }
         }
-        //printHeap();
+        printHeap();
         return completedBuildingNum;
 
         //heap[0].setBuildingNum(6);
 
+    }
+    public void minHeap()
+    {
+        for (int pos = (heapSize / 2); pos >= 1; pos--) {
+            minHeapify(pos);
+        }
+    }
+    private int leftChild(int pos)
+    {
+        return (2 * pos);
+    }
+    private int rightChild(int pos)
+    {
+        return (2 * pos) + 1;
+    }
+
+    private boolean isLeaf(int pos)
+    {
+        if (pos >= (heapSize / 2) && pos <= heapSize) {
+            return true;
+        }
+        return false;
+    }
+
+    private void swap(int fpos, int spos)
+    {
+        HeapNode tmp=new HeapNode(heap[fpos].getNode(), heap[fpos].getTempProgress(), heap[fpos].getRBTNode());
+        //tmp.setNode(heap[fpos].getNode());
+        heap[fpos].setNode(heap[spos].getNode());
+        heap[fpos].setTempProgress(heap[spos].getTempProgress());
+        heap[fpos].setRBTNode(heap[spos].getRBTNode());
+        heap[spos].setNode(tmp.getNode());
+        heap[spos].setTempProgress(tmp.getTempProgress());
+        heap[spos].setRBTNode(tmp.getRBTNode());
+    }
+    // Function to heapify the node at pos
+    private void minHeapify(int pos)
+    {
+
+        // If the node is a non-leaf node and greater
+        // than any of its child
+        if (!isLeaf(pos)) {
+            if (heap[pos].getNode().getExecutionTime() > heap[leftChild(pos)].getNode().getExecutionTime()
+                    || heap[pos].getNode().getExecutionTime() > heap[rightChild(pos)].getNode().getExecutionTime()) {
+
+                int smallest = pos;
+                if(leftChild(pos)<heapSize && heap[leftChild(pos)].getNode().getExecutionTime()<heap[pos].getNode().getExecutionTime()){
+                    smallest = leftChild(pos);
+                }
+                if(rightChild(pos)<heapSize && heap[rightChild(pos)].getNode().getExecutionTime()<heap[smallest].getNode().getExecutionTime()){
+                    smallest = rightChild(pos);
+                }
+                if(smallest!=pos){
+                    swap(pos,smallest);
+                    minHeapify(smallest);
+                }
+
+                // Swap with the left child and heapify
+                // the left child
+                /*if (heap[leftChild(pos)].getNode().getExecutionTime() < heap[rightChild(pos)].getNode().getExecutionTime()) {
+                    swap(pos, leftChild(pos));
+                    minHeapify(leftChild(pos));
+                } else if (heap[leftChild(pos)].getNode().getExecutionTime() == heap[rightChild(pos)].getNode().getExecutionTime()
+                        && heap[leftChild(pos)].getNode().getBuildingNum() < heap[rightChild(pos)].getNode().getBuildingNum()){
+                    swap(pos, leftChild(pos));
+                    minHeapify(leftChild(pos));
+                }
+
+                // Swap with the right child and heapify
+                // the right child
+                else {
+                    swap(pos, rightChild(pos));
+                    minHeapify(rightChild(pos));
+                }*/
+            }
+        }
     }
 
 

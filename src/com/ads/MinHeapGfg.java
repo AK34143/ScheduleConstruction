@@ -64,8 +64,21 @@ public class MinHeapGfg {
             // If the node is a non-leaf node and greater
             // than any of its child
             if (!isLeaf(pos)) {
-                if (Heap[pos][1] > Heap[leftChild(pos)][1]
-                        || Heap[pos][1] > Heap[rightChild(pos)][1]) {
+                int smallest = pos;
+                if(leftChild(pos)<size && Heap[leftChild(pos)][1]<Heap[pos][1]){
+                    smallest = leftChild(pos);
+                }
+                if(rightChild(pos)<size && Heap[rightChild(pos)][1]<Heap[smallest][1]){
+                    smallest = rightChild(pos);
+                }
+                if(smallest!=pos){
+                    swap(pos,smallest);
+                    minHeapify(smallest);
+                }
+
+
+                /*if (Heap[pos][1] >= Heap[leftChild(pos)][1]
+                        || Heap[pos][1] >= Heap[rightChild(pos)][1]) {
 
                     // Swap with the left child and heapify
                     // the left child
@@ -79,11 +92,11 @@ public class MinHeapGfg {
 
                     // Swap with the right child and heapify
                     // the right child
-                    else {
+                    else if(){
                         swap(pos, rightChild(pos));
                         minHeapify(rightChild(pos));
                     }
-                }
+                }*/
             }
         }
 
@@ -96,7 +109,7 @@ public class MinHeapGfg {
             Heap[++size] = element;
             int current = size;
 
-            while (Heap[current][1] < Heap[parent(current)][1]) {
+            while ((Heap[current][1] < Heap[parent(current)][1]) || (Heap[current][1] == Heap[parent(current)][1] && Heap[current][0] < Heap[parent(current)][0])) {
                 swap(current, parent(current));
                 current = parent(current);
             }
@@ -137,10 +150,11 @@ public class MinHeapGfg {
         {
             System.out.println("The Min Heap is ");
             MinHeapGfg minHeap = new MinHeapGfg(15);
-            minHeap.insert(new int[]{19059,45,179});
+
             minHeap.insert(new int[]{16385,45,138});
+            minHeap.insert(new int[]{19059,45,179});
+            minHeap.insert(new int[]{13764,45,126});
             minHeap.insert(new int[]{5296,45,133});
-            minHeap.insert(new int[]{13764,0,126});
 //            minHeap.insert(84);
 //            minHeap.insert(19);
 //            minHeap.insert(6);

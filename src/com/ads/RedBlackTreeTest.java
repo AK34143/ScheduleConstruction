@@ -2,6 +2,8 @@ package com.ads;
 
 import java.util.Scanner;
 
+import static com.ads.Main2.triple;
+
 /* Class RedBlackTreeTest */
 public class RedBlackTreeTest
 {
@@ -9,7 +11,7 @@ public class RedBlackTreeTest
     {
         Scanner scan = new Scanner(System.in);
         /* Creating object of RedBlack Tree */
-        RedBlackTree rbt = new RedBlackTree(Integer.MIN_VALUE);
+        RedBlackTree rbt = new RedBlackTree(new int[3]);
         System.out.println("Red Black Tree Test\n");
         char ch;
         /*  Perform tree operations  */
@@ -27,7 +29,8 @@ public class RedBlackTreeTest
             {
                 case 1 :
                     System.out.println("Enter integer element to insert");
-                    rbt.insert( scan.nextInt() );
+                    int[] params = stringToParams(scan.next());
+                    rbt.insertRBT( params );
                     break;
                 case 2 :
                     System.out.println("Enter integer element to search");
@@ -48,15 +51,40 @@ public class RedBlackTreeTest
                     break;
             }
             /*  Display tree  */
-            System.out.print("\nPost order : ");
+            /*System.out.print("\nPost order : ");
             rbt.postorder();
             System.out.print("\nPre order : ");
-            rbt.preorder();
+            rbt.preorder();*/
             System.out.print("\nIn order : ");
             rbt.inorder();
 
             System.out.println("\nDo you want to continue (Type y or n) \n");
             ch = scan.next().charAt(0);
         } while (ch == 'Y'|| ch == 'y');
+    }
+    public static int[] stringToParams(String input) {
+        input = input.trim();
+        //input = input.substring(1, input.length() - 1);
+        if (input.length() == 0) {
+            return new int[0];
+        }
+
+
+        String[] params = input.split(",");
+        int[] output = new int[triple+1];
+        String part = params[0].split("\\(")[1];
+        output[0] = Integer.parseInt(part);
+        output[1]=0;
+        part = params[1].split("\\)")[0];
+        output[2] = Integer.parseInt(part);
+        /*for(int index = 0; index < params.length+1; index++) {
+            if(index==1){
+                output[index]=0;
+            }else {
+                String part = params[index].trim();
+                output[index] = Integer.parseInt(part);
+            }
+        }*/
+        return output;
     }
 }

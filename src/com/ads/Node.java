@@ -43,14 +43,5 @@ public class Node {
         this.totalTime = newTotalTime;
     }
 
-    //Getter
-    /*public RedBlackTree2.RBTNode getRBTNode() {
-        return rbtNode;
-    }*/
-
-    // Setter
-    /*public void setRBTNode(RedBlackTree2.RBTNode newRBTNode) {
-        this.rbtNode = newRBTNode;
-    }*/
 }
 

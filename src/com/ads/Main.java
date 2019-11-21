@@ -45,7 +45,7 @@ public class Main {
         while ((i=fr.read()) != -1)
             System.out.print((char) i);*/
         File file =
-                new File("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input_wip.txt");
+                new File("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input_3.txt");
         StringBuilder str = new StringBuilder();
         BufferedWriter writer = new BufferedWriter(new FileWriter("output_wip", false));
         writer.flush();
@@ -75,8 +75,8 @@ public class Main {
                     if(rbt.printBuilding(params[0])==null) {
                         Node node1 = new Node(params[0], params[1], params[2]);
                         HeapNode heapNode1 = new HeapNode(node1);
-                        if(minHeap.heap[0].getTempProgress()>0)
-                            processNode = minHeap.heap[0];
+//                        if(minHeap.heap[0].getTempProgress()>0)
+//                            processNode = minHeap.heap[0];
                         minHeap.insert(heapNode1);
                         RedBlackTree2.RBTNode rbtNode1 = new RedBlackTree2.RBTNode(new Node(node1.buildingNum, node1.executionTime, node1.totalTime));
                         rbt.insertRBT(rbtNode1);
@@ -125,7 +125,7 @@ public class Main {
                 //}
 
                 counter++;
-                if((completedBuildingNum = minHeap.process(counter, minHeap, rbt))!=-1) str.append("(").append(completedBuildingNum).append(",").append(counter).append(")\n");
+                if((completedBuildingNum = minHeap.process(counter, minHeap.heap[0], rbt))!=-1) str.append("(").append(completedBuildingNum).append(",").append(counter).append(")\n");
                 /*if(!minHeap.isEmpty() && currentCommand.contains("Insert")){
                     minHeap.heapifyUp(minHeap.heapSize-1);;
                 }*/

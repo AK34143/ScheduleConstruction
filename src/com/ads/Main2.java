@@ -70,12 +70,12 @@ public class Main2 {
         // If the node is a non-leaf node and greater
         // than any of its child
         if (!isLeaf(pos)) {
-            if (Heap[pos][0] > Heap[leftChild(pos)][0]
-                    || Heap[pos][0] > Heap[rightChild(pos)][0]) {
+            if (Heap[pos][1] > Heap[leftChild(pos)][1]
+                    || Heap[pos][1] > Heap[rightChild(pos)][1]) {
 
                 // Swap with the left child and heapify
                 // the left child
-                if (Heap[leftChild(pos)][0] < Heap[rightChild(pos)][0]) {
+                if (Heap[leftChild(pos)][1] < Heap[rightChild(pos)][1]) {
                     swap(pos, leftChild(pos));
                     minHeapify(leftChild(pos));
                 }
@@ -115,6 +115,7 @@ public class Main2 {
             System.out.println();
         }
     }
+
 
     // Function to build the min heap using
     // the minHeapify
@@ -161,11 +162,11 @@ public class Main2 {
 
         String[] params = input.split(",");
         int[] output = new int[triple+1];
-        String part = params[0].split("\\(")[1];
-        output[0] = Integer.parseInt(part);
-        output[1]=0;
-        part = params[1].split("\\)")[0];
-        output[2] = Integer.parseInt(part);
+        //String part = params[0].split("\\(")[1];
+        output[0] = Integer.parseInt(params[0]);
+        output[1]=Integer.parseInt(params[1]);
+        //part = params[1].split("\\)")[0];
+        output[2] = Integer.parseInt(params[2]);
         /*for(int index = 0; index < params.length+1; index++) {
             if(index==1){
                 output[index]=0;
@@ -205,20 +206,39 @@ public class Main2 {
             //System.out.println(st);
         }*/
 
-    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+    /*BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
+
+        while ((line = in.readLine()) != null) {*/
         Main2 minHeap = new Main2(15);
-        while ((line = in.readLine()) != null) {
-            int[] params = stringToParams(line);
-            minHeap.insertMinHeap(params);
-            minHeap.process();
+            int[] params = stringToParams("19058,45,179");
+        minHeap.insertMinHeap(params);
+            params = stringToParams("5296,56,133");
+        minHeap.insertMinHeap(params);
+        params = stringToParams("16385,45,138");
+        minHeap.insertMinHeap(params);
+        params = stringToParams("16386,55,138");
+        minHeap.insertMinHeap(params);
+        params = stringToParams("5296,45,133");
+        minHeap.insertMinHeap(params);
+        params = stringToParams("13764,55,126");
+        minHeap.insertMinHeap(params);
+        params = stringToParams("13765,0,126");
+        minHeap.insertMinHeap(params);
+        params = stringToParams("19059,55,179");
+        minHeap.insertMinHeap(params);
+        params = stringToParams("15569,0,153");
+        minHeap.insertMinHeap(params);
+        minHeap.minHeap();
+        //minHeap.process();
+
             minHeap.print();
             //int[] ret = new RevealCards().deckRevealedIncreasing(deck);
 
             //String out = integerArrayToString(ret);
 
             //System.out.print(out);
-        }
+        //}
         //System.out.println("The Min Heap is ");
 
         /*minHeap.insert(5);

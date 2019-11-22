@@ -47,14 +47,21 @@ public class RedBlackTree {
     public void printBetween(RBTProperties current,int x, int y){
         if(current==nil){
 
-        } else if( x <= current.key.getBuildingNum() && y >= current.key.getBuildingNum()) {
-            rangeBuildings.add(current);
-            printBetween(current.left, x,Math.min(y,current.key.getBuildingNum()));
-            printBetween(current.right, Math.max(x,current.key.getBuildingNum()),y);
-        } else if ( x > current.key.getBuildingNum() && y > current.key.getBuildingNum()) {
-            printBetween(current.right, Math.max(x,current.key.getBuildingNum()),y);
-        } else if (x < current.key.getBuildingNum() && y < current.key.getBuildingNum()){
-            printBetween(current.left, x,Math.min(y,current.key.getBuildingNum()));
+        }else {
+            if (x < current.key.getBuildingNum()) {
+                printBetween(current.left, x, y);
+            }
+
+            /* if root's data lies in range, then prints root's data */
+            if (x <= current.key.getBuildingNum() && y >= current.key.getBuildingNum()) {
+                rangeBuildings.add(current);
+            }
+
+        /* If root->data is smaller than k2, then only we can get o/p keys
+         in right subtree */
+            if (y > current.key.getBuildingNum()) {
+                printBetween(current.right, x, y);
+            }
         }
     }
 

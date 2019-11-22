@@ -186,7 +186,7 @@ public class MinHeap {
         return output;
     }
 
-    public int construct(List<Building> buildingList,Building building, RedBlackTree rbt)
+    public int construct(String nextCommand, List<Building> buildingList,Building building, RedBlackTree rbt)
     {
         int completedBuildingNum=-1;
         int minTime = Math.min(building.getBuildingProperties().getTotalTime(), 5);
@@ -196,7 +196,11 @@ public class MinHeap {
             building.setProgress(building.getProgress()+1);
             if(building.getBuildingProperties().getExecutionTime()==building.getBuildingProperties().getTotalTime()){
                 completedBuildingNum = building.getBuildingProperties().getBuildingNum();
-                rbt.delete(building.getRBTProperties());
+
+                if(nextCommand==null ||(nextCommand!=null && !nextCommand.contains("Print"))) {
+                    rbt.delete(building.getRBTProperties());
+
+                }
                 delete(0);
                 if(!buildingList.isEmpty()){
                     for(int i=0;i<buildingList.size();i++) {

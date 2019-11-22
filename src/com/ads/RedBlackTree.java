@@ -11,19 +11,20 @@ public class RedBlackTree {
     private final int RED = 0;
     private static final int BLACK = 1;
     public List<RBTProperties> rangeBuildings;
+
     public static class RBTProperties {
 
         BuildingProperties key;
         int color = BLACK;
         RBTProperties left = nil, right = nil, parent = nil;
-
+        int size;
         RBTProperties(BuildingProperties key) {
             this.key = key;
         }
     }
 
     private static final RBTProperties nil = new RBTProperties(new BuildingProperties(-1,-1,-1));
-    private RBTProperties root = nil;
+    public RBTProperties root = nil;
 
     public RBTProperties printBuilding( int buildingNum ) {
         RBTProperties current = root;
@@ -52,17 +53,28 @@ public class RedBlackTree {
                 printBetween(current.left, x, y);
             }
 
-            /* if root's data lies in range, then prints root's data */
+             /*if root's data lies in range, then prints root's data*/
             if (x <= current.key.getBuildingNum() && y >= current.key.getBuildingNum()) {
                 rangeBuildings.add(current);
             }
 
-        /* If root->data is smaller than k2, then only we can get o/p keys
+         /*If root->data is smaller than k2, then only we can get o/p keys
          in right subtree */
             if (y > current.key.getBuildingNum()) {
                 printBetween(current.right, x, y);
             }
         }
+        /*if(current==nil){
+
+        } else if( x <= current.key.getBuildingNum() && y >= current.key.getBuildingNum()) {
+            rangeBuildings.add(current);
+            printBetween(current.left, x,Math.min(y,current.key.getBuildingNum()));
+            printBetween(current.right, Math.max(x,current.key.getBuildingNum()),y);
+        } else if ( x > current.key.getBuildingNum() && y > current.key.getBuildingNum()) {
+            printBetween(current.right, Math.max(x,current.key.getBuildingNum()),y);
+        } else if (x < current.key.getBuildingNum() && y < current.key.getBuildingNum()){
+            printBetween(current.left, x,Math.min(y,current.key.getBuildingNum()));
+        }*/
     }
 
     private RBTProperties findProperties(RBTProperties findRBTProperties, RBTProperties node) {
@@ -267,6 +279,13 @@ public class RedBlackTree {
         return true;
     }
 
+    /*public void deleteCompleted(){
+        for(int i=0;i<size();i++) {
+            if(root.key
+            delete(root);
+        }
+    }*/
+
     private void deleteFixup(RBTProperties x){
         while(x!=root && x.color == BLACK){
             if(x == x.parent.left){
@@ -332,4 +351,17 @@ public class RedBlackTree {
         }
         return subTreeRoot;
     }
+    /*private int size(RBTProperties x) {
+        if (x == null) return 0;
+        return x.size;
+    }
+
+
+    *//**
+     * Returns the number of key-value pairs in this symbol table.
+     * @return the number of key-value pairs in this symbol table
+     *//*
+    public int size() {
+        return size(root);
+    }*/
 }

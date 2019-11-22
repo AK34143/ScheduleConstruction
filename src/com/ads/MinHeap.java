@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class MinHeap2 {
+public class MinHeap {
     /**
      * MinHeap implemented using Array
      */
@@ -19,7 +19,7 @@ public class MinHeap2 {
         /**
          * This will initialize our heap with default size.
          */
-        public MinHeap2(int capacity){
+        public MinHeap(int capacity){
             heapSize = 0;
             heap = new HeapNode[capacity+1];
             Arrays.fill(heap, new HeapNode(nullNode));

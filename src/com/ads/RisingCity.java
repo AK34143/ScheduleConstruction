@@ -3,7 +3,7 @@ package com.ads;
 import java.io.*;
 import java.util.*;
 
-import static com.ads.MinHeap2.stringToParams;
+import static com.ads.MinHeap.stringToParams;
 
 public class RisingCity {
     static int days = 0;
@@ -13,7 +13,7 @@ public class RisingCity {
     public static void main(String[] args) throws IOException {
         // write your code here
         long start1 = System.currentTimeMillis();
-        MinHeap2 minHeap = new MinHeap2(maxBuildings); //Initializing empty array for minHeap
+        MinHeap minHeap = new MinHeap(maxBuildings); //Initializing empty array for minHeap
         RedBlackTree rbt = new RedBlackTree();
         /*File file = new File("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));

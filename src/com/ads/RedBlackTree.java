@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.ads.MinHeap2.stringToParams;
+import static com.ads.MinHeap.stringToParams;
 
 public class RedBlackTree {
 
@@ -50,9 +50,9 @@ public class RedBlackTree {
         } else if( x <= current.key.getBuildingNum() && y >= current.key.getBuildingNum()) {
             rangeBuildings.add(current);
             printBetween(current.left, x,Math.min(y,current.key.getBuildingNum()));
-            printBetween(current.right, Math.max(x,current.key.getBuildingNum()),y);//current = current.left;
+            printBetween(current.right, Math.max(x,current.key.getBuildingNum()),y);
         } else if ( x > current.key.getBuildingNum() && y > current.key.getBuildingNum()) {
-            printBetween(current.right, Math.max(x,current.key.getBuildingNum()),y);//current = current.left;
+            printBetween(current.right, Math.max(x,current.key.getBuildingNum()),y);
         } else if (x < current.key.getBuildingNum() && y < current.key.getBuildingNum()){
             printBetween(current.left, x,Math.min(y,current.key.getBuildingNum()));
         }

@@ -7,9 +7,6 @@ import java.util.NoSuchElementException;
 import static com.ads.Main2.triple;
 
 public class MinHeap2 {
-
-    //RedBlackTree2.RBTNode rbt = new RedBlackTree2.RBTNode();
-
     /**
      * MinHeap implemented using Array
      */
@@ -235,10 +232,8 @@ public class MinHeap2 {
             heapifyDown(0);
         }
     }*/
-    public int process(List<HeapNode> minHeapList, int counter, HeapNode processNode, RedBlackTree2 rbt)
+    public int process(List<HeapNode> minHeapList,HeapNode processNode, RedBlackTree2 rbt)
     {
-        if(counter==3502)
-            System.out.println(counter);
         //if(counter==5215) System.out.println("At 5215 counter minHeap = "+heap[0].getNode().getBuildingNum());
         //System.out.println(Heap[1][0]+" "+Heap[1][1]);
         //nodes[0].setExecutionTime(3);
@@ -260,9 +255,9 @@ public class MinHeap2 {
                 System.out.println("min time for "+heap[0].getNode().getBuildingNum()+" = "+minTime);
                 System.out.println("----------------------------");
             }*/
-            if(heap[0].getNode().getExecutionTime()==heap[0].getNode().getTotalTime()){
-                completedBuildingNum = heap[0].getNode().getBuildingNum();
-                rbt.delete(heap[0].getRBTNode());
+            if(processNode.getNode().getExecutionTime()==processNode.getNode().getTotalTime()){
+                completedBuildingNum = processNode.getNode().getBuildingNum();
+                rbt.delete(processNode.getRBTNode());
                 delete(0);
                 if(!minHeapList.isEmpty()){
                     for(int i=0;i<minHeapList.size();i++) {
@@ -270,8 +265,8 @@ public class MinHeap2 {
                         minHeapList.remove(0);
                     }
                 }
-            } else if(heap[0].getTempProgress()==minTime){
-                heap[0].setTempProgress(0);
+            } else if(processNode.getTempProgress()==minTime){
+                processNode.setTempProgress(0);
                 heapifyDown(0);
                 if(!minHeapList.isEmpty()){
                     for(int i=0;i<minHeapList.size();i++) {

@@ -1,0 +1,5 @@
+0:Insert(1,10)
+6:Insert(2,10)
+7: PrintBuilding(2)
+
+

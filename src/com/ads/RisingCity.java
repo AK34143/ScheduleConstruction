@@ -5,7 +5,7 @@ import java.util.*;
 
 import static com.ads.MinHeap2.stringToParams;
 
-public class Main {
+public class RisingCity {
     static int counter = 0;
     private Node[] nodes;
 
@@ -30,7 +30,7 @@ public class Main {
 
         // ending time
 
-        Main main = new Main();
+        RisingCity risingCity = new RisingCity();
         MinHeap2 minHeap = new MinHeap2(2000); //Initializing empty array for minHeap
         RedBlackTree2 rbt = new RedBlackTree2(); //
         /*File file = new File("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input.txt");
@@ -46,11 +46,12 @@ public class Main {
         while ((i=fr.read()) != -1)
             System.out.print((char) i);*/
         File file =
-                new File("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input_2.txt");
+                new File("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input_5.txt");
         StringBuilder str = new StringBuilder();
         BufferedWriter writer = new BufferedWriter(new FileWriter("output_wip", false));
         writer.flush();
         List<HeapNode> minHeapList = new ArrayList<>();
+        List<String> commandList = new ArrayList<>();
 
 
         Scanner sc = new Scanner(file);
@@ -59,14 +60,18 @@ public class Main {
         int completedBuildingNum;
         HeapNode processNode;
         while (sc.hasNextLine()) {
+            /*commandList.add(sc.nextLine());
+        }*/
             //long start = System.currentTimeMillis();
-            int commandTime =Integer.parseInt(sc.next().split(":")[0]);
-            String currentCommand=sc.next();
+            String currentLine = sc.nextLine();
+            //System.out.println(currentLine);
+            int commandTime =Integer.parseInt(currentLine.split(":")[0]);
+            String currentCommand=currentLine.split(":")[1];
             //System.out.println(currentCommand);
             int nextCommandTime =Integer.MAX_VALUE;
             if(sc.hasNextLine()) {
                 String nextCommand = scCopy.nextLine();
-                nextCommandTime = Integer.parseInt(nextCommand.split(":")[0]);
+                if(!nextCommand.equalsIgnoreCase("")) nextCommandTime = Integer.parseInt(nextCommand.split(":")[0]);
             }
             while(counter>=commandTime && counter<nextCommandTime) {
                 //System.out.println("counter : " + counter);
@@ -98,12 +103,16 @@ public class Main {
 
                     //if((completedBuildingNum = minHeap.process(minHeap, rbt))!=-1) System.out.println("("+completedBuildingNum+","+(counter+1)+")");
                 } else if(currentCommand.contains("PrintBuilding") && commandTime==counter){
-                    //System.out.println(currentCommand);
+                    System.out.println(currentCommand);
                     if(currentCommand.contains(",")){
                         int[] params = stringToParams(currentCommand);
                         List<RedBlackTree2.RBTNode> rangeBuildings = rbt.printBuilding(params[0],params[2]);
+                        for(HeapNode minHeapNode : minHeapList){
+                            if(minHeapNode.getNode().getBuildingNum()>params[0] && minHeapNode.getNode().getBuildingNum()<params[2])
+                                rangeBuildings.add(minHeapNode.getRBTNode());
+                        }
                         if(rangeBuildings.size()==0){
-                            str.append("(" + 0 + "," + 0 + "," + 0 + ")\n");
+                            str.append("(" + 0 + "," + 0 + "," + 0 + ")");
                         } else {
                             int i=0;
                             for(RedBlackTree2.RBTNode rbtNode: rangeBuildings){
@@ -117,6 +126,10 @@ public class Main {
                         String part = currentCommand.split("\\(")[1];
                         part = part.split("\\)")[0];
                         RedBlackTree2.RBTNode printBuildingNode = rbt.printBuilding(Integer.parseInt(part));
+                        for(HeapNode minHeapNode : minHeapList){
+                            if(minHeapNode.getNode().getBuildingNum()==Integer.parseInt(part))
+                                printBuildingNode=minHeapNode.getRBTNode();
+                        }
                         if (printBuildingNode == null) {
                             str.append("(" + 0 + "," + 0 + "," + 0 + ")\n");
                         } else {
@@ -131,7 +144,7 @@ public class Main {
                 //}
 
                 counter++;
-                if((completedBuildingNum = minHeap.process(minHeapList, counter, minHeap.heap[0], rbt))!=-1) str.append("(").append(completedBuildingNum).append(",").append(counter).append(")\n");
+                if((completedBuildingNum = minHeap.process(minHeapList, minHeap.heap[0], rbt))!=-1) str.append("(").append(completedBuildingNum).append(",").append(counter).append(")\n");
                 /*if(!minHeap.isEmpty() && currentCommand.contains("Insert")){
                     minHeap.heapifyUp(minHeap.heapSize-1);;
                 }*/

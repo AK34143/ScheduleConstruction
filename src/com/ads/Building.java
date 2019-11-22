@@ -2,7 +2,7 @@ package com.ads;
 
 public class Building {
     BuildingProperties buildingProperties;
-    int tempProgress;
+    int progress;
     RedBlackTree.RBTNode rbtNode;
 
     /* Constructor */
@@ -11,30 +11,30 @@ public class Building {
         buildingProperties=basicNode;
     }
 
-    public Building(BuildingProperties basicNode, int tempProg, RedBlackTree.RBTNode rbt) {
+    public Building(BuildingProperties basicNode, int prog, RedBlackTree.RBTNode rbt) {
         buildingProperties = basicNode;
-        tempProgress = tempProg;
+        progress = prog;
         rbtNode = rbt;
     }
 
     //Getter
-    public BuildingProperties getNode() {
+    public BuildingProperties getBuildingProperties() {
         return buildingProperties;
     }
 
     // Setter
-    public void setNode(BuildingProperties newnode) {
-        this.buildingProperties = newnode;
+    public void setBuildingProperties(BuildingProperties newBuildingProps) {
+        this.buildingProperties = newBuildingProps;
     }
 
     //Getter
-    public int getTempProgress() {
-        return tempProgress;
+    public int getProgress() {
+        return progress;
     }
 
     // Setter
-    public void setTempProgress(int newTempProgress) {
-        this.tempProgress = newTempProgress;
+    public void setProgress(int newProgress) {
+        this.progress = newProgress;
     }
 
     //Getter

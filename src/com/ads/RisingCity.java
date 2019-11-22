@@ -10,7 +10,7 @@ public class RisingCity {
     static int maxBuildings = 2000;
 
     public static void main(String[] args) throws IOException {
-        // write your code here
+    // write your code here
         long start1 = System.currentTimeMillis();
         MinHeap minHeap = new MinHeap(maxBuildings); //Initializing empty array for minHeap
         RedBlackTree rbt = new RedBlackTree();
@@ -18,20 +18,20 @@ public class RisingCity {
         BufferedReader br = new BufferedReader(new FileReader(file));
         String st;
         while((st=br.readLine())!=null){
-            System.out.println(st);
+        System.out.println(st);
         }*/
         /*FileReader fr =
-                new FileReader("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input.txt");
+        new FileReader("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input.txt");
 
         int i;
         while ((i=fr.read()) != -1)
-            System.out.print((char) i);*/
+        System.out.print((char) i);*/
         File file =
-                new File("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input_5.txt");
+        new File("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input_5.txt");
         StringBuilder str = new StringBuilder();
         BufferedWriter writer = new BufferedWriter(new FileWriter("output_wip", false));
         writer.flush();
-        List<Building> minHeapList = new ArrayList<>();
+        List<Building> buildingList = new ArrayList<>();
         List<String> commandList = new ArrayList<>();
 
 
@@ -41,7 +41,7 @@ public class RisingCity {
         int completedBuildingNum;
         while (sc.hasNextLine()) {
             /*commandList.add(sc.nextLine());
-        }*/
+            }*/
             String currentLine = sc.nextLine();
             int commandTime =Integer.parseInt(currentLine.split(":")[0]);
             String currentCommand=currentLine.split(":")[1];
@@ -59,10 +59,10 @@ public class RisingCity {
                         RedBlackTree.RBTNode rbtNode1 = new RedBlackTree.RBTNode(new BuildingProperties(buildingProperties.buildingNum, buildingProperties.executionTime, buildingProperties.totalTime));
                         rbt.insertRBT(rbtNode1);
                         heapNode1.setRBTNode(rbtNode1);
-                        minHeapList.add(heapNode1);
-                        if(minHeap.heapSize==0 || minHeap.heap[0].getTempProgress()==0) {
-                            minHeap.insert(minHeapList.get(0));
-                            minHeapList.remove(0);
+                        buildingList.add(heapNode1);
+                        if(minHeap.heapSize==0 || minHeap.heap[0].getProgress()==0) {
+                            minHeap.insert(buildingList.get(0));
+                            buildingList.remove(0);
                         }
                     } else {
                         str.append("Building with buildingNum ").append(params[0]).append(" exists\n");
@@ -71,9 +71,9 @@ public class RisingCity {
                     if(currentCommand.contains(",")){
                         int[] buildingNums = stringToParams(currentCommand);
                         List<RedBlackTree.RBTNode> rangeBuildings = rbt.printBuilding(buildingNums[0],buildingNums[2]);
-                        for(Building minHeapNode : minHeapList){
-                            if(minHeapNode.getNode().getBuildingNum()>buildingNums[0] && minHeapNode.getNode().getBuildingNum()<buildingNums[2])
-                                rangeBuildings.add(minHeapNode.getRBTNode());
+                        for(Building building : buildingList){
+                            if(building.getBuildingProperties().getBuildingNum()>buildingNums[0] && building.getBuildingProperties().getBuildingNum()<buildingNums[2])
+                            rangeBuildings.add(building.getRBTNode());
                         }
                         if(rangeBuildings.size()==0){
                             str.append("(" + 0 + "," + 0 + "," + 0 + ")");
@@ -90,9 +90,9 @@ public class RisingCity {
                         String part = currentCommand.split("\\(")[1];
                         int buildingNum = Integer.parseInt(part.split("\\)")[0]);
                         RedBlackTree.RBTNode printBuildingNode = rbt.printBuilding(buildingNum);
-                        for(Building minHeapNode : minHeapList){
-                            if(minHeapNode.getNode().getBuildingNum()==buildingNum)
-                                printBuildingNode=minHeapNode.getRBTNode();
+                        for(Building minHeapNode : buildingList){
+                            if(minHeapNode.getBuildingProperties().getBuildingNum()==buildingNum)
+                            printBuildingNode=minHeapNode.getRBTNode();
                         }
                         if (printBuildingNode == null) {
                             str.append("(" + 0 + "," + 0 + "," + 0 + ")\n");
@@ -101,11 +101,10 @@ public class RisingCity {
                         }
                     }
                 }
-
                 days++;
-                if((completedBuildingNum = minHeap.process(minHeapList, minHeap.heap[0], rbt))!=-1) str.append("(").append(completedBuildingNum).append(",").append(days).append(")\n");
+                if((completedBuildingNum = minHeap.construct(buildingList, minHeap.heap[0], rbt))!=-1) str.append("(").append(completedBuildingNum).append(",").append(days).append(")\n");
                 if(minHeap.isEmpty() && !sc.hasNextLine())
-                    break;
+                break;
             }
         }
         writer.append(str);

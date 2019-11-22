@@ -72,16 +72,16 @@ public class MinHeap {
         public int delete(int x){
             if(isEmpty())
                 throw new NoSuchElementException("Heap is empty, No element to delete");
-            int key = heap[x].getNode().getBuildingNum();
+            int key = heap[x].getBuildingProperties().getBuildingNum();
 
-            heap[x].setNode(heap[heapSize -1].getNode());
-            heap[x].setTempProgress(heap[heapSize -1].getTempProgress());
+            heap[x].setBuildingProperties(heap[heapSize -1].getBuildingProperties());
+            heap[x].setProgress(heap[heapSize -1].getProgress());
             heap[x].setRBTNode(heap[heapSize -1].getRBTNode());
             heapSize--;
             heapifyDown(x);
             int lastIndex = heapSize;
-            heap[lastIndex].setNode(nullBuilding);
-            heap[lastIndex].setTempProgress(0);
+            heap[lastIndex].setBuildingProperties(nullBuilding);
+            heap[lastIndex].setProgress(0);
             heap[lastIndex].setRBTNode(null);
             return key;
         }
@@ -92,8 +92,8 @@ public class MinHeap {
          */
         public void heapifyUp(int i) {
             Building temp = heap[i];
-            while(i>0 && ((temp.getNode().getExecutionTime() < heap[parent(i)].getNode().getExecutionTime())
-                    || (temp.getNode().getExecutionTime()==heap[parent(i)].getNode().getExecutionTime() && temp.getNode().getBuildingNum()<heap[parent(i)].getNode().getBuildingNum()))){
+            while(i>0 && ((temp.getBuildingProperties().getExecutionTime() < heap[parent(i)].getBuildingProperties().getExecutionTime())
+                    || (temp.getBuildingProperties().getExecutionTime()==heap[parent(i)].getBuildingProperties().getExecutionTime() && temp.getBuildingProperties().getBuildingNum()<heap[parent(i)].getBuildingProperties().getBuildingNum()))){
                 heap[i] = heap[parent(i)];
                 i = parent(i);
             }
@@ -106,24 +106,24 @@ public class MinHeap {
          */
         public void heapifyDown(int i){
             int child;
-            Building temp = new Building(heap[i].getNode(),heap[i].getTempProgress(),heap[i].getRBTNode());
+            Building temp = new Building(heap[i].getBuildingProperties(),heap[i].getProgress(),heap[i].getRBTNode());
             while(kthChild(i, 1) < heapSize){
                 child = minChild(i);// Finding out the min of the children
-                if(temp.getNode().getExecutionTime() > heap[child].getNode().getExecutionTime()){ // Comparing parent with the min of the children
-                    heap[i].setNode(heap[child].getNode()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
-                    heap[i].setTempProgress(heap[child].getTempProgress()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
+                if(temp.getBuildingProperties().getExecutionTime() > heap[child].getBuildingProperties().getExecutionTime()){ // Comparing parent with the min of the children
+                    heap[i].setBuildingProperties(heap[child].getBuildingProperties()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
+                    heap[i].setProgress(heap[child].getProgress()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
                     heap[i].setRBTNode(heap[child].getRBTNode()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
-                }else if(temp.getNode().getExecutionTime()==heap[child].getNode().getExecutionTime() && temp.getNode().getBuildingNum()>heap[child].getNode().getBuildingNum()){
-                    heap[i].setNode(heap[child].getNode());
-                    heap[i].setTempProgress(heap[child].getTempProgress());
+                }else if(temp.getBuildingProperties().getExecutionTime()==heap[child].getBuildingProperties().getExecutionTime() && temp.getBuildingProperties().getBuildingNum()>heap[child].getBuildingProperties().getBuildingNum()){
+                    heap[i].setBuildingProperties(heap[child].getBuildingProperties());
+                    heap[i].setProgress(heap[child].getProgress());
                     heap[i].setRBTNode(heap[child].getRBTNode());
                 } else
                     break;
 
                 i = child;
             }
-            heap[i].setNode(temp.getNode());
-            heap[i].setTempProgress(temp.getTempProgress());
+            heap[i].setBuildingProperties(temp.getBuildingProperties());
+            heap[i].setProgress(temp.getProgress());
             heap[i].setRBTNode(temp.getRBTNode());
         }
 
@@ -131,10 +131,10 @@ public class MinHeap {
             int leftChild = kthChild(i, 1);
             int rightChild = kthChild(i, 2);
             int minChild=leftChild;
-            if(heap[leftChild].getNode().getExecutionTime()>heap[rightChild].getNode().getExecutionTime()){
+            if(heap[leftChild].getBuildingProperties().getExecutionTime()>heap[rightChild].getBuildingProperties().getExecutionTime()){
                 minChild=rightChild;
-            } else if(heap[leftChild].getNode().getExecutionTime()==heap[rightChild].getNode().getExecutionTime()){
-                if(heap[leftChild].getNode().getBuildingNum()>heap[rightChild].getNode().getBuildingNum()){
+            } else if(heap[leftChild].getBuildingProperties().getExecutionTime()==heap[rightChild].getBuildingProperties().getExecutionTime()){
+                if(heap[leftChild].getBuildingProperties().getBuildingNum()>heap[rightChild].getBuildingProperties().getBuildingNum()){
                     minChild=rightChild;
                 }
             }
@@ -149,7 +149,7 @@ public class MinHeap {
         {
             System.out.print("\nHeap = ");
             for (int i = 0; i < heapSize; i++)
-                System.out.print("("+heap[i].getNode().getBuildingNum()+","+heap[i].getNode().getExecutionTime() +","+heap[i].getNode().getTotalTime()+") ");
+                System.out.print("("+heap[i].getBuildingProperties().getBuildingNum()+","+heap[i].getBuildingProperties().getExecutionTime() +","+heap[i].getBuildingProperties().getTotalTime()+") ");
             System.out.println();
         }
         /**
@@ -187,31 +187,31 @@ public class MinHeap {
         return output;
     }
 
-    public int process(List<Building> minHeapList,Building processNode, RedBlackTree rbt)
+    public int construct(List<Building> buildingList,Building building, RedBlackTree rbt)
     {
         int completedBuildingNum=-1;
-        int minTime = Math.min(processNode.getNode().getTotalTime(), 5);
-        if(heapSize>0 && processNode.getNode().getExecutionTime()+1<=processNode.getNode().getTotalTime() && processNode.getTempProgress()<minTime){
-            processNode.getNode().setExecutionTime(processNode.getNode().getExecutionTime()+1);
-            processNode.getRBTNode().key=processNode.getNode();
-            processNode.setTempProgress(processNode.getTempProgress()+1);
-            if(processNode.getNode().getExecutionTime()==processNode.getNode().getTotalTime()){
-                completedBuildingNum = processNode.getNode().getBuildingNum();
-                rbt.delete(processNode.getRBTNode());
+        int minTime = Math.min(building.getBuildingProperties().getTotalTime(), 5);
+        if(heapSize>0 && building.getBuildingProperties().getExecutionTime()+1<=building.getBuildingProperties().getTotalTime() && building.getProgress()<minTime){
+            building.getBuildingProperties().setExecutionTime(building.getBuildingProperties().getExecutionTime()+1);
+            building.getRBTNode().key=building.getBuildingProperties();
+            building.setProgress(building.getProgress()+1);
+            if(building.getBuildingProperties().getExecutionTime()==building.getBuildingProperties().getTotalTime()){
+                completedBuildingNum = building.getBuildingProperties().getBuildingNum();
+                rbt.delete(building.getRBTNode());
                 delete(0);
-                if(!minHeapList.isEmpty()){
-                    for(int i=0;i<minHeapList.size();i++) {
-                        insert(minHeapList.get(0));
-                        minHeapList.remove(0);
+                if(!buildingList.isEmpty()){
+                    for(int i=0;i<buildingList.size();i++) {
+                        insert(buildingList.get(0));
+                        buildingList.remove(0);
                     }
                 }
-            } else if(processNode.getTempProgress()==minTime){
-                processNode.setTempProgress(0);
+            } else if(building.getProgress()==minTime){
+                building.setProgress(0);
                 heapifyDown(0);
-                if(!minHeapList.isEmpty()){
-                    for(int i=0;i<minHeapList.size();i++) {
-                        insert(minHeapList.get(0));
-                        minHeapList.remove(0);
+                if(!buildingList.isEmpty()){
+                    for(int i=0;i<buildingList.size();i++) {
+                        insert(buildingList.get(0));
+                        buildingList.remove(0);
                     }
                 }
             }

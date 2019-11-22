@@ -81,11 +81,11 @@ public class RisingCity {
                     int[] params = stringToParams(currentCommand);
                     if(rbt.printBuilding(params[0])==null) {
                         BuildingProperties buildingProperties = new BuildingProperties(params[0], params[1], params[2]);
-                        Building heapNode1 = new Building(buildingProperties);
-                        RedBlackTree.RBTNode rbtNode1 = new RedBlackTree.RBTNode(new BuildingProperties(buildingProperties.buildingNum, buildingProperties.executionTime, buildingProperties.totalTime));
-                        rbt.insertRBT(rbtNode1);
-                        heapNode1.setRBTNode(rbtNode1);
-                        buildingList.add(heapNode1);
+                        Building building = new Building(buildingProperties);
+                        RedBlackTree.RBTProperties rbtProperties = new RedBlackTree.RBTProperties(new BuildingProperties(buildingProperties.buildingNum, buildingProperties.executionTime, buildingProperties.totalTime));
+                        rbt.insertRBT(rbtProperties);
+                        building.setRBTProperties(rbtProperties);
+                        buildingList.add(building);
                         if(minHeap.heapSize==0 || minHeap.heap[0].getProgress()==0) {
                             minHeap.insert(buildingList.get(0));
                             buildingList.remove(0);
@@ -96,17 +96,17 @@ public class RisingCity {
                 } else if(currentCommand.contains("PrintBuilding") && commandTime==days){
                     if(currentCommand.contains(",")){
                         int[] buildingNums = stringToParams(currentCommand);
-                        List<RedBlackTree.RBTNode> rangeBuildings = rbt.printBuilding(buildingNums[0],buildingNums[2]);
+                        List<RedBlackTree.RBTProperties> rangeBuildings = rbt.printBuilding(buildingNums[0],buildingNums[2]);
                         for(Building building : buildingList){
                             if(building.getBuildingProperties().getBuildingNum()>buildingNums[0] && building.getBuildingProperties().getBuildingNum()<buildingNums[2])
-                            rangeBuildings.add(building.getRBTNode());
+                            rangeBuildings.add(building.getRBTProperties());
                         }
                         if(rangeBuildings.size()==0){
                             str.append("(" + 0 + "," + 0 + "," + 0 + ")");
                         } else {
                             int i=0;
-                            for(RedBlackTree.RBTNode rbtNode: rangeBuildings){
-                                str.append("(").append(rbtNode.key.getBuildingNum()).append(",").append(rbtNode.key.getExecutionTime()).append(",").append(rbtNode.key.getTotalTime()).append(")");
+                            for(RedBlackTree.RBTProperties rbtBuilding: rangeBuildings){
+                                str.append("(").append(rbtBuilding.key.getBuildingNum()).append(",").append(rbtBuilding.key.getExecutionTime()).append(",").append(rbtBuilding.key.getTotalTime()).append(")");
                                 i++;
                                 if(i!=rangeBuildings.size())  str.append(",");
                             }
@@ -115,15 +115,15 @@ public class RisingCity {
                     } else {
                         String part = currentCommand.split("\\(")[1];
                         int buildingNum = Integer.parseInt(part.split("\\)")[0]);
-                        RedBlackTree.RBTNode printBuildingNode = rbt.printBuilding(buildingNum);
+                        RedBlackTree.RBTProperties printBuilding = rbt.printBuilding(buildingNum);
                         for(Building building : buildingList){
                             if(building.getBuildingProperties().getBuildingNum()==buildingNum)
-                            printBuildingNode=building.getRBTNode();
+                                printBuilding=building.getRBTProperties();
                         }
-                        if (printBuildingNode == null) {
+                        if (printBuilding == null) {
                             str.append("(" + 0 + "," + 0 + "," + 0 + ")\n");
                         } else {
-                            str.append("(").append(printBuildingNode.key.getBuildingNum()).append(",").append(printBuildingNode.key.getExecutionTime()).append(",").append(printBuildingNode.key.getTotalTime()).append(")\n");
+                            str.append("(").append(printBuilding.key.getBuildingNum()).append(",").append(printBuilding.key.getExecutionTime()).append(",").append(printBuilding.key.getTotalTime()).append(")\n");
                         }
                     }
                 }

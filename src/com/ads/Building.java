@@ -3,18 +3,18 @@ package com.ads;
 public class Building {
     BuildingProperties buildingProperties;
     int progress;
-    RedBlackTree.RBTNode rbtNode;
+    RedBlackTree.RBTProperties rbtProperties;
 
     /* Constructor */
-    public Building(BuildingProperties basicNode)
+    public Building(BuildingProperties basicBuildingProperties)
     {
-        buildingProperties=basicNode;
+        buildingProperties=basicBuildingProperties;
     }
 
-    public Building(BuildingProperties basicNode, int prog, RedBlackTree.RBTNode rbt) {
-        buildingProperties = basicNode;
+    public Building(BuildingProperties basicBuildingProperties, int prog, RedBlackTree.RBTProperties rbt) {
+        buildingProperties = basicBuildingProperties;
         progress = prog;
-        rbtNode = rbt;
+        rbtProperties = rbt;
     }
 
     //Getter
@@ -38,13 +38,13 @@ public class Building {
     }
 
     //Getter
-    public RedBlackTree.RBTNode getRBTNode() {
-        return rbtNode;
+    public RedBlackTree.RBTProperties getRBTProperties() {
+        return rbtProperties;
     }
 
     // Setter
-    public void setRBTNode(RedBlackTree.RBTNode newRBTNode) {
-        this.rbtNode = newRBTNode;
+    public void setRBTProperties(RedBlackTree.RBTProperties newRBTProperties) {
+        this.rbtProperties = newRBTProperties;
     }
 
 }

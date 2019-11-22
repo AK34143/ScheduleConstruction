@@ -12,7 +12,7 @@ public class MinHeap {
 
         private static final int d= 2;
         public Building[] heap;
-        private RedBlackTree.RBTNode node;
+        private RedBlackTree.RBTProperties rbtProperties;
         public int heapSize;
         public BuildingProperties nullBuilding=new BuildingProperties(Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE);
 
@@ -57,7 +57,6 @@ public class MinHeap {
          *  As worst case scenario, we need to traverse till the root
          */
         public void insert(Building heapx){
-            //Node heapx= new Node(x[0],x[1],x[2]);
             if(isFull())
                 throw new NoSuchElementException("Heap is full, No space to insert new element");
             heap[heapSize++] = heapx;
@@ -76,13 +75,13 @@ public class MinHeap {
 
             heap[x].setBuildingProperties(heap[heapSize -1].getBuildingProperties());
             heap[x].setProgress(heap[heapSize -1].getProgress());
-            heap[x].setRBTNode(heap[heapSize -1].getRBTNode());
+            heap[x].setRBTProperties(heap[heapSize -1].getRBTProperties());
             heapSize--;
             heapifyDown(x);
             int lastIndex = heapSize;
             heap[lastIndex].setBuildingProperties(nullBuilding);
             heap[lastIndex].setProgress(0);
-            heap[lastIndex].setRBTNode(null);
+            heap[lastIndex].setRBTProperties(null);
             return key;
         }
 
@@ -106,17 +105,17 @@ public class MinHeap {
          */
         public void heapifyDown(int i){
             int child;
-            Building temp = new Building(heap[i].getBuildingProperties(),heap[i].getProgress(),heap[i].getRBTNode());
+            Building temp = new Building(heap[i].getBuildingProperties(),heap[i].getProgress(),heap[i].getRBTProperties());
             while(kthChild(i, 1) < heapSize){
                 child = minChild(i);// Finding out the min of the children
                 if(temp.getBuildingProperties().getExecutionTime() > heap[child].getBuildingProperties().getExecutionTime()){ // Comparing parent with the min of the children
                     heap[i].setBuildingProperties(heap[child].getBuildingProperties()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
                     heap[i].setProgress(heap[child].getProgress()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
-                    heap[i].setRBTNode(heap[child].getRBTNode()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
+                    heap[i].setRBTProperties(heap[child].getRBTProperties()); // If parent is more than min of the children, place the minChild as parent and below place the parent in minChild's place
                 }else if(temp.getBuildingProperties().getExecutionTime()==heap[child].getBuildingProperties().getExecutionTime() && temp.getBuildingProperties().getBuildingNum()>heap[child].getBuildingProperties().getBuildingNum()){
                     heap[i].setBuildingProperties(heap[child].getBuildingProperties());
                     heap[i].setProgress(heap[child].getProgress());
-                    heap[i].setRBTNode(heap[child].getRBTNode());
+                    heap[i].setRBTProperties(heap[child].getRBTProperties());
                 } else
                     break;
 
@@ -124,7 +123,7 @@ public class MinHeap {
             }
             heap[i].setBuildingProperties(temp.getBuildingProperties());
             heap[i].setProgress(temp.getProgress());
-            heap[i].setRBTNode(temp.getRBTNode());
+            heap[i].setRBTProperties(temp.getRBTProperties());
         }
 
         private int minChild(int i) {
@@ -193,11 +192,11 @@ public class MinHeap {
         int minTime = Math.min(building.getBuildingProperties().getTotalTime(), 5);
         if(heapSize>0 && building.getBuildingProperties().getExecutionTime()+1<=building.getBuildingProperties().getTotalTime() && building.getProgress()<minTime){
             building.getBuildingProperties().setExecutionTime(building.getBuildingProperties().getExecutionTime()+1);
-            building.getRBTNode().key=building.getBuildingProperties();
+            building.getRBTProperties().key=building.getBuildingProperties();
             building.setProgress(building.getProgress()+1);
             if(building.getBuildingProperties().getExecutionTime()==building.getBuildingProperties().getTotalTime()){
                 completedBuildingNum = building.getBuildingProperties().getBuildingNum();
-                rbt.delete(building.getRBTNode());
+                rbt.delete(building.getRBTProperties());
                 delete(0);
                 if(!buildingList.isEmpty()){
                     for(int i=0;i<buildingList.size();i++) {

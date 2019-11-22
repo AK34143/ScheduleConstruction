@@ -10,23 +10,23 @@ public class RedBlackTree {
 
     private final int RED = 0;
     private static final int BLACK = 1;
-    public List<RBTNode> rangeBuildings;
-    public static class RBTNode {
+    public List<RBTProperties> rangeBuildings;
+    public static class RBTProperties {
 
         BuildingProperties key;
         int color = BLACK;
-        RBTNode left = nil, right = nil, parent = nil;
+        RBTProperties left = nil, right = nil, parent = nil;
 
-        RBTNode(BuildingProperties key) {
+        RBTProperties(BuildingProperties key) {
             this.key = key;
         }
     }
 
-    private static final RBTNode nil = new RBTNode(new BuildingProperties(-1,-1,-1));
-    private RBTNode root = nil;
+    private static final RBTProperties nil = new RBTProperties(new BuildingProperties(-1,-1,-1));
+    private RBTProperties root = nil;
 
-    public RBTNode printBuilding( int buildingNum ) {
-        RBTNode current = root;
+    public RBTProperties printBuilding( int buildingNum ) {
+        RBTProperties current = root;
         while(current!=nil) {
             if( buildingNum < current.key.getBuildingNum() )
                 current = current.left;
@@ -38,13 +38,13 @@ public class RedBlackTree {
         return null;
     }
 
-    public List<RBTNode> printBuilding(int x, int y) {
+    public List<RBTProperties> printBuilding(int x, int y) {
         rangeBuildings=new ArrayList<>();
-        RBTNode current = root;
+        RBTProperties current = root;
         printBetween(current,x,y);
         return rangeBuildings;
     }
-    public void printBetween(RBTNode current,int x, int y){
+    public void printBetween(RBTProperties current,int x, int y){
         if(current==nil){
 
         } else if( x <= current.key.getBuildingNum() && y >= current.key.getBuildingNum()) {
@@ -58,27 +58,27 @@ public class RedBlackTree {
         }
     }
 
-    private RBTNode findNode(RBTNode findNode, RBTNode node) {
+    private RBTProperties findProperties(RBTProperties findRBTProperties, RBTProperties node) {
         if (root == nil) {
             return null;
         }
 
-        if (findNode.key.getBuildingNum() < node.key.getBuildingNum()) {
+        if (findRBTProperties.key.getBuildingNum() < node.key.getBuildingNum()) {
             if (node.left != nil) {
-                return findNode(findNode, node.left);
+                return findProperties(findRBTProperties, node.left);
             }
-        } else if (findNode.key.getBuildingNum() > node.key.getBuildingNum()) {
+        } else if (findRBTProperties.key.getBuildingNum() > node.key.getBuildingNum()) {
             if (node.right != nil) {
-                return findNode(findNode, node.right);
+                return findProperties(findRBTProperties, node.right);
             }
-        } else if (findNode.key.getBuildingNum() == node.key.getBuildingNum()) {
+        } else if (findRBTProperties.key.getBuildingNum() == node.key.getBuildingNum()) {
             return node;
         }
         return null;
     }
 
-    public void insertRBT(RBTNode node) {
-        RBTNode temp = root;
+    public void insertRBT(RBTProperties node) {
+        RBTProperties temp = root;
         if (root == nil) {
             root = node;
             node.color = BLACK;
@@ -109,9 +109,9 @@ public class RedBlackTree {
     }
 
     //Takes as argument the newly inserted node
-    private void fixTree(RBTNode node) {
+    private void fixTree(RBTProperties node) {
         while (node.parent.color == RED) {
-            RBTNode uncle = nil;
+            RBTProperties uncle = nil;
             if (node.parent == node.parent.parent.left) {
                 uncle = node.parent.parent.right;
 
@@ -156,7 +156,7 @@ public class RedBlackTree {
         root.color = BLACK;
     }
 
-    void rotateLeft(RBTNode node) {
+    void rotateLeft(RBTProperties node) {
         if (node.parent != nil) {
             if (node == node.parent.left) {
                 node.parent.left = node.right;
@@ -171,7 +171,7 @@ public class RedBlackTree {
             node.right = node.right.left;
             node.parent.left = node;
         } else {//Need to rotate root
-            RBTNode right = root.right;
+            RBTProperties right = root.right;
             root.right = right.left;
             right.left.parent = root;
             root.parent = right;
@@ -181,7 +181,7 @@ public class RedBlackTree {
         }
     }
 
-    void rotateRight(RBTNode node) {
+    void rotateRight(RBTProperties node) {
         if (node.parent != nil) {
             if (node == node.parent.left) {
                 node.parent.left = node.left;
@@ -197,7 +197,7 @@ public class RedBlackTree {
             node.left = node.left.right;
             node.parent.right = node;
         } else {//Need to rotate root
-            RBTNode left = root.left;
+            RBTProperties left = root.left;
             root.left = root.left.right;
             left.right.parent = root;
             root.parent = left;
@@ -217,7 +217,7 @@ public class RedBlackTree {
     //This operation doesn't care about the new Node's connections
     //with previous node's left and right. The caller has to take care
     //of that.
-    void transplant(RBTNode target, RBTNode with){
+    void transplant(RBTProperties target, RBTProperties with){
         if(target.parent == nil){
             root = with;
         }else if(target == target.parent.left){
@@ -227,10 +227,10 @@ public class RedBlackTree {
         with.parent = target.parent;
     }
 
-    boolean delete(RBTNode z){
-        if((z = findNode(z, root))==null)return false;
-        RBTNode x;
-        RBTNode y = z; // temporary reference y
+    boolean delete(RBTProperties z){
+        if((z = findProperties(z, root))==null)return false;
+        RBTProperties x;
+        RBTProperties y = z; // temporary reference y
         int y_original_color = y.color;
 
         if(z.left == nil){
@@ -260,10 +260,10 @@ public class RedBlackTree {
         return true;
     }
 
-    private void deleteFixup(RBTNode x){
+    private void deleteFixup(RBTProperties x){
         while(x!=root && x.color == BLACK){
             if(x == x.parent.left){
-                RBTNode w = x.parent.right;
+                RBTProperties w = x.parent.right;
                 if(w.color == RED){
                     w.color = BLACK;
                     x.parent.color = RED;
@@ -289,7 +289,7 @@ public class RedBlackTree {
                     x = root;
                 }
             }else{
-                RBTNode w = x.parent.left;
+                RBTProperties w = x.parent.left;
                 if(w.color == RED){
                     w.color = BLACK;
                     x.parent.color = RED;
@@ -319,7 +319,7 @@ public class RedBlackTree {
         x.color = BLACK;
     }
 
-    private RBTNode treeMinimum(RBTNode subTreeRoot){
+    private RBTProperties treeMinimum(RBTProperties subTreeRoot){
         while(subTreeRoot.left!=nil){
             subTreeRoot = subTreeRoot.left;
         }

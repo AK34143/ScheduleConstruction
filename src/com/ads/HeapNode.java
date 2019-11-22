@@ -6,7 +6,7 @@ public class HeapNode {
     int totalTime;*/
     Node node;
     int tempProgress;
-    RedBlackTree2.RBTNode rbtNode;
+    RedBlackTree.RBTNode rbtNode;
 
     /* Constructor */
     //public HeapNode(int buildingNumber, int execTime, int totTime)
@@ -19,7 +19,7 @@ public class HeapNode {
     }
 
     //public HeapNode(int buildingNumber, int execTime, int totTime, int tempProg, RedBlackTree2.RBTNode rbt) {
-    public HeapNode(Node basicNode, int tempProg, RedBlackTree2.RBTNode rbt) {
+    public HeapNode(Node basicNode, int tempProg, RedBlackTree.RBTNode rbt) {
         /*buildingNum = buildingNumber;
         executionTime = execTime;
         totalTime = totTime;*/
@@ -78,12 +78,12 @@ public class HeapNode {
     }
 
     //Getter
-    public RedBlackTree2.RBTNode getRBTNode() {
+    public RedBlackTree.RBTNode getRBTNode() {
         return rbtNode;
     }
 
     // Setter
-    public void setRBTNode(RedBlackTree2.RBTNode newRBTNode) {
+    public void setRBTNode(RedBlackTree.RBTNode newRBTNode) {
         this.rbtNode = newRBTNode;
     }
 

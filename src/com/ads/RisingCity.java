@@ -39,9 +39,35 @@ public class RisingCity {
         Scanner scCopy=new Scanner(file);
         if(scCopy.hasNextLine()) scCopy.nextLine();
         int completedBuildingNum;
-        while (sc.hasNextLine()) {
-            /*commandList.add(sc.nextLine());
-            }*/
+        /*while (sc.hasNextLine()) {
+            commandList.add(sc.nextLine());
+        }
+        *//*for (String command : commandList) {
+            System.out.println(command);
+        }*//*
+        String currentCommandLine = commandList.get(0);
+        String nextCommandLine = commandList.get(1);
+        int currentCommandDay =Integer.parseInt(currentCommandLine.split(":")[0]);
+        int nextCommandDay =Integer.parseInt(nextCommandLine.split(":")[0]);
+        String currentCommand=currentCommandLine.split(":")[1];
+        while(!commandList.isEmpty()){
+            while(days>=currentCommandDay && days<nextCommandDay){
+                System.out.println("current command day = "+currentCommandDay);
+                System.out.println("current command = "+currentCommand);
+                System.out.println("next command day = "+nextCommandDay);
+
+                commandList.remove(0);
+
+                days++;
+            }
+            currentCommandLine = commandList.get(0);
+            nextCommandLine = commandList.get(1);
+            currentCommandDay=Integer.parseInt(currentCommandLine.split(":")[0]);
+            nextCommandDay =Integer.parseInt(nextCommandLine.split(":")[0]);
+            currentCommand=currentCommandLine.split(":")[1];
+        }*/
+
+    while (sc.hasNextLine()) {
             String currentLine = sc.nextLine();
             int commandTime =Integer.parseInt(currentLine.split(":")[0]);
             String currentCommand=currentLine.split(":")[1];
@@ -90,9 +116,9 @@ public class RisingCity {
                         String part = currentCommand.split("\\(")[1];
                         int buildingNum = Integer.parseInt(part.split("\\)")[0]);
                         RedBlackTree.RBTNode printBuildingNode = rbt.printBuilding(buildingNum);
-                        for(Building minHeapNode : buildingList){
-                            if(minHeapNode.getBuildingProperties().getBuildingNum()==buildingNum)
-                            printBuildingNode=minHeapNode.getRBTNode();
+                        for(Building building : buildingList){
+                            if(building.getBuildingProperties().getBuildingNum()==buildingNum)
+                            printBuildingNode=building.getRBTNode();
                         }
                         if (printBuildingNode == null) {
                             str.append("(" + 0 + "," + 0 + "," + 0 + ")\n");

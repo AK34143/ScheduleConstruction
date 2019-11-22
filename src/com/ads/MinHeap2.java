@@ -12,7 +12,7 @@ public class MinHeap2 {
 
         private static final int d= 2;
         public HeapNode[] heap;
-        private RedBlackTree2.RBTNode node;
+        private RedBlackTree.RBTNode node;
         public int heapSize;
         public Node nullNode=new Node(Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE);
 
@@ -230,7 +230,7 @@ public class MinHeap2 {
             heapifyDown(0);
         }
     }*/
-    public int process(List<HeapNode> minHeapList,HeapNode processNode, RedBlackTree2 rbt)
+    public int process(List<HeapNode> minHeapList,HeapNode processNode, RedBlackTree rbt)
     {
         //if(counter==5215) System.out.println("At 5215 counter minHeap = "+heap[0].getNode().getBuildingNum());
         //System.out.println(Heap[1][0]+" "+Heap[1][1]);
@@ -245,14 +245,6 @@ public class MinHeap2 {
             //heap[0].setNode(node);
             processNode.getRBTNode().key=processNode.getNode();
             processNode.setTempProgress(processNode.getTempProgress()+1);
-            /*if(heap[0].getNode().getBuildingNum()==13320) {
-                System.out.println("counter for "+heap[0].getNode().getBuildingNum()+" = "+counter);
-                System.out.println("exec time for "+heap[0].getNode().getBuildingNum()+" = "+heap[0].getNode().getExecutionTime());
-                System.out.println("Total time for "+heap[0].getNode().getBuildingNum()+" = "+heap[0].getNode().getTotalTime());
-                System.out.println("time progress for "+heap[0].getNode().getBuildingNum()+" = "+heap[0].getTempProgress());
-                System.out.println("min time for "+heap[0].getNode().getBuildingNum()+" = "+minTime);
-                System.out.println("----------------------------");
-            }*/
             if(processNode.getNode().getExecutionTime()==processNode.getNode().getTotalTime()){
                 completedBuildingNum = processNode.getNode().getBuildingNum();
                 rbt.delete(processNode.getRBTNode());
@@ -272,22 +264,9 @@ public class MinHeap2 {
                         minHeapList.remove(0);
                     }
                 }
-                /*heapifyUp(heapSize-1);
-                minHeap();*/
-                //heapifyDown(0);
-
-                /*heapifyUp(heapSize-1);
-                heapifyDown(0);*/
-                //minHeap();
-
-                //HeapSort.sort(heap,heapSize);
             }
         }
-        //printHeap();
         return completedBuildingNum;
-
-        //heap[0].setBuildingNum(6);
-
     }
     public void minHeap()
     {
@@ -344,58 +323,7 @@ public class MinHeap2 {
                     swap(pos,smallest);
                     minHeapify(smallest);
                 }
-
-                // Swap with the left child and heapify
-                // the left child
-                /*if (heap[leftChild(pos)].getNode().getExecutionTime() < heap[rightChild(pos)].getNode().getExecutionTime()) {
-                    swap(pos, leftChild(pos));
-                    minHeapify(leftChild(pos));
-                } else if (heap[leftChild(pos)].getNode().getExecutionTime() == heap[rightChild(pos)].getNode().getExecutionTime()
-                        && heap[leftChild(pos)].getNode().getBuildingNum() < heap[rightChild(pos)].getNode().getBuildingNum()){
-                    swap(pos, leftChild(pos));
-                    minHeapify(leftChild(pos));
-                }
-
-                // Swap with the right child and heapify
-                // the right child
-                else {
-                    swap(pos, rightChild(pos));
-                    minHeapify(rightChild(pos));
-                }*/
             }
         }
     }
-
-
-        /*public static void main(String[] args){
-            MinHeap2 minHeap = new MinHeap2(10);
-
-            int[] params = stringToParams("1,0,5");
-           *//* minHeap.insert(params);
-            minHeap.printHeap();
-            params = stringToParams("5,0,10");
-            minHeap.insert(params);
-            minHeap.printHeap();
-            params = stringToParams("9,0,15");
-            minHeap.insert(params);
-            minHeap.printHeap();
-            params = stringToParams("10,0,3");
-            minHeap.insert(params);
-            minHeap.printHeap();
-            params = stringToParams("6,0,4");
-            //RedBlackTree2.Node node = new RedBlackTree2.Node(params);
-            //insertRBT(params);
-            minHeap.insert(params);
-            minHeap.printHeap();
-            params = stringToParams("4,0,4");
-            minHeap.insert(params);
-            minHeap.printHeap();
-            params = stringToParams("7,0,4");
-            minHeap.insert(params);*//*
-            minHeap.printHeap();
-            //minHeap.process();
-            //minHeap.delete(0);
-            minHeap.printHeap();
-        }*/
-
 }

@@ -10,7 +10,7 @@ public class RedBlackTreeTest
     {
         Scanner scan = new Scanner(System.in);
         /* Creating object of RedBlack Tree */
-        RedBlackTree rbt = new RedBlackTree(new int[3]);
+        RedBlackTreeArchive rbt = new RedBlackTreeArchive(new int[3]);
         System.out.println("Red Black Tree Test\n");
         char ch;
         /*  Perform tree operations  */

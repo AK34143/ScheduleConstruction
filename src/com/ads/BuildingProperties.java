@@ -1,13 +1,12 @@
 package com.ads;
 
-public class Node {
+public class BuildingProperties {
     int buildingNum;
     int executionTime;
     int totalTime;
-    //RedBlackTree2.RBTNode rbtNode;
 
     /* Constructor */
-    public Node(int buildingNumber, int execTime, int totTime)
+    public BuildingProperties(int buildingNumber, int execTime, int totTime)
     {
         buildingNum = buildingNumber;
         executionTime = execTime;

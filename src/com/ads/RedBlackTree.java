@@ -13,16 +13,16 @@ public class RedBlackTree {
     public List<RBTNode> rangeBuildings;
     public static class RBTNode {
 
-        Node key;
+        BuildingProperties key;
         int color = BLACK;
         RBTNode left = nil, right = nil, parent = nil;
 
-        RBTNode(Node key) {
+        RBTNode(BuildingProperties key) {
             this.key = key;
         }
     }
 
-    private static final RBTNode nil = new RBTNode(new Node(-1,-1,-1));
+    private static final RBTNode nil = new RBTNode(new BuildingProperties(-1,-1,-1));
     private RBTNode root = nil;
 
     public RBTNode printBuilding( int buildingNum ) {

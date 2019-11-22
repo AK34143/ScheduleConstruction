@@ -7,7 +7,6 @@ import static com.ads.MinHeap.stringToParams;
 
 public class RisingCity {
     static int days = 0;
-    private Node[] nodes;
     static int maxBuildings = 2000;
 
     public static void main(String[] args) throws IOException {
@@ -32,7 +31,7 @@ public class RisingCity {
         StringBuilder str = new StringBuilder();
         BufferedWriter writer = new BufferedWriter(new FileWriter("output_wip", false));
         writer.flush();
-        List<HeapNode> minHeapList = new ArrayList<>();
+        List<Building> minHeapList = new ArrayList<>();
         List<String> commandList = new ArrayList<>();
 
 
@@ -55,9 +54,9 @@ public class RisingCity {
                 if (currentCommand.contains("Insert") && commandTime==days) {
                     int[] params = stringToParams(currentCommand);
                     if(rbt.printBuilding(params[0])==null) {
-                        Node node1 = new Node(params[0], params[1], params[2]);
-                        HeapNode heapNode1 = new HeapNode(node1);
-                        RedBlackTree.RBTNode rbtNode1 = new RedBlackTree.RBTNode(new Node(node1.buildingNum, node1.executionTime, node1.totalTime));
+                        BuildingProperties buildingProperties = new BuildingProperties(params[0], params[1], params[2]);
+                        Building heapNode1 = new Building(buildingProperties);
+                        RedBlackTree.RBTNode rbtNode1 = new RedBlackTree.RBTNode(new BuildingProperties(buildingProperties.buildingNum, buildingProperties.executionTime, buildingProperties.totalTime));
                         rbt.insertRBT(rbtNode1);
                         heapNode1.setRBTNode(rbtNode1);
                         minHeapList.add(heapNode1);
@@ -70,10 +69,10 @@ public class RisingCity {
                     }
                 } else if(currentCommand.contains("PrintBuilding") && commandTime==days){
                     if(currentCommand.contains(",")){
-                        int[] params = stringToParams(currentCommand);
-                        List<RedBlackTree.RBTNode> rangeBuildings = rbt.printBuilding(params[0],params[2]);
-                        for(HeapNode minHeapNode : minHeapList){
-                            if(minHeapNode.getNode().getBuildingNum()>params[0] && minHeapNode.getNode().getBuildingNum()<params[2])
+                        int[] buildingNums = stringToParams(currentCommand);
+                        List<RedBlackTree.RBTNode> rangeBuildings = rbt.printBuilding(buildingNums[0],buildingNums[2]);
+                        for(Building minHeapNode : minHeapList){
+                            if(minHeapNode.getNode().getBuildingNum()>buildingNums[0] && minHeapNode.getNode().getBuildingNum()<buildingNums[2])
                                 rangeBuildings.add(minHeapNode.getRBTNode());
                         }
                         if(rangeBuildings.size()==0){
@@ -89,10 +88,10 @@ public class RisingCity {
                         str.append("\n");
                     } else {
                         String part = currentCommand.split("\\(")[1];
-                        part = part.split("\\)")[0];
-                        RedBlackTree.RBTNode printBuildingNode = rbt.printBuilding(Integer.parseInt(part));
-                        for(HeapNode minHeapNode : minHeapList){
-                            if(minHeapNode.getNode().getBuildingNum()==Integer.parseInt(part))
+                        int buildingNum = Integer.parseInt(part.split("\\)")[0]);
+                        RedBlackTree.RBTNode printBuildingNode = rbt.printBuilding(buildingNum);
+                        for(Building minHeapNode : minHeapList){
+                            if(minHeapNode.getNode().getBuildingNum()==buildingNum)
                                 printBuildingNode=minHeapNode.getRBTNode();
                         }
                         if (printBuildingNode == null) {

@@ -11,18 +11,18 @@ public class MinHeap {
 
 
         private static final int d= 2;
-        public HeapNode[] heap;
+        public Building[] heap;
         private RedBlackTree.RBTNode node;
         public int heapSize;
-        public Node nullNode=new Node(Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE);
+        public BuildingProperties nullBuilding=new BuildingProperties(Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE);
 
         /**
          * This will initialize our heap with default size.
          */
         public MinHeap(int capacity){
             heapSize = 0;
-            heap = new HeapNode[capacity+1];
-            Arrays.fill(heap, new HeapNode(nullNode));
+            heap = new Building[capacity+1];
+            Arrays.fill(heap, new Building(nullBuilding));
 
         }
 
@@ -56,7 +56,7 @@ public class MinHeap {
          *  Complexity: O(log N)
          *  As worst case scenario, we need to traverse till the root
          */
-        public void insert(HeapNode heapx){
+        public void insert(Building heapx){
             //Node heapx= new Node(x[0],x[1],x[2]);
             if(isFull())
                 throw new NoSuchElementException("Heap is full, No space to insert new element");
@@ -80,7 +80,7 @@ public class MinHeap {
             heapSize--;
             heapifyDown(x);
             int lastIndex = heapSize;
-            heap[lastIndex].setNode(nullNode);
+            heap[lastIndex].setNode(nullBuilding);
             heap[lastIndex].setTempProgress(0);
             heap[lastIndex].setRBTNode(null);
             return key;
@@ -91,7 +91,7 @@ public class MinHeap {
          *
          */
         public void heapifyUp(int i) {
-            HeapNode temp = heap[i];
+            Building temp = heap[i];
             while(i>0 && ((temp.getNode().getExecutionTime() < heap[parent(i)].getNode().getExecutionTime())
                     || (temp.getNode().getExecutionTime()==heap[parent(i)].getNode().getExecutionTime() && temp.getNode().getBuildingNum()<heap[parent(i)].getNode().getBuildingNum()))){
                 heap[i] = heap[parent(i)];
@@ -106,7 +106,7 @@ public class MinHeap {
          */
         public void heapifyDown(int i){
             int child;
-            HeapNode temp = new HeapNode(heap[i].getNode(),heap[i].getTempProgress(),heap[i].getRBTNode());
+            Building temp = new Building(heap[i].getNode(),heap[i].getTempProgress(),heap[i].getRBTNode());
             while(kthChild(i, 1) < heapSize){
                 child = minChild(i);// Finding out the min of the children
                 if(temp.getNode().getExecutionTime() > heap[child].getNode().getExecutionTime()){ // Comparing parent with the min of the children
@@ -156,7 +156,7 @@ public class MinHeap {
          *  This method returns the min element of the heap.
          *  complexity: O(1)
          */
-        public HeapNode findMin(){
+        public Building findMin(){
             if(isEmpty())
                 throw new NoSuchElementException("Heap is empty.");
             return heap[0];
@@ -187,7 +187,7 @@ public class MinHeap {
         return output;
     }
 
-    public int process(List<HeapNode> minHeapList,HeapNode processNode, RedBlackTree rbt)
+    public int process(List<Building> minHeapList,Building processNode, RedBlackTree rbt)
     {
         int completedBuildingNum=-1;
         int minTime = Math.min(processNode.getNode().getTotalTime(), 5);

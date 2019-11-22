@@ -1,30 +1,30 @@
 package com.ads;
 
-public class HeapNode {
-    Node node;
+public class Building {
+    BuildingProperties buildingProperties;
     int tempProgress;
     RedBlackTree.RBTNode rbtNode;
 
     /* Constructor */
-    public HeapNode(Node basicNode)
+    public Building(BuildingProperties basicNode)
     {
-        node=basicNode;
+        buildingProperties=basicNode;
     }
 
-    public HeapNode(Node basicNode, int tempProg, RedBlackTree.RBTNode rbt) {
-        node = basicNode;
+    public Building(BuildingProperties basicNode, int tempProg, RedBlackTree.RBTNode rbt) {
+        buildingProperties = basicNode;
         tempProgress = tempProg;
         rbtNode = rbt;
     }
 
     //Getter
-    public Node getNode() {
-        return node;
+    public BuildingProperties getNode() {
+        return buildingProperties;
     }
 
     // Setter
-    public void setNode(Node newnode) {
-        this.node = newnode;
+    public void setNode(BuildingProperties newnode) {
+        this.buildingProperties = newnode;
     }
 
     //Getter

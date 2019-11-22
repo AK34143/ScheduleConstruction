@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static com.ads.Main2.triple;
-
 public class MinHeap2 {
     /**
      * MinHeap implemented using Array

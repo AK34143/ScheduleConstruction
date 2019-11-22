@@ -1,4 +1,4 @@
-package com.ads;
+package com.ads.archive;
 
 // Java program for implementation of Heap Sort
 public class HeapSort

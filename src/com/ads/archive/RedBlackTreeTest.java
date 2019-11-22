@@ -1,8 +1,7 @@
-package com.ads;
+package com.ads.archive;
 
 import java.util.Scanner;
 
-import static com.ads.Main2.triple;
 
 /* Class RedBlackTreeTest */
 public class RedBlackTreeTest
@@ -71,7 +70,7 @@ public class RedBlackTreeTest
 
 
         String[] params = input.split(",");
-        int[] output = new int[triple+1];
+        int[] output = new int[2+1];
         String part = params[0].split("\\(")[1];
         output[0] = Integer.parseInt(part);
         output[1]=0;

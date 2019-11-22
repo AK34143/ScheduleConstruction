@@ -1,4 +1,4 @@
-package com.ads;
+package com.ads.archive;
 /*
  *  Java Program to Implement Red Black Tree
  */

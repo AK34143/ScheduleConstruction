@@ -1,4 +1,4 @@
-package com.ads;
+package com.ads.archive;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

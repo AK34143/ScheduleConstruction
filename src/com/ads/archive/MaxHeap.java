@@ -1,4 +1,4 @@
-package com.ads;
+package com.ads.archive;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;

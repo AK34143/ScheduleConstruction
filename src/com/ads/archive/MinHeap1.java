@@ -1,4 +1,4 @@
-package com.ads;
+package com.ads.archive;
 
 public class MinHeap1 {
     public int capacity;

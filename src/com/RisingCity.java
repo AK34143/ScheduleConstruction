@@ -5,6 +5,9 @@ import java.util.*;
 
 import static com.MinHeap.stringToParams;
 
+/**
+ * RisingCity with main class to construct a city with buildings
+ */
 public class RisingCity {
     static int days = 0;
     static int maxBuildings = 2000;

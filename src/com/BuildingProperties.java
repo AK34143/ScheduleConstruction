@@ -1,5 +1,8 @@
 package com;
 
+/**
+ * BuildingProperties object that contains the main three properties of the building :- buildingNum, executionTime, totalTime
+ */
 public class BuildingProperties {
     int buildingNum;
     int executionTime;

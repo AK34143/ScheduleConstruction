@@ -3,6 +3,9 @@ package com;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * RedBlackTree implementation
+ */
 public class RedBlackTree {
 
     private final int RED = 0;

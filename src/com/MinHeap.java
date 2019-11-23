@@ -4,11 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * MinHeap implemented using Array
+ */
 public class MinHeap {
-    /**
-     * MinHeap implemented using Array
-     */
-
 
     private static final int d= 2;
     public Building[] heap;

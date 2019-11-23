@@ -1,5 +1,8 @@
 package com;
 
+/**
+ * Building object that contains buildingProperties(buildingNu,  exectionTime, totalTime) , progess and corresponding RedBlackTree node
+ */
 public class Building {
     BuildingProperties buildingProperties;
     int progress;

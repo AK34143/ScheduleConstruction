@@ -197,10 +197,10 @@ public class MinHeap {
             if(building.getBuildingProperties().getExecutionTime()==building.getBuildingProperties().getTotalTime()){
                 completedBuildingNum = building.getBuildingProperties().getBuildingNum();
 
-                if(nextCommand==null ||(nextCommand!=null && !nextCommand.contains("Print"))) {
+                //if(nextCommand==null ||(nextCommand!=null && !nextCommand.contains("Print"))) {
                     rbt.delete(building.getRBTProperties());
 
-                }
+                //}
                 delete(0);
                 if(!buildingList.isEmpty()){
                     for(int i=0;i<buildingList.size();i++) {

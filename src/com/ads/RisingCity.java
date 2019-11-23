@@ -106,19 +106,22 @@ public class RisingCity {
                         int[] buildingNums = stringToParams(currentCommand);
                         List<RedBlackTree.RBTProperties> rangeBuildings = rbt.printBuilding(buildingNums[0],buildingNums[2]);
                         for(Building building : buildingList){
-                            if(building.getBuildingProperties().getBuildingNum()>buildingNums[0] && building.getBuildingProperties().getBuildingNum()<buildingNums[2])
+                            if(building.getBuildingProperties().getBuildingNum()>buildingNums[0] && building.getBuildingProperties().getBuildingNum()<buildingNums[2]) {
                                 rangeBuildings.add(building.getRBTProperties());
+                            }
+
                         }
                         if(rangeBuildings.size()==0){
-                            //str.append("here");
                             str.append("(" + 0 + "," + 0 + "," + 0 + ")");
                         } else {
                             int j=0;
                             for(RedBlackTree.RBTProperties rbtBuilding: rangeBuildings){
-                                //str.append("here1");
                                 str.append("(").append(rbtBuilding.key.getBuildingNum()).append(",").append(rbtBuilding.key.getExecutionTime()).append(",").append(rbtBuilding.key.getTotalTime()).append(")");
                                 j++;
                                 if(j!=rangeBuildings.size())  str.append(",");
+                                /*if(rbtBuilding.key.getExecutionTime()==rbtBuilding.key.getTotalTime()){
+                                    rbt.delete(rbtBuilding);
+                                }*/
                             }
                         }
                         str.append("\n");
@@ -129,32 +132,32 @@ public class RisingCity {
                         String part = currentCommand.split("\\(")[1];
                         int buildingNum = Integer.parseInt(part.split("\\)")[0]);
                         RedBlackTree.RBTProperties printBuilding = rbt.printBuilding(buildingNum);
-                        for(Building building : buildingList){
+                        /*for(Building building : buildingList){
                             if(building.getBuildingProperties().getBuildingNum()==buildingNum)
                                 printBuilding=building.getRBTProperties();
-                        }
-                        //str.append("here4");
+                        }*/
                         if (printBuilding == null) {
-                            //str.append("here2");
                             str.append("(" + 0 + "," + 0 + "," + 0 + ")\n");
                         } else {
-                            //str.append("here3");
                             str.append("(").append(printBuilding.key.getBuildingNum()).append(",").append(printBuilding.key.getExecutionTime()).append(",").append(printBuilding.key.getTotalTime()).append(")\n");
+                            /*if(printBuilding.key.getExecutionTime()==printBuilding.key.getTotalTime()){
+                                rbt.delete(printBuilding);
+                            }*/
                         }
+
 //                        long endPrint2 = System.currentTimeMillis();
 //                        System.out.println("Print all takes " + (endPrint2 - startPrint2) + "ms");
                     }
-                    if(completedBuildingNum!=-1) {
+                    /*if(completedBuildingNum!=-1) {
                         RedBlackTree.RBTProperties completedBuilding = rbt.printBuilding(completedBuildingNum);
-                        if (completedBuilding.key.getExecutionTime() == completedBuilding.key.getTotalTime()) {
+                        if (completedBuilding!=null && (completedBuilding.key.getExecutionTime() == completedBuilding.key.getTotalTime())) {
                             rbt.delete(completedBuilding);
-                            //minHeap.delete(0);
                         }
-                    }
+                    }*/
                 }
                 days++;
                 if((completedBuildingNum = minHeap.construct(nextCommand, buildingList, minHeap.heap[0], rbt))!=-1) str.append("(").append(completedBuildingNum).append(",").append(days).append(")\n");
-                //if(nextCommand.)
+
                 if(nextCommand==null){//if(i==commandList.size()-1){
                     //while(rbt.size()!=0){
                         //rbt.deleteCompleted();
@@ -164,8 +167,10 @@ public class RisingCity {
                             rbt.delete(minHeap.heap[k].getRBTProperties());
                             //minHeap.delete(k);
                     }*/
-                    /*if(minHeap.heap[0].getBuildingProperties().getExecutionTime()==minHeap.heap[0].getBuildingProperties().getTotalTime())
-                        minHeap.delete(0);*/
+                    /*if(!minHeap.isEmpty() && minHeap.heap[0].getBuildingProperties().getExecutionTime()==minHeap.heap[0].getBuildingProperties().getTotalTime()) {
+                        rbt.delete(minHeap.heap[0].getRBTProperties());
+                        minHeap.delete(0);
+                    }*/
                     if(minHeap.isEmpty())
                         break;
                 }

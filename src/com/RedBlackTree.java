@@ -2,9 +2,6 @@ package com;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
-import static com.MinHeap.stringToParams;
 
 public class RedBlackTree {
 
@@ -26,6 +23,11 @@ public class RedBlackTree {
     private static final RBTProperties nil = new RBTProperties(new BuildingProperties(-1,-1,-1));
     public RBTProperties root = nil;
 
+    /**
+     * Print Building for a given buildingNum
+     * @param buildingNum
+     * @return
+     */
     public RBTProperties printBuilding( int buildingNum ) {
         RBTProperties current = root;
         while(current!=nil) {
@@ -39,27 +41,42 @@ public class RedBlackTree {
         return null;
     }
 
+    /**
+     * Print building between 2 buildingNumbers
+     * @param x
+     * @param y
+     * @return
+     */
     public List<RBTProperties> printBuilding(int x, int y) {
         rangeBuildings=new ArrayList<>();
         RBTProperties current = root;
         printBetween(current,x,y);
         return rangeBuildings;
     }
+
+    /**
+     * Get buildings between two building numbers
+     * @param current
+     * @param x
+     * @param y
+     */
     public void printBetween(RBTProperties current,int x, int y){
         if(current==nil){
 
         }else {
+            /**If building number of the root is larger than first parameter , then we can get building
+             in left subtree */
             if (x < current.buildingProperties.getBuildingNum()) {
                 printBetween(current.left, x, y);
             }
 
-             /*if root's data lies in range, then prints root's data*/
+            /**if root's data lies in range, then return root's data*/
             if (x <= current.buildingProperties.getBuildingNum() && y >= current.buildingProperties.getBuildingNum()) {
                 rangeBuildings.add(current);
             }
 
-         /*If root->data is smaller than k2, then only we can get o/p keys
-         in right subtree */
+            /**If building number of the root is smaller than second parameter , then only we can get building
+            in right subtree */
             if (y > current.buildingProperties.getBuildingNum()) {
                 printBetween(current.right, x, y);
             }
@@ -96,6 +113,10 @@ public class RedBlackTree {
         return null;
     }
 
+    /**
+     * Insert into RedBlackTree
+     * @param node
+     */
     public void insertRBT(RBTProperties node) {
         RBTProperties temp = root;
         if (root == nil) {
@@ -128,6 +149,11 @@ public class RedBlackTree {
     }
 
     //Takes as argument the newly inserted node
+
+    /**
+     * Fix the tree after inserting a node into RedBlackTree
+     * @param node
+     */
     private void fixTree(RBTProperties node) {
         while (node.parent.color == RED) {
             RBTProperties uncle = nil;
@@ -142,14 +168,14 @@ public class RedBlackTree {
                     continue;
                 }
                 if (node == node.parent.right) {
-                    //Double rotation needed
+                    /**Double rotation needed*/
                     node = node.parent;
                     rotateLeft(node);
                 }
                 node.parent.color = BLACK;
                 node.parent.parent.color = RED;
-                //if the "else if" code hasn't executed, this
-                //is a case where we only need a single rotation
+                /**if the "else if" code hasn't executed, this
+                *  is a case where we only need a single rotation*/
                 rotateRight(node.parent.parent);
             } else {
                 uncle = node.parent.parent.left;
@@ -161,20 +187,24 @@ public class RedBlackTree {
                     continue;
                 }
                 if (node == node.parent.left) {
-                    //Double rotation needed
+                    /**Double rotation needed*/
                     node = node.parent;
                     rotateRight(node);
                 }
                 node.parent.color = BLACK;
                 node.parent.parent.color = RED;
-                //if the "else if" code hasn't executed, this
-                //is a case where we only need a single rotation
+                /**if the "else if" code hasn't executed, this
+                is a case where we only need a single rotation*/
                 rotateLeft(node.parent.parent);
             }
         }
         root.color = BLACK;
     }
 
+    /**
+     * Rotate left at the node
+     * @param node
+     */
     void rotateLeft(RBTProperties node) {
         if (node.parent != nil) {
             if (node == node.parent.left) {
@@ -200,6 +230,10 @@ public class RedBlackTree {
         }
     }
 
+    /**
+     * Rotate right at the node
+     * @param node
+     */
     void rotateRight(RBTProperties node) {
         if (node.parent != nil) {
             if (node == node.parent.left) {
@@ -227,15 +261,22 @@ public class RedBlackTree {
     }
 
     //Deletes whole tree
-    void deleteTree(){
+    /*void deleteTree(){
         root = nil;
-    }
+    }*/
 
-    //Deletion Code .
+    /**
+     * Deletion Code .
+     * This operation doesn't care about the new Node's connections
+     * with previous node's left and right. The caller has to take care
+     * of that.
+     */
 
-    //This operation doesn't care about the new Node's connections
-    //with previous node's left and right. The caller has to take care
-    //of that.
+    /**
+     *
+     * @param target
+     * @param with
+     */
     void transplant(RBTProperties target, RBTProperties with){
         if(target.parent == nil){
             root = with;
@@ -246,33 +287,38 @@ public class RedBlackTree {
         with.parent = target.parent;
     }
 
-    boolean delete(RBTProperties z){
-        if((z = findProperties(z, root))==null)return false;
+    /**
+     * Delete the node
+     * @param node
+     * @return
+     */
+    boolean delete(RBTProperties node){
+        if((node = findProperties(node, root))==null)return false;
         RBTProperties x;
-        RBTProperties y = z; // temporary reference y
+        RBTProperties y = node; // temporary reference y
         int y_original_color = y.color;
 
-        if(z.left == nil){
-            x = z.right;
-            transplant(z, z.right);
-        }else if(z.right == nil){
-            x = z.left;
-            transplant(z, z.left);
+        if(node.left == nil){
+            x = node.right;
+            transplant(node, node.right);
+        }else if(node.right == nil){
+            x = node.left;
+            transplant(node, node.left);
         }else{
-            y = treeMinimum(z.right);
+            y = treeMinimum(node.right);
             y_original_color = y.color;
             x = y.right;
-            if(y.parent == z)
+            if(y.parent == node)
                 x.parent = y;
             else{
                 transplant(y, y.right);
-                y.right = z.right;
+                y.right = node.right;
                 y.right.parent = y;
             }
-            transplant(z, y);
-            y.left = z.left;
+            transplant(node, y);
+            y.left = node.left;
             y.left.parent = y;
-            y.color = z.color;
+            y.color = node.color;
         }
         if(y_original_color==BLACK)
             deleteFixup(x);
@@ -286,63 +332,67 @@ public class RedBlackTree {
         }
     }*/
 
-    private void deleteFixup(RBTProperties x){
-        while(x!=root && x.color == BLACK){
-            if(x == x.parent.left){
-                RBTProperties w = x.parent.right;
+    /**
+     *
+     * @param node
+     */
+    private void deleteFixup(RBTProperties node){
+        while(node!=root && node.color == BLACK){
+            if(node == node.parent.left){
+                RBTProperties w = node.parent.right;
                 if(w.color == RED){
                     w.color = BLACK;
-                    x.parent.color = RED;
-                    rotateLeft(x.parent);
-                    w = x.parent.right;
+                    node.parent.color = RED;
+                    rotateLeft(node.parent);
+                    w = node.parent.right;
                 }
                 if(w.left.color == BLACK && w.right.color == BLACK){
                     w.color = RED;
-                    x = x.parent;
+                    node = node.parent;
                     continue;
                 }
                 else if(w.right.color == BLACK){
                     w.left.color = BLACK;
                     w.color = RED;
                     rotateRight(w);
-                    w = x.parent.right;
+                    w = node.parent.right;
                 }
                 if(w.right.color == RED){
-                    w.color = x.parent.color;
-                    x.parent.color = BLACK;
+                    w.color = node.parent.color;
+                    node.parent.color = BLACK;
                     w.right.color = BLACK;
-                    rotateLeft(x.parent);
-                    x = root;
+                    rotateLeft(node.parent);
+                    node = root;
                 }
             }else{
-                RBTProperties w = x.parent.left;
+                RBTProperties w = node.parent.left;
                 if(w.color == RED){
                     w.color = BLACK;
-                    x.parent.color = RED;
-                    rotateRight(x.parent);
-                    w = x.parent.left;
+                    node.parent.color = RED;
+                    rotateRight(node.parent);
+                    w = node.parent.left;
                 }
                 if(w.right.color == BLACK && w.left.color == BLACK){
                     w.color = RED;
-                    x = x.parent;
+                    node = node.parent;
                     continue;
                 }
                 else if(w.left.color == BLACK){
                     w.right.color = BLACK;
                     w.color = RED;
                     rotateLeft(w);
-                    w = x.parent.left;
+                    w = node.parent.left;
                 }
                 if(w.left.color == RED){
-                    w.color = x.parent.color;
-                    x.parent.color = BLACK;
+                    w.color = node.parent.color;
+                    node.parent.color = BLACK;
                     w.left.color = BLACK;
-                    rotateRight(x.parent);
-                    x = root;
+                    rotateRight(node.parent);
+                    node = root;
                 }
             }
         }
-        x.color = BLACK;
+        node.color = BLACK;
     }
 
     private RBTProperties treeMinimum(RBTProperties subTreeRoot){

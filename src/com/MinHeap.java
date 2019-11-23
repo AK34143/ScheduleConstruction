@@ -1,4 +1,4 @@
-package com.ads;
+package com;
 
 import java.util.Arrays;
 import java.util.List;
@@ -192,7 +192,7 @@ public class MinHeap {
         int minTime = Math.min(building.getBuildingProperties().getTotalTime(), 5);
         if(heapSize>0 && building.getBuildingProperties().getExecutionTime()+1<=building.getBuildingProperties().getTotalTime() && building.getProgress()<minTime){
             building.getBuildingProperties().setExecutionTime(building.getBuildingProperties().getExecutionTime()+1);
-            building.getRBTProperties().key=building.getBuildingProperties();
+            building.getRBTProperties().buildingProperties=building.getBuildingProperties();
             building.setProgress(building.getProgress()+1);
             if(building.getBuildingProperties().getExecutionTime()==building.getBuildingProperties().getTotalTime()){
                 completedBuildingNum = building.getBuildingProperties().getBuildingNum();

@@ -1,9 +1,9 @@
-package com.ads;
+package com;
 
 import java.io.*;
 import java.util.*;
 
-import static com.ads.MinHeap.stringToParams;
+import static com.MinHeap.stringToParams;
 
 public class RisingCity {
     static int days = 0;
@@ -36,8 +36,6 @@ public class RisingCity {
 
 
         Scanner sc = new Scanner(file);
-        Scanner scCopy=new Scanner(file);
-        if(scCopy.hasNextLine()) scCopy.nextLine();
         int completedBuildingNum = -1;
         String line;
         while (sc.hasNextLine()) {
@@ -116,7 +114,7 @@ public class RisingCity {
                         } else {
                             int j=0;
                             for(RedBlackTree.RBTProperties rbtBuilding: rangeBuildings){
-                                str.append("(").append(rbtBuilding.key.getBuildingNum()).append(",").append(rbtBuilding.key.getExecutionTime()).append(",").append(rbtBuilding.key.getTotalTime()).append(")");
+                                str.append("(").append(rbtBuilding.buildingProperties.getBuildingNum()).append(",").append(rbtBuilding.buildingProperties.getExecutionTime()).append(",").append(rbtBuilding.buildingProperties.getTotalTime()).append(")");
                                 j++;
                                 if(j!=rangeBuildings.size())  str.append(",");
                                 /*if(rbtBuilding.key.getExecutionTime()==rbtBuilding.key.getTotalTime()){
@@ -139,7 +137,7 @@ public class RisingCity {
                         if (printBuilding == null) {
                             str.append("(" + 0 + "," + 0 + "," + 0 + ")\n");
                         } else {
-                            str.append("(").append(printBuilding.key.getBuildingNum()).append(",").append(printBuilding.key.getExecutionTime()).append(",").append(printBuilding.key.getTotalTime()).append(")\n");
+                            str.append("(").append(printBuilding.buildingProperties.getBuildingNum()).append(",").append(printBuilding.buildingProperties.getExecutionTime()).append(",").append(printBuilding.buildingProperties.getTotalTime()).append(")\n");
                             /*if(printBuilding.key.getExecutionTime()==printBuilding.key.getTotalTime()){
                                 rbt.delete(printBuilding);
                             }*/

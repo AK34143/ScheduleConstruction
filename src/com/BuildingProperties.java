@@ -1,4 +1,4 @@
-package com.ads;
+package com;
 
 public class BuildingProperties {
     int buildingNum;

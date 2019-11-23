@@ -1,10 +1,10 @@
-package com.ads;
+package com;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.ads.MinHeap.stringToParams;
+import static com.MinHeap.stringToParams;
 
 public class RedBlackTree {
 
@@ -14,12 +14,12 @@ public class RedBlackTree {
 
     public static class RBTProperties {
 
-        BuildingProperties key;
+        BuildingProperties buildingProperties;
         int color = BLACK;
         RBTProperties left = nil, right = nil, parent = nil;
         int size;
-        RBTProperties(BuildingProperties key) {
-            this.key = key;
+        RBTProperties(BuildingProperties buildingProperties) {
+            this.buildingProperties = buildingProperties;
         }
     }
 
@@ -29,11 +29,11 @@ public class RedBlackTree {
     public RBTProperties printBuilding( int buildingNum ) {
         RBTProperties current = root;
         while(current!=nil) {
-            if( buildingNum < current.key.getBuildingNum() )
+            if( buildingNum < current.buildingProperties.getBuildingNum() )
                 current = current.left;
-            else if( buildingNum > current.key.getBuildingNum())
+            else if( buildingNum > current.buildingProperties.getBuildingNum())
                 current = current.right;
-            else if( buildingNum == current.key.getBuildingNum() )
+            else if( buildingNum == current.buildingProperties.getBuildingNum() )
                 return current;
         }
         return null;
@@ -49,18 +49,18 @@ public class RedBlackTree {
         if(current==nil){
 
         }else {
-            if (x < current.key.getBuildingNum()) {
+            if (x < current.buildingProperties.getBuildingNum()) {
                 printBetween(current.left, x, y);
             }
 
              /*if root's data lies in range, then prints root's data*/
-            if (x <= current.key.getBuildingNum() && y >= current.key.getBuildingNum()) {
+            if (x <= current.buildingProperties.getBuildingNum() && y >= current.buildingProperties.getBuildingNum()) {
                 rangeBuildings.add(current);
             }
 
          /*If root->data is smaller than k2, then only we can get o/p keys
          in right subtree */
-            if (y > current.key.getBuildingNum()) {
+            if (y > current.buildingProperties.getBuildingNum()) {
                 printBetween(current.right, x, y);
             }
         }
@@ -82,15 +82,15 @@ public class RedBlackTree {
             return null;
         }
 
-        if (findRBTProperties.key.getBuildingNum() < node.key.getBuildingNum()) {
+        if (findRBTProperties.buildingProperties.getBuildingNum() < node.buildingProperties.getBuildingNum()) {
             if (node.left != nil) {
                 return findProperties(findRBTProperties, node.left);
             }
-        } else if (findRBTProperties.key.getBuildingNum() > node.key.getBuildingNum()) {
+        } else if (findRBTProperties.buildingProperties.getBuildingNum() > node.buildingProperties.getBuildingNum()) {
             if (node.right != nil) {
                 return findProperties(findRBTProperties, node.right);
             }
-        } else if (findRBTProperties.key.getBuildingNum() == node.key.getBuildingNum()) {
+        } else if (findRBTProperties.buildingProperties.getBuildingNum() == node.buildingProperties.getBuildingNum()) {
             return node;
         }
         return null;
@@ -105,7 +105,7 @@ public class RedBlackTree {
         } else {
             node.color = RED;
             while (true) {
-                if (node.key.getBuildingNum() < temp.key.getBuildingNum()) {
+                if (node.buildingProperties.getBuildingNum() < temp.buildingProperties.getBuildingNum()) {
                     if (temp.left == nil) {
                         temp.left = node;
                         node.parent = temp;
@@ -113,7 +113,7 @@ public class RedBlackTree {
                     } else {
                         temp = temp.left;
                     }
-                } else if (node.key.getBuildingNum() >= temp.key.getBuildingNum()) {
+                } else if (node.buildingProperties.getBuildingNum() >= temp.buildingProperties.getBuildingNum()) {
                     if (temp.right == nil) {
                         temp.right = node;
                         node.parent = temp;

@@ -92,34 +92,23 @@ public class RisingCity {
                                 str.append("(").append(rbtBuilding.buildingProperties.getBuildingNum()).append(",").append(rbtBuilding.buildingProperties.getExecutionTime()).append(",").append(rbtBuilding.buildingProperties.getTotalTime()).append(")");
                                 j++;
                                 if(j!=rangeBuildings.size())  str.append(",");
-                                /*if(rbtBuilding.buildingProperties.getExecutionTime()==rbtBuilding.buildingProperties.getTotalTime()){
-                                    rbt.delete(rbtBuilding);
-                                }*/
                             }
                         }
-                        //str.append("\n(").append(completedBuildingNum).append(",").append(days).append(")\n");
                         str.append("\n");
                     } else {
                         /** If the command is to PrintBuilding with a particular building number*/
                         String part = currentCommand.split("\\(")[1];
                         int buildingNum = Integer.parseInt(part.split("\\)")[0]);
                         RedBlackTree.RBTProperties printBuilding = rbt.printBuilding(buildingNum);
-                        /*for(Building building : buildingList){
-                            if(building.getBuildingProperties().getBuildingNum()==buildingNum)
-                                printBuilding=building.getRBTProperties();
-                        }*/
                         if (printBuilding == null) {
                             str.append("(" + 0 + "," + 0 + "," + 0 + ")\n");
                         } else {
                             str.append("(").append(printBuilding.buildingProperties.getBuildingNum()).append(",").append(printBuilding.buildingProperties.getExecutionTime()).append(",").append(printBuilding.buildingProperties.getTotalTime()).append(")\n");
-                            /*if(printBuilding.buildingProperties.getExecutionTime()==printBuilding.buildingProperties.getTotalTime()){
-                                str.append("\n(").append(printBuilding.buildingProperties.buildingNum).append(",").append(days).append(")\n");
-                                rbt.delete(printBuilding);
-                            }*/
                         }
                     }
 
                 }
+                /** If the construction of a building was completed from before it is safe to delete from RedBlackTree and print */
                 if(completedBuildingNum!=-1) {
                     RedBlackTree.RBTProperties completedBuilding = rbt.printBuilding(completedBuildingNum);
                     if (completedBuilding!=null && (completedBuilding.buildingProperties.getExecutionTime() == completedBuilding.buildingProperties.getTotalTime())) {
@@ -132,24 +121,10 @@ public class RisingCity {
                 if((completedBuildingNum = minHeap.construct(nextCommand, buildingList, minHeap.heap[0], rbt))!=-1) {
                     if(nextCommand==null || !nextCommand.contains("Print")){
                         str.append("(").append(completedBuildingNum).append(",").append(days).append(")\n");
-                    }/*else if(nextCommand.contains("Print")){
-
-                    }*/
+                    }
                 }
                 /** If there is no more command left*/
-                if(nextCommand==null){//if(i==commandList.size()-1){
-                    //while(rbt.size()!=0){
-                        //rbt.deleteCompleted();
-                    //}
-                   /* while(rbt.findProperties(z, rbt.root)!=null){
-                        if(minHeap.heap[k].getBuildingProperties().getExecutionTime()==minHeap.heap[k].getBuildingProperties().getTotalTime())
-                            rbt.delete(minHeap.heap[k].getRBTProperties());
-                            //minHeap.delete(k);
-                    }*/
-                    /*if(!minHeap.isEmpty() && minHeap.heap[0].getBuildingProperties().getExecutionTime()==minHeap.heap[0].getBuildingProperties().getTotalTime()) {
-                        rbt.delete(minHeap.heap[0].getRBTProperties());
-                        minHeap.delete(0);
-                    }*/
+                if(nextCommand==null){
                     /**If the heap is empty and there are no more commands left then stop*/
                     if(minHeap.isEmpty())
                         break;

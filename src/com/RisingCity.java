@@ -29,29 +29,37 @@ public class RisingCity {
         BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, false));
         writer.flush();
         List<Building> buildingList = new ArrayList<>();
-        List<String> commandList = new ArrayList<>();
 
-
-        Scanner sc = new Scanner(file);
         int completedBuildingNum = -1;
         String line;
+        Scanner sc = new Scanner(file);
+        List<String> commandList = new ArrayList<>();
         /** Storing all the commands in a list called commandList*/
         while (sc.hasNextLine()) {
             line = sc.nextLine();
-            if(!line.trim().equals(""))
+            if(!line.trim().equals("") && line.trim().contains(":"))
                 commandList.add(line);
         }
 
         /**read each command from commandList*/
         for(int i=0;i<commandList.size();i++) {
             String currentLine = commandList.get(i);
+            if(!currentLine.contains(":")) continue; /** If any command does not contain ":" it means it is not valid command and moved to the next command */
             int commandTime =Integer.parseInt(currentLine.split(":")[0]);
             String currentCommand=currentLine.split(":")[1];
             int nextCommandTime =Integer.MAX_VALUE;
             String nextCommand=null;
             if(i!=commandList.size()-1) {
-                nextCommand = commandList.get(i+1);//scCopy.nextLine();
-                if(!nextCommand.equalsIgnoreCase("")) nextCommandTime = Integer.parseInt(nextCommand.split(":")[0]);
+                nextCommand = commandList.get(i+1);
+                if(!nextCommand.equalsIgnoreCase("")){
+                    if(!nextCommand.contains(":")){
+                        /** If any command does not contain ":" it means it is not valid command. It is removed from the list and moved to the next command */
+                        commandList.remove(i);
+                        i--;
+                        continue;
+                    }
+                    nextCommandTime = Integer.parseInt(nextCommand.split(":")[0]);
+                }
             }
             while(days>=commandTime && days<nextCommandTime) {
                 if (currentCommand.contains("Insert") && commandTime==days) {

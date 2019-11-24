@@ -64,7 +64,7 @@ public class RisingCity {
                         rbt.insertRBT(rbtProperties);
                         building.setRBTProperties(rbtProperties);
                         buildingList.add(building);
-                        /** If there is no building currently under construction, insert into the heap and remove from the list of building in the queue*/
+                        /** If there is no building currently under construction, only then insert into the heap and remove from the list of building in the queue*/
                         if(minHeap.heapSize==0 || minHeap.heap[0].getProgress()==0) {
                             minHeap.insert(buildingList.get(0));
                             buildingList.remove(0);
@@ -92,11 +92,12 @@ public class RisingCity {
                                 str.append("(").append(rbtBuilding.buildingProperties.getBuildingNum()).append(",").append(rbtBuilding.buildingProperties.getExecutionTime()).append(",").append(rbtBuilding.buildingProperties.getTotalTime()).append(")");
                                 j++;
                                 if(j!=rangeBuildings.size())  str.append(",");
-                                /*if(rbtBuilding.key.getExecutionTime()==rbtBuilding.key.getTotalTime()){
+                                /*if(rbtBuilding.buildingProperties.getExecutionTime()==rbtBuilding.buildingProperties.getTotalTime()){
                                     rbt.delete(rbtBuilding);
                                 }*/
                             }
                         }
+                        //str.append("\n(").append(completedBuildingNum).append(",").append(days).append(")\n");
                         str.append("\n");
                     } else {
                         /** If the command is to PrintBuilding with a particular building number*/
@@ -111,23 +112,30 @@ public class RisingCity {
                             str.append("(" + 0 + "," + 0 + "," + 0 + ")\n");
                         } else {
                             str.append("(").append(printBuilding.buildingProperties.getBuildingNum()).append(",").append(printBuilding.buildingProperties.getExecutionTime()).append(",").append(printBuilding.buildingProperties.getTotalTime()).append(")\n");
-                            /*if(printBuilding.key.getExecutionTime()==printBuilding.key.getTotalTime()){
+                            /*if(printBuilding.buildingProperties.getExecutionTime()==printBuilding.buildingProperties.getTotalTime()){
+                                str.append("\n(").append(printBuilding.buildingProperties.buildingNum).append(",").append(days).append(")\n");
                                 rbt.delete(printBuilding);
                             }*/
                         }
                     }
-                    /*if(completedBuildingNum!=-1) {
-                        RedBlackTree.RBTProperties completedBuilding = rbt.printBuilding(completedBuildingNum);
-                        if (completedBuilding!=null && (completedBuilding.key.getExecutionTime() == completedBuilding.key.getTotalTime())) {
-                            rbt.delete(completedBuilding);
-                        }
-                    }*/
+
+                }
+                if(completedBuildingNum!=-1) {
+                    RedBlackTree.RBTProperties completedBuilding = rbt.printBuilding(completedBuildingNum);
+                    if (completedBuilding!=null && (completedBuilding.buildingProperties.getExecutionTime() == completedBuilding.buildingProperties.getTotalTime())) {
+                        rbt.delete(completedBuilding);
+                        str.append("(").append(completedBuildingNum).append(",").append(days).append(")\n");
+                    }
                 }
                 days++;
                 /** If completedBuildingNum is not -1, it means a building construction is completed */
-                if((completedBuildingNum = minHeap.construct(nextCommand, buildingList, minHeap.heap[0], rbt))!=-1)
-                    str.append("(").append(completedBuildingNum).append(",").append(days).append(")\n");
+                if((completedBuildingNum = minHeap.construct(nextCommand, buildingList, minHeap.heap[0], rbt))!=-1) {
+                    if(nextCommand==null || !nextCommand.contains("Print")){
+                        str.append("(").append(completedBuildingNum).append(",").append(days).append(")\n");
+                    }/*else if(nextCommand.contains("Print")){
 
+                    }*/
+                }
                 /** If there is no more command left*/
                 if(nextCommand==null){//if(i==commandList.size()-1){
                     //while(rbt.size()!=0){

@@ -222,12 +222,12 @@ public class MinHeap {
             building.setProgress(building.getProgress()+1);
             if(building.getBuildingProperties().getExecutionTime()==building.getBuildingProperties().getTotalTime()){
                 /** If the execution time and total time are same, it means the building construction is completed*/
+
                 completedBuildingNum = building.getBuildingProperties().getBuildingNum();
+                if(nextCommand==null ||(nextCommand!=null && !nextCommand.contains("Print"))) {
 
-                //if(nextCommand==null ||(nextCommand!=null && !nextCommand.contains("Print"))) {
                     rbt.delete(building.getRBTProperties());
-
-                //}
+                }
                 delete(0);
                 /**After building construction is completed, we can add the buildings in the queue and heapify to get the building with least execution time*/
                 if(!buildingList.isEmpty()){

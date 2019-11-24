@@ -11,6 +11,7 @@ import static com.MinHeap.stringToParams;
 public class RisingCity {
     static int days = 0;
     static int maxBuildings = 2000;
+    static String outputFile="output_file.txt";
 
     public static void main(String[] args) throws IOException {
         // write your code here
@@ -18,9 +19,14 @@ public class RisingCity {
         MinHeap minHeap = new MinHeap(maxBuildings); /**Initializing array for minHeap*/
         RedBlackTree rbt = new RedBlackTree();
 
-        File file = new File("C:\\Me_Florida\\UF_courses\\ADS\\ADSProject\\ADS_ProgramminProject\\input_2.txt");
+        if(args.length==0){
+            System.out.println("No input file entered.");
+            System.exit(0);
+        }
+        String filename=args[0];
+        File file = new File(filename);
         StringBuilder str = new StringBuilder();
-        BufferedWriter writer = new BufferedWriter(new FileWriter("output_wip", false));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, false));
         writer.flush();
         List<Building> buildingList = new ArrayList<>();
         List<String> commandList = new ArrayList<>();
@@ -65,6 +71,7 @@ public class RisingCity {
                         }
                     } else {
                         str.append("Building with buildingNum ").append(params[0]).append(" exists\n");
+                        System.exit(0);
                     }
                 } else if(currentCommand.contains("PrintBuilding") && commandTime==days){
                     /** If the command is PrintBuilding and the time of the command matches the current day*/

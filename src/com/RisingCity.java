@@ -16,6 +16,7 @@ public class RisingCity {
     public static void main(String[] args) throws IOException {
         // write your code here
         long start1 = System.currentTimeMillis();
+        //Remove above part
         MinHeap minHeap = new MinHeap(maxBuildings); /**Initializing array for minHeap*/
         RedBlackTree rbt = new RedBlackTree();
 
@@ -37,29 +38,20 @@ public class RisingCity {
         /** Storing all the commands in a list called commandList*/
         while (sc.hasNextLine()) {
             line = sc.nextLine();
-            if(!line.trim().equals("") && line.trim().contains(":"))
+            if(!line.trim().equals("") && line.trim().contains(":"))/** Add only valid commands */
                 commandList.add(line);
         }
 
         /**read each command from commandList*/
         for(int i=0;i<commandList.size();i++) {
             String currentLine = commandList.get(i);
-            if(!currentLine.contains(":")) continue; /** If any command does not contain ":" it means it is not valid command and moved to the next command */
             int commandTime =Integer.parseInt(currentLine.split(":")[0]);
             String currentCommand=currentLine.split(":")[1];
             int nextCommandTime =Integer.MAX_VALUE;
             String nextCommand=null;
             if(i!=commandList.size()-1) {
                 nextCommand = commandList.get(i+1);
-                if(!nextCommand.equalsIgnoreCase("")){
-                    if(!nextCommand.contains(":")){
-                        /** If any command does not contain ":" it means it is not valid command. It is removed from the list and moved to the next command */
-                        commandList.remove(i);
-                        i--;
-                        continue;
-                    }
-                    nextCommandTime = Integer.parseInt(nextCommand.split(":")[0]);
-                }
+                nextCommandTime = Integer.parseInt(nextCommand.split(":")[0]);
             }
             while(days>=commandTime && days<nextCommandTime) {
                 if (currentCommand.contains("Insert") && commandTime==days) {
@@ -77,10 +69,11 @@ public class RisingCity {
                             minHeap.insert(buildingList.get(0));
                             buildingList.remove(0);
                         }
-                    } else {
+                    } /*No need to handle according to TA
+                    else {
                         str.append("Building with buildingNum ").append(params[0]).append(" exists\n");
                         System.exit(0);
-                    }
+                    }*/
                 } else if(currentCommand.contains("PrintBuilding") && commandTime==days){
                     /** If the command is PrintBuilding and the time of the command matches the current day*/
                     if(currentCommand.contains(",")){
@@ -131,11 +124,9 @@ public class RisingCity {
                         str.append("(").append(completedBuildingNum).append(",").append(days).append(")\n");
                     }
                 }
-                /** If there is no more command left*/
-                if(nextCommand==null){
-                    /**If the heap is empty and there are no more commands left then stop*/
-                    if(minHeap.isEmpty())
-                        break;
+                /** If the heap is empty and there are no more commands left then stop */
+                if(nextCommand==null && minHeap.isEmpty()){
+                    break;
                 }
             }
         }

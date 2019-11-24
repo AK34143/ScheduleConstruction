@@ -46,72 +46,67 @@ public class RedBlackTree {
 
     /**
      * Print building between 2 buildingNumbers
-     * @param x
-     * @param y
+     * @param buildingNum1
+     * @param buildingNum2
      * @return
      */
-    public List<RBTProperties> printBuilding(int x, int y) {
+    public List<RBTProperties> printBuilding(int buildingNum1, int buildingNum2) {
         rangeBuildings=new ArrayList<>();
         RBTProperties current = root;
-        printBetween(current,x,y);
+        printBetween(current,buildingNum1,buildingNum2);
         return rangeBuildings;
     }
 
     /**
      * Get buildings between two building numbers
      * @param current
-     * @param x
-     * @param y
+     * @param buildingNum1
+     * @param buildingNum2
      */
-    public void printBetween(RBTProperties current,int x, int y){
+    public void printBetween(RBTProperties current,int buildingNum1, int buildingNum2){
         if(current==nil){
 
         }else {
             /**If building number of the root is larger than first parameter , then we can get building
              in left subtree */
-            if (x < current.buildingProperties.getBuildingNum()) {
-                printBetween(current.left, x, y);
+            if (buildingNum1 < current.buildingProperties.getBuildingNum()) {
+                printBetween(current.left, buildingNum1, buildingNum2);
             }
 
             /**if root's data lies in range, then return root's data*/
-            if (x <= current.buildingProperties.getBuildingNum() && y >= current.buildingProperties.getBuildingNum()) {
+            if (buildingNum1 <= current.buildingProperties.getBuildingNum() && buildingNum2 >= current.buildingProperties.getBuildingNum()) {
                 rangeBuildings.add(current);
             }
 
             /**If building number of the root is smaller than second parameter , then only we can get building
             in right subtree */
-            if (y > current.buildingProperties.getBuildingNum()) {
-                printBetween(current.right, x, y);
+            if (buildingNum2 > current.buildingProperties.getBuildingNum()) {
+                printBetween(current.right, buildingNum1, buildingNum2);
             }
         }
-        /*if(current==nil){
-
-        } else if( x <= current.key.getBuildingNum() && y >= current.key.getBuildingNum()) {
-            rangeBuildings.add(current);
-            printBetween(current.left, x,Math.min(y,current.key.getBuildingNum()));
-            printBetween(current.right, Math.max(x,current.key.getBuildingNum()),y);
-        } else if ( x > current.key.getBuildingNum() && y > current.key.getBuildingNum()) {
-            printBetween(current.right, Math.max(x,current.key.getBuildingNum()),y);
-        } else if (x < current.key.getBuildingNum() && y < current.key.getBuildingNum()){
-            printBetween(current.left, x,Math.min(y,current.key.getBuildingNum()));
-        }*/
     }
 
-    private RBTProperties findProperties(RBTProperties findRBTProperties, RBTProperties node) {
+    /**
+     * Find RBTProperties node with reference to another node
+     * @param findRBTProperties
+     * @param refRBTProperties
+     * @return
+     */
+    private RBTProperties findProperties(RBTProperties findRBTProperties, RBTProperties refRBTProperties) {
         if (root == nil) {
             return null;
         }
 
-        if (findRBTProperties.buildingProperties.getBuildingNum() < node.buildingProperties.getBuildingNum()) {
-            if (node.left != nil) {
-                return findProperties(findRBTProperties, node.left);
+        if (findRBTProperties.buildingProperties.getBuildingNum() < refRBTProperties.buildingProperties.getBuildingNum()) {
+            if (refRBTProperties.left != nil) {
+                return findProperties(findRBTProperties, refRBTProperties.left);
             }
-        } else if (findRBTProperties.buildingProperties.getBuildingNum() > node.buildingProperties.getBuildingNum()) {
-            if (node.right != nil) {
-                return findProperties(findRBTProperties, node.right);
+        } else if (findRBTProperties.buildingProperties.getBuildingNum() > refRBTProperties.buildingProperties.getBuildingNum()) {
+            if (refRBTProperties.right != nil) {
+                return findProperties(findRBTProperties, refRBTProperties.right);
             }
-        } else if (findRBTProperties.buildingProperties.getBuildingNum() == node.buildingProperties.getBuildingNum()) {
-            return node;
+        } else if (findRBTProperties.buildingProperties.getBuildingNum() == refRBTProperties.buildingProperties.getBuildingNum()) {
+            return refRBTProperties;
         }
         return null;
     }
@@ -299,7 +294,7 @@ public class RedBlackTree {
         if((node = findProperties(node, root))==null)return false;
         RBTProperties x;
         RBTProperties y = node; // temporary reference y
-        int y_original_color = y.color;
+        int yOriginalColor = y.color;
 
         if(node.left == nil){
             x = node.right;
@@ -309,7 +304,7 @@ public class RedBlackTree {
             transplant(node, node.left);
         }else{
             y = treeMinimum(node.right);
-            y_original_color = y.color;
+            yOriginalColor = y.color;
             x = y.right;
             if(y.parent == node)
                 x.parent = y;
@@ -323,7 +318,7 @@ public class RedBlackTree {
             y.left.parent = y;
             y.color = node.color;
         }
-        if(y_original_color==BLACK)
+        if(yOriginalColor==BLACK)
             deleteFixup(x);
         return true;
     }
@@ -342,54 +337,54 @@ public class RedBlackTree {
     private void deleteFixup(RBTProperties node){
         while(node!=root && node.color == BLACK){
             if(node == node.parent.left){
-                RBTProperties w = node.parent.right;
-                if(w.color == RED){
-                    w.color = BLACK;
+                RBTProperties sibling = node.parent.right;
+                if(sibling.color == RED){
+                    sibling.color = BLACK;
                     node.parent.color = RED;
                     rotateLeft(node.parent);
-                    w = node.parent.right;
+                    sibling = node.parent.right;
                 }
-                if(w.left.color == BLACK && w.right.color == BLACK){
-                    w.color = RED;
+                if(sibling.left.color == BLACK && sibling.right.color == BLACK){
+                    sibling.color = RED;
                     node = node.parent;
                     continue;
                 }
-                else if(w.right.color == BLACK){
-                    w.left.color = BLACK;
-                    w.color = RED;
-                    rotateRight(w);
-                    w = node.parent.right;
+                else if(sibling.right.color == BLACK){
+                    sibling.left.color = BLACK;
+                    sibling.color = RED;
+                    rotateRight(sibling);
+                    sibling = node.parent.right;
                 }
-                if(w.right.color == RED){
-                    w.color = node.parent.color;
+                if(sibling.right.color == RED){
+                    sibling.color = node.parent.color;
                     node.parent.color = BLACK;
-                    w.right.color = BLACK;
+                    sibling.right.color = BLACK;
                     rotateLeft(node.parent);
                     node = root;
                 }
             }else{
-                RBTProperties w = node.parent.left;
-                if(w.color == RED){
-                    w.color = BLACK;
+                RBTProperties sibling = node.parent.left;
+                if(sibling.color == RED){
+                    sibling.color = BLACK;
                     node.parent.color = RED;
                     rotateRight(node.parent);
-                    w = node.parent.left;
+                    sibling = node.parent.left;
                 }
-                if(w.right.color == BLACK && w.left.color == BLACK){
-                    w.color = RED;
+                if(sibling.right.color == BLACK && sibling.left.color == BLACK){
+                    sibling.color = RED;
                     node = node.parent;
                     continue;
                 }
-                else if(w.left.color == BLACK){
-                    w.right.color = BLACK;
-                    w.color = RED;
-                    rotateLeft(w);
-                    w = node.parent.left;
+                else if(sibling.left.color == BLACK){
+                    sibling.right.color = BLACK;
+                    sibling.color = RED;
+                    rotateLeft(sibling);
+                    sibling = node.parent.left;
                 }
-                if(w.left.color == RED){
-                    w.color = node.parent.color;
+                if(sibling.left.color == RED){
+                    sibling.color = node.parent.color;
                     node.parent.color = BLACK;
-                    w.left.color = BLACK;
+                    sibling.left.color = BLACK;
                     rotateRight(node.parent);
                     node = root;
                 }
@@ -404,17 +399,4 @@ public class RedBlackTree {
         }
         return subTreeRoot;
     }
-    /*private int size(RBTProperties x) {
-        if (x == null) return 0;
-        return x.size;
-    }
-
-
-    *//**
-     * Returns the number of key-value pairs in this symbol table.
-     * @return the number of key-value pairs in this symbol table
-     *//*
-    public int size() {
-        return size(root);
-    }*/
 }

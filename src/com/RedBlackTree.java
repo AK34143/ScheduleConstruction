@@ -17,7 +17,6 @@ public class RedBlackTree {
         BuildingProperties buildingProperties;
         int color = BLACK;
         RBTProperties left = nil, right = nil, parent = nil;
-        int size;
         RBTProperties(BuildingProperties buildingProperties) {
             this.buildingProperties = buildingProperties;
         }

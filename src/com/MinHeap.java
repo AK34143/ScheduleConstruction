@@ -63,7 +63,7 @@ public class MinHeap {
         if(isFull())
             throw new NoSuchElementException("Heap is full, No space to insert new element");
         heap[heapSize++] = heapx;
-        heapifyUp(heapSize-1);
+        heapifyNewBuilding(heapSize-1);
     }
 
     /**
@@ -81,7 +81,7 @@ public class MinHeap {
         heap[index].setProgress(heap[heapSize -1].getProgress());
         heap[index].setRBTProperties(heap[heapSize -1].getRBTProperties());
         heapSize--;
-        heapifyDown(index);
+        heapifyCompletedBuilding(index);
         int lastIndex = heapSize;
         heap[lastIndex].setBuildingProperties(nullBuilding);
         heap[lastIndex].setProgress(0);
@@ -93,7 +93,7 @@ public class MinHeap {
      * This method used to maintain the heap property while inserting an element.
      * @param i
      */
-    public void heapifyUp(int i) {
+    public void heapifyNewBuilding(int i) {
         Building temp = heap[i];
         while(i>0 && ((temp.getBuildingProperties().getExecutionTime() < heap[parent(i)].getBuildingProperties().getExecutionTime())
                 || (temp.getBuildingProperties().getExecutionTime()==heap[parent(i)].getBuildingProperties().getExecutionTime() && temp.getBuildingProperties().getBuildingNum()<heap[parent(i)].getBuildingProperties().getBuildingNum()))){
@@ -107,7 +107,7 @@ public class MinHeap {
      * This method used to maintain the heap property while deleting an element.
      * @param i
      */
-    public void heapifyDown(int i){
+    public void heapifyCompletedBuilding(int i){
         int child;
         Building temp = new Building(heap[i].getBuildingProperties(),heap[i].getProgress(),heap[i].getRBTProperties());
         while(kthChild(i, 1) < heapSize){
@@ -175,79 +175,5 @@ public class MinHeap {
         return heap[0];
     }*/
 
-    /**
-     * Convert a string to array of parameters
-     * @param input
-     * @return
-     */
-    public static int[] stringToParams(String input) {
-        input = input.trim();
-        if (input.length() == 0) {
-            return new int[0];
-        }
 
-        String[] params = input.split(",");
-        int[] output = new int[3];
-        // For input file
-        String part = params[0].split("\\(")[1];
-        output[0] = Integer.parseInt(part);
-        output[1]=0;
-        part = params[1].split("\\)")[0];
-        output[2] = Integer.parseInt(part);
-        // For hard coded input
-        /*String part = params[0].trim();
-        output[0] = Integer.parseInt(part);
-        part = params[1].trim();
-        output[1]=Integer.parseInt(part);
-        part = params[2].trim();
-        output[2] = Integer.parseInt(part);*/
-        return output;
-    }
-
-    /**
-     * This method constructs the building and returns building number if construction is completed
-     * @param nextCommand
-     * @param buildingList
-     * @param building
-     * @param rbt
-     * @return
-     */
-    public int construct(String nextCommand, List<Building> buildingList,Building building, RedBlackTree rbt)
-    {
-        int completedBuildingNum=-1;
-        int minTime = Math.min(building.getBuildingProperties().getTotalTime(), 5);// Find the min of totalTime and 5 so we can run our construction those many days
-        if(heapSize>0 && building.getBuildingProperties().getExecutionTime()+1<=building.getBuildingProperties().getTotalTime() && building.getProgress()<minTime){
-            building.getBuildingProperties().setExecutionTime(building.getBuildingProperties().getExecutionTime()+1);
-            building.getRBTProperties().buildingProperties=building.getBuildingProperties();
-            building.setProgress(building.getProgress()+1);
-            if(building.getBuildingProperties().getExecutionTime()==building.getBuildingProperties().getTotalTime()){
-                /** If the execution time and total time are same, it means the building construction is completed*/
-
-                completedBuildingNum = building.getBuildingProperties().getBuildingNum();
-                if(nextCommand==null ||(nextCommand!=null && !nextCommand.contains("Print"))) {
-
-                    rbt.delete(building.getRBTProperties());
-                }
-                delete(0);
-                /**After building construction is completed, we can add the buildings in the queue and heapify to get the building with least execution time*/
-                if(!buildingList.isEmpty()){
-                    for(int i=0;i<buildingList.size();i++) {
-                        insert(buildingList.get(0));
-                        buildingList.remove(0);
-                    }
-                }
-            } else if(building.getProgress()==minTime){
-                /**If the building is constructed for 5 days or total time, whichever is small, reset progress back to 0 and insert the buildings in the queue*/
-                building.setProgress(0);
-                heapifyDown(0);
-                if(!buildingList.isEmpty()){
-                    for(int i=0;i<buildingList.size();i++) {
-                        insert(buildingList.get(0));
-                        buildingList.remove(0);
-                    }
-                }
-            }
-        }
-        return completedBuildingNum;
-    }
 }

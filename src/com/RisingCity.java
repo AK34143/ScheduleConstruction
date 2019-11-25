@@ -3,8 +3,6 @@ package com;
 import java.io.*;
 import java.util.*;
 
-import static com.MinHeap.stringToParams;
-
 /**
  * RisingCity with main class to construct a city with buildings
  */
@@ -12,12 +10,13 @@ public class RisingCity {
     static int days = 0;
     static int maxBuildings = 2000;
     static String outputFile="output_file.txt";
+    static MinHeap minHeap = new MinHeap(maxBuildings); /**Initializing array for minHeap*/
 
     public static void main(String[] args) throws IOException {
         // write your code here
-        long start1 = System.currentTimeMillis();
+        long start11 = System.currentTimeMillis();
         //Remove above part
-        MinHeap minHeap = new MinHeap(maxBuildings); /**Initializing array for minHeap*/
+
         RedBlackTree rbt = new RedBlackTree();
 
         if(args.length==0){
@@ -38,8 +37,13 @@ public class RisingCity {
         /** Storing all the commands in a list called commandList*/
         while (sc.hasNextLine()) {
             line = sc.nextLine();
-            if(!line.trim().equals("") && line.trim().contains(":"))/** Add only valid commands */
-                commandList.add(line);
+            if(!line.trim().equals("") && line.trim().contains(":")) {/** Add only valid commands */
+                if("Insert".equals(line.split(":")[1].split("\\(")[0].trim()) || ("PrintBuilding").equals(line.split(":")[1].split("\\(")[0].trim())){
+                    System.out.println(line);
+                    commandList.add(line);
+                }
+
+            }
         }
 
         /**read each command from commandList*/
@@ -119,7 +123,7 @@ public class RisingCity {
                 }
                 days++;
                 /** If completedBuildingNum is not -1, it means a building construction is completed */
-                if((completedBuildingNum = minHeap.construct(nextCommand, buildingList, minHeap.heap[0], rbt))!=-1) {
+                if((completedBuildingNum = construct(nextCommand, buildingList, minHeap.heap[0], rbt))!=-1) {
                     if(nextCommand==null || !nextCommand.contains("Print")){
                         str.append("(").append(completedBuildingNum).append(",").append(days).append(")\n");
                     }
@@ -136,11 +140,84 @@ public class RisingCity {
 
         //Remove the below part
         long end1 = System.currentTimeMillis();
-        System.out.println("Application on the whole takes " + (end1 - start1) + "ms");
+        System.out.println("Application on the whole takes " + (end1 - start11) + "ms");
         System.gc();
         Runtime rt = Runtime.getRuntime();
         long usedMB = (rt.totalMemory() - rt.freeMemory()) / 1024 / 1024;
         System.out.println( "memory usage " + usedMB+"MB");
     }
+    /**
+     * This method constructs the building and returns building number if construction is completed
+     * @param nextCommand
+     * @param buildingList
+     * @param building
+     * @param rbt
+     * @return
+     */
+    public static int construct(String nextCommand, List<Building> buildingList, Building building, RedBlackTree rbt)
+    {
+        int completedBuildingNum=-1;
+        int minTime = Math.min(building.getBuildingProperties().getTotalTime(), 5);// Find the min of totalTime and 5 so we can run our construction those many days
+        if(minHeap.heapSize>0 && building.getBuildingProperties().getExecutionTime()+1<=building.getBuildingProperties().getTotalTime() && building.getProgress()<minTime){
+            building.getBuildingProperties().setExecutionTime(building.getBuildingProperties().getExecutionTime()+1);
+            building.getRBTProperties().buildingProperties=building.getBuildingProperties();
+            building.setProgress(building.getProgress()+1);
+            if(building.getBuildingProperties().getExecutionTime()==building.getBuildingProperties().getTotalTime()){
+                /** If the execution time and total time are same, it means the building construction is completed*/
 
+                completedBuildingNum = building.getBuildingProperties().getBuildingNum();
+                if(nextCommand==null ||(nextCommand!=null && !nextCommand.contains("Print"))) {
+
+                    rbt.delete(building.getRBTProperties());
+                }
+                minHeap.delete(0);
+                /**After building construction is completed, we can add the buildings in the queue and heapify to get the building with least execution time*/
+                if(!buildingList.isEmpty()){
+                    for(int i=0;i<buildingList.size();i++) {
+                        minHeap.insert(buildingList.get(0));
+                        buildingList.remove(0);
+                    }
+                }
+            } else if(building.getProgress()==minTime){
+                /**If the building is constructed for 5 days or total time, whichever is small, reset progress back to 0 and insert the buildings in the queue*/
+                building.setProgress(0);
+                minHeap.heapifyCompletedBuilding(0);
+                if(!buildingList.isEmpty()){
+                    for(int i=0;i<buildingList.size();i++) {
+                        minHeap.insert(buildingList.get(0));
+                        buildingList.remove(0);
+                    }
+                }
+            }
+        }
+        return completedBuildingNum;
+    }
+    /**
+     * Convert a string to array of parameters
+     * @param input
+     * @return
+     */
+    public static int[] stringToParams(String input) {
+        input = input.trim();
+        if (input.length() == 0) {
+            return new int[0];
+        }
+
+        String[] params = input.split(",");
+        int[] output = new int[3];
+        // For input file
+        String part = params[0].split("\\(")[1];
+        output[0] = Integer.parseInt(part);
+        output[1]=0;
+        part = params[1].split("\\)")[0];
+        output[2] = Integer.parseInt(part);
+        // For hard coded input
+        /*String part = params[0].trim();
+        output[0] = Integer.parseInt(part);
+        part = params[1].trim();
+        output[1]=Integer.parseInt(part);
+        part = params[2].trim();
+        output[2] = Integer.parseInt(part);*/
+        return output;
+    }
 }

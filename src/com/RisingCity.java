@@ -39,7 +39,6 @@ public class RisingCity {
             line = sc.nextLine();
             if(!line.trim().equals("") && line.trim().contains(":")) {/** Add only valid commands */
                 if("Insert".equals(line.split(":")[1].split("\\(")[0].trim()) || ("PrintBuilding").equals(line.split(":")[1].split("\\(")[0].trim())){
-                    System.out.println(line);
                     commandList.add(line);
                 }
 

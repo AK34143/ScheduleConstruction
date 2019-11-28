@@ -154,27 +154,4 @@ public class MinHeap {
         }
         return minChild;
     }
-
-    /**
-     * This method used to print all element of the heap
-     */
-    public void printHeap(){
-        System.out.print("\nHeap = ");
-        for (int i = 0; i < heapSize; i++)
-            System.out.print("("+heap[i].getBuildingProperties().getBuildingNum()+","+heap[i].getBuildingProperties().getExecutionTime() +","+heap[i].getBuildingProperties().getTotalTime()+") ");
-        System.out.println();
-    }
-
-    /**
-     * This method returns the min element of the heap.
-     * complexity: O(1)
-     * @return
-     */
-    /*public Building findMin(){
-        if(isEmpty())
-            throw new NoSuchElementException("Heap is empty.");
-        return heap[0];
-    }*/
-
-
 }

@@ -12,6 +12,9 @@ public class RedBlackTree {
     private static final int BLACK = 1;
     public List<RBTProperties> rangeBuildings;
 
+    private static final RBTProperties nil = new RBTProperties(new BuildingProperties(-1,-1,-1));
+    public RBTProperties root = nil;
+
     public static class RBTProperties {
 
         BuildingProperties buildingProperties;
@@ -20,10 +23,26 @@ public class RedBlackTree {
         RBTProperties(BuildingProperties buildingProperties) {
             this.buildingProperties = buildingProperties;
         }
+        //Getter
+        public BuildingProperties getBuildingProperties() {
+            return buildingProperties;
+        }
+
+        // Setter
+        public void setBuildingProperties(BuildingProperties newBuildingProps) {
+            this.buildingProperties = newBuildingProps;
+        }
+        //Getter
+        public int getColor() {
+            return color;
+        }
+
+        // Setter
+        public void setColor(int c) {
+            this.color = c;
+        }
     }
 
-    private static final RBTProperties nil = new RBTProperties(new BuildingProperties(-1,-1,-1));
-    public RBTProperties root = nil;
 
     /**
      * Print Building for a given buildingNum
@@ -118,10 +137,10 @@ public class RedBlackTree {
         RBTProperties temp = root;
         if (root == nil) {
             root = node;
-            node.color = BLACK;
+            node.setColor(BLACK);
             node.parent = nil;
         } else {
-            node.color = RED;
+            node.setColor(RED);
             while (true) {
                 if (node.buildingProperties.getBuildingNum() < temp.buildingProperties.getBuildingNum()) {
                     if (temp.left == nil) {
@@ -145,22 +164,20 @@ public class RedBlackTree {
         }
     }
 
-    //Takes as argument the newly inserted node
-
     /**
      * Fix the tree after inserting a node into RedBlackTree
      * @param node
      */
     private void fixTree(RBTProperties node) {
-        while (node.parent.color == RED) {
+        while (node.parent.getColor() == RED) {
             RBTProperties uncle = nil;
             if (node.parent == node.parent.parent.left) {
                 uncle = node.parent.parent.right;
 
-                if (uncle != nil && uncle.color == RED) {
-                    node.parent.color = BLACK;
-                    uncle.color = BLACK;
-                    node.parent.parent.color = RED;
+                if (uncle != nil && uncle.getColor() == RED) {
+                    node.parent.setColor(BLACK);
+                    uncle.setColor(BLACK);
+                    node.parent.parent.setColor(RED);
                     node = node.parent.parent;
                     continue;
                 }
@@ -169,17 +186,17 @@ public class RedBlackTree {
                     node = node.parent;
                     rotateLeft(node);
                 }
-                node.parent.color = BLACK;
-                node.parent.parent.color = RED;
+                node.parent.setColor(BLACK);
+                node.parent.parent.setColor(RED);
                 /**if the "else if" code hasn't executed, this
                 *  is a case where we only need a single rotation*/
                 rotateRight(node.parent.parent);
             } else {
                 uncle = node.parent.parent.left;
-                if (uncle != nil && uncle.color == RED) {
-                    node.parent.color = BLACK;
-                    uncle.color = BLACK;
-                    node.parent.parent.color = RED;
+                if (uncle != nil && uncle.getColor() == RED) {
+                    node.parent.setColor(BLACK);
+                    uncle.setColor(BLACK);
+                    node.parent.parent.setColor(RED);
                     node = node.parent.parent;
                     continue;
                 }
@@ -188,14 +205,14 @@ public class RedBlackTree {
                     node = node.parent;
                     rotateRight(node);
                 }
-                node.parent.color = BLACK;
-                node.parent.parent.color = RED;
+                node.parent.setColor(BLACK);
+                node.parent.parent.setColor(RED);
                 /**if the "else if" code hasn't executed, this
                 is a case where we only need a single rotation*/
                 rotateLeft(node.parent.parent);
             }
         }
-        root.color = BLACK;
+        root.setColor(BLACK);
     }
 
     /**
@@ -257,11 +274,6 @@ public class RedBlackTree {
         }
     }
 
-    //Deletes whole tree
-    /*void deleteTree(){
-        root = nil;
-    }*/
-
     /**
      * Deletion Code .
      * This operation doesn't care about the new Node's connections
@@ -293,7 +305,7 @@ public class RedBlackTree {
         if((node = findProperties(node, root))==null)return false;
         RBTProperties x;
         RBTProperties y = node; // temporary reference y
-        int yOriginalColor = y.color;
+        int yOriginalColor = y.getColor();
 
         if(node.left == nil){
             x = node.right;
@@ -303,7 +315,7 @@ public class RedBlackTree {
             transplant(node, node.left);
         }else{
             y = treeMinimum(node.right);
-            yOriginalColor = y.color;
+            yOriginalColor = y.getColor();
             x = y.right;
             if(y.parent == node)
                 x.parent = y;
@@ -315,81 +327,74 @@ public class RedBlackTree {
             transplant(node, y);
             y.left = node.left;
             y.left.parent = y;
-            y.color = node.color;
+            y.setColor(node.getColor());
         }
         if(yOriginalColor==BLACK)
             deleteFixup(x);
         return true;
     }
 
-    /*public void deleteCompleted(){
-        for(int i=0;i<size();i++) {
-            if(root.key
-            delete(root);
-        }
-    }*/
-
     /**
-     *
+     * Fix the tree when deleting a node
      * @param node
      */
     private void deleteFixup(RBTProperties node){
-        while(node!=root && node.color == BLACK){
+        while(node!=root && node.getColor() == BLACK){
             if(node == node.parent.left){
                 RBTProperties sibling = node.parent.right;
-                if(sibling.color == RED){
-                    sibling.color = BLACK;
-                    node.parent.color = RED;
+                if(sibling.getColor() == RED){
+                    sibling.setColor(BLACK);
+                    node.parent.setColor(RED);
                     rotateLeft(node.parent);
                     sibling = node.parent.right;
                 }
-                if(sibling.left.color == BLACK && sibling.right.color == BLACK){
-                    sibling.color = RED;
+                if(sibling.left.getColor() == BLACK && sibling.right.getColor() == BLACK){
+                    sibling.setColor(RED);
                     node = node.parent;
                     continue;
                 }
-                else if(sibling.right.color == BLACK){
-                    sibling.left.color = BLACK;
-                    sibling.color = RED;
+                else if(sibling.right.getColor() == BLACK){
+                    sibling.left.setColor(BLACK);
+                    sibling.setColor(RED);
                     rotateRight(sibling);
                     sibling = node.parent.right;
                 }
-                if(sibling.right.color == RED){
-                    sibling.color = node.parent.color;
-                    node.parent.color = BLACK;
-                    sibling.right.color = BLACK;
+                if(sibling.right.getColor() == RED){
+                    sibling.setColor(node.parent.getColor());
+                    node.parent.setColor(BLACK);
+                    sibling.right.setColor(BLACK);
                     rotateLeft(node.parent);
                     node = root;
                 }
             }else{
                 RBTProperties sibling = node.parent.left;
-                if(sibling.color == RED){
-                    sibling.color = BLACK;
-                    node.parent.color = RED;
+                if(sibling.getColor() == RED){
+                    sibling.setColor(BLACK);
+                    node.parent.setColor(RED);
                     rotateRight(node.parent);
                     sibling = node.parent.left;
                 }
-                if(sibling.right.color == BLACK && sibling.left.color == BLACK){
-                    sibling.color = RED;
+                if(sibling.right.getColor() == BLACK && sibling.left.getColor() == BLACK){
+                    sibling.setColor(RED);
                     node = node.parent;
                     continue;
                 }
-                else if(sibling.left.color == BLACK){
-                    sibling.right.color = BLACK;
-                    sibling.color = RED;
+                else if(sibling.left.getColor() == BLACK){
+                    sibling.right.setColor(BLACK);
+                    sibling.setColor(RED);
                     rotateLeft(sibling);
                     sibling = node.parent.left;
                 }
-                if(sibling.left.color == RED){
-                    sibling.color = node.parent.color;
-                    node.parent.color = BLACK;
-                    sibling.left.color = BLACK;
+                if(sibling.left.getColor() == RED){
+                    sibling.setColor(node.parent.getColor());
+                    node.parent.setColor(BLACK);
+                    sibling.left.setColor(BLACK);
                     rotateRight(node.parent);
                     node = root;
                 }
             }
         }
-        node.color = BLACK;
+        node.setColor(BLACK);
     }
 
     private RBTProperties treeMinimum(RBTProperties subTreeRoot){

@@ -13,24 +13,14 @@ public class RisingCity {
     static MinHeap minHeap = new MinHeap(maxBuildings); /**Initializing array for minHeap*/
 
     public static void main(String[] args) throws IOException {
-        // write your code here
-        long start11 = System.currentTimeMillis();
-        //Remove above part
-
-        RedBlackTree rbt = new RedBlackTree();
-
         if(args.length==0){
             System.out.println("No input file entered.");
             System.exit(0);
         }
+
         String filename=args[0];
         File file = new File(filename);
-        StringBuilder str = new StringBuilder();
-        BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, false));
-        writer.flush();
-        List<Building> buildingList = new ArrayList<>();
 
-        int completedBuildingNum = -1;
         String line;
         Scanner sc = new Scanner(file);
         List<String> commandList = new ArrayList<>();
@@ -44,7 +34,12 @@ public class RisingCity {
 
             }
         }
-
+        StringBuilder str = new StringBuilder();
+        BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, false));
+        writer.flush();
+        List<Building> buildingList = new ArrayList<>();
+        RedBlackTree rbt = new RedBlackTree();
+        int completedBuildingNum = -1;
         /**read each command from commandList*/
         for(int i=0;i<commandList.size();i++) {
             String currentLine = commandList.get(i);
@@ -83,14 +78,9 @@ public class RisingCity {
                         /** If the command is PrintBuilding between two building numbers*/
                         int[] buildingNums = stringToParams(currentCommand);
                         List<RedBlackTree.RBTProperties> rangeBuildings = rbt.printBuilding(buildingNums[0],buildingNums[2]);
-                        for(Building building : buildingList){
-                            if(building.getBuildingProperties().getBuildingNum()>buildingNums[0] && building.getBuildingProperties().getBuildingNum()<buildingNums[2]) {
-                                rangeBuildings.add(building.getRBTProperties());
-                            }
-                        }
-                        if(rangeBuildings.size()==0){
+                        if(rangeBuildings.size()==0){/** If there are no buildings between the given buildingNumbers*/
                             str.append("(" + 0 + "," + 0 + "," + 0 + ")");
-                        } else {
+                        } else {/** If there are buildings between the given buildingNumbers, loop through each building and print one after the other*/
                             int j=0;
                             for(RedBlackTree.RBTProperties rbtBuilding: rangeBuildings){
                                 str.append("(").append(rbtBuilding.buildingProperties.getBuildingNum()).append(",").append(rbtBuilding.buildingProperties.getExecutionTime()).append(",").append(rbtBuilding.buildingProperties.getTotalTime()).append(")");
@@ -136,14 +126,6 @@ public class RisingCity {
         /**write to the output file*/
         writer.append(str);
         writer.close();
-
-        //Remove the below part
-        long end1 = System.currentTimeMillis();
-        System.out.println("Application on the whole takes " + (end1 - start11) + "ms");
-        System.gc();
-        Runtime rt = Runtime.getRuntime();
-        long usedMB = (rt.totalMemory() - rt.freeMemory()) / 1024 / 1024;
-        System.out.println( "memory usage " + usedMB+"MB");
     }
     /**
      * This method constructs the building and returns building number if construction is completed
@@ -156,17 +138,15 @@ public class RisingCity {
     public static int construct(String nextCommand, List<Building> buildingList, Building building, RedBlackTree rbt)
     {
         int completedBuildingNum=-1;
-        int minTime = Math.min(building.getBuildingProperties().getTotalTime(), 5);// Find the min of totalTime and 5 so we can run our construction those many days
+        int minTime = Math.min(building.getBuildingProperties().getTotalTime(), 5);/** Find the min of totalTime and 5 so we can run our construction those many days */
         if(minHeap.heapSize>0 && building.getBuildingProperties().getExecutionTime()+1<=building.getBuildingProperties().getTotalTime() && building.getProgress()<minTime){
             building.getBuildingProperties().setExecutionTime(building.getBuildingProperties().getExecutionTime()+1);
             building.getRBTProperties().buildingProperties=building.getBuildingProperties();
             building.setProgress(building.getProgress()+1);
             if(building.getBuildingProperties().getExecutionTime()==building.getBuildingProperties().getTotalTime()){
                 /** If the execution time and total time are same, it means the building construction is completed*/
-
                 completedBuildingNum = building.getBuildingProperties().getBuildingNum();
                 if(nextCommand==null ||(nextCommand!=null && !nextCommand.contains("Print"))) {
-
                     rbt.delete(building.getRBTProperties());
                 }
                 minHeap.delete(0);
@@ -204,19 +184,12 @@ public class RisingCity {
 
         String[] params = input.split(",");
         int[] output = new int[3];
-        // For input file
+        /** Placing the parameters into an output array*/
         String part = params[0].split("\\(")[1];
         output[0] = Integer.parseInt(part);
         output[1]=0;
         part = params[1].split("\\)")[0];
         output[2] = Integer.parseInt(part);
-        // For hard coded input
-        /*String part = params[0].trim();
-        output[0] = Integer.parseInt(part);
-        part = params[1].trim();
-        output[1]=Integer.parseInt(part);
-        part = params[2].trim();
-        output[2] = Integer.parseInt(part);*/
         return output;
     }
 }

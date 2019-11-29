@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
  */
 public class MinHeap {
 
-    private static final int d= 2;
+    private static final int degree= 2;
     public Building[] heap;
     private RedBlackTree.RBTProperties rbtProperties;
     public int heapSize;
@@ -46,36 +46,33 @@ public class MinHeap {
 
 
     private int parent(int i){
-        return (i-1)/d;
+        return (i-1)/degree;
     }
 
-    private int kthChild(int i,int k){
-        return d*i  +k;
+    private int childIndex(int i,int j){
+        return degree*i  +j;
     }
 
     /**
-     * This will insert new element in to heap
-     * Complexity: O(log N)
-     * As worst case scenario, we need to traverse till the root
-     * @param heapx
+     * This will insert new building in to heap
+     * @param buidling
      */
-    public void insert(Building heapx){
+    public void insert(Building buidling){
         if(isFull())
             throw new NoSuchElementException("Heap is full, No space to insert new element");
-        heap[heapSize++] = heapx;
+        heap[heapSize++] = buidling;
         heapifyNewBuilding(heapSize-1);
     }
 
     /**
      * This will delete element at index
-     * Complexity: O(log N)
      * @param index
      * @return
      */
     public int delete(int index){
         if(isEmpty())
-            throw new NoSuchElementException("Heap is empty, No element to delete");
-        int key = heap[index].getBuildingProperties().getBuildingNum();
+            throw new NoSuchElementException("No element present in heap");
+        int buildingNum = heap[index].getBuildingProperties().getBuildingNum();
 
         heap[index].setBuildingProperties(heap[heapSize -1].getBuildingProperties());
         heap[index].setProgress(heap[heapSize -1].getProgress());
@@ -86,7 +83,7 @@ public class MinHeap {
         heap[lastIndex].setBuildingProperties(nullBuilding);
         heap[lastIndex].setProgress(0);
         heap[lastIndex].setRBTProperties(null);
-        return key;
+        return buildingNum;
     }
 
     /**
@@ -111,7 +108,7 @@ public class MinHeap {
     public void heapifyCompletedBuilding(int i){
         int child;
         Building temp = new Building(heap[i].getBuildingProperties(),heap[i].getProgress(),heap[i].getRBTProperties());
-        while(kthChild(i, 1) < heapSize){
+        while(childIndex(i, 1) < heapSize){
             child = minChild(i);// Finding out the min of the children
             if(temp.getBuildingProperties().getExecutionTime() > heap[child].getBuildingProperties().getExecutionTime()
             || temp.getBuildingProperties().getExecutionTime()==heap[child].getBuildingProperties().getExecutionTime() && temp.getBuildingProperties().getBuildingNum()>heap[child].getBuildingProperties().getBuildingNum()){ // Comparing parent with the min of the children
@@ -121,11 +118,6 @@ public class MinHeap {
                 heap[i].setBuildingProperties(heap[child].getBuildingProperties());
                 heap[i].setProgress(heap[child].getProgress());
                 heap[i].setRBTProperties(heap[child].getRBTProperties());
-            /*}else if(){
-
-                heap[i].setBuildingProperties(heap[child].getBuildingProperties());
-                heap[i].setProgress(heap[child].getProgress());
-                heap[i].setRBTProperties(heap[child].getRBTProperties());*/
             } else
                 break;
 
@@ -142,8 +134,8 @@ public class MinHeap {
      * @return
      */
     private int minChild(int i) {
-        int leftChild = kthChild(i, 1);
-        int rightChild = kthChild(i, 2);
+        int leftChild = childIndex(i, 1);
+        int rightChild = childIndex(i, 2);
         int minChild=leftChild;
         if(heap[leftChild].getBuildingProperties().getExecutionTime()>heap[rightChild].getBuildingProperties().getExecutionTime()){
             minChild=rightChild;

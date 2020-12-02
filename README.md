@@ -4,6 +4,6 @@ Wayne Enterprises is developing a new city. They are constructing many buildings
 The program takes input from file in input directory
 How to run this program: \
 javac -d out src/com/*.java \
-java -cp out com.RisingCity \
+java -cp out com.RisingCity 
 
 The output_file will be present in out directory

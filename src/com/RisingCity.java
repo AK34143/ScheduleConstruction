@@ -9,16 +9,16 @@ import java.util.*;
 public class RisingCity {
     static int days = 0;
     static int maxBuildings = 2000;
-    static String outputFile="output_file.txt";
+    static String outputFile="out/output_file.txt";
     static MinHeap minHeap = new MinHeap(maxBuildings); /**Initializing array for minHeap*/
 
     public static void main(String[] args) throws IOException {
-        if(args.length==0){
+        /*if(args.length==0){
             System.out.println("No input file entered.");
             System.exit(0);
-        }
+        }*/
 
-        String filename=args[0];
+        String filename="input/input_1.txt";
         File file = new File(filename);
 
         String line;
